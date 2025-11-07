@@ -1,0 +1,17 @@
+/**
+ * Rushby Elementor Widgets - Editor Styles
+ *
+ * @package Rushby_Elementor_Widgets
+ * @version 1.0.0
+ */
+
+/* Editor-specific styles */
+.elementor-widget-rushby-hero .elementor-widget-container {
+	overflow: visible;
+}
+
+/* Preview helpers */
+.elementor-editor-active .rushby-floating-card-1,
+.elementor-editor-active .rushby-floating-card-2 {
+	display: block !important;
+}

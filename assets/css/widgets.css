@@ -1,0 +1,1696 @@
+/**
+ * Rushby Elementor Widgets Styles
+ *
+ * @package Rushby_Elementor_Widgets
+ * @version 1.0.0
+ */
+
+/* ============================================
+   Announcement Bar Section
+   ============================================ */
+
+.rushby-announcement-bar {
+	background-color: #1F2937;
+	border-bottom: 1px solid #374151;
+	position: relative;
+	z-index: 40;
+	transition: transform 0.3s ease;
+}
+
+.rushby-announcement-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+.rushby-announcement-bar-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 40px;
+	font-size: 0.875rem;
+}
+
+/* Contact Info */
+.rushby-announcement-contact {
+	display: none;
+	align-items: center;
+	gap: 1rem;
+}
+
+@media (min-width: 768px) {
+	.rushby-announcement-contact {
+		display: flex;
+	}
+}
+
+.rushby-announcement-contact-link {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	color: #D1D5DB;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.rushby-announcement-contact-link:hover {
+	color: #FFFFFF;
+}
+
+.rushby-announcement-contact-icon {
+	width: 0.875rem;
+	height: 0.875rem;
+	flex-shrink: 0;
+}
+
+.rushby-announcement-contact-text {
+	font-size: 0.75rem;
+}
+
+/* Mobile Currency Switcher */
+.rushby-announcement-mobile-currency {
+	position: relative;
+}
+
+.rushby-mobile-only {
+	display: block;
+}
+
+@media (min-width: 768px) {
+	.rushby-mobile-only {
+		display: none;
+	}
+}
+
+.rushby-announcement-currency-button {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	background: transparent;
+	border: none;
+	color: #D1D5DB;
+	cursor: pointer;
+	padding: 0;
+	font-size: 0.75rem;
+	transition: color 0.2s;
+}
+
+.rushby-announcement-currency-button:hover {
+	color: #FFFFFF;
+}
+
+.rushby-currency-flag {
+	font-size: 0.875rem;
+	line-height: 1;
+}
+
+.rushby-currency-code {
+	font-weight: 500;
+	font-size: 0.75rem;
+}
+
+.rushby-currency-chevron-small {
+	width: 0.875rem;
+	height: 0.875rem;
+	transition: transform 0.2s;
+}
+
+.rushby-announcement-currency-dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	margin-top: 0.5rem;
+	background-color: #FFFFFF;
+	border-radius: 0.5rem;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	border: 1px solid #E5E7EB;
+	z-index: 60;
+	min-width: 12.5rem;
+	max-height: 20rem;
+	overflow-y: auto;
+	padding: 0.5rem;
+}
+
+.rushby-announcement-currency-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+	padding: 0.75rem;
+	background: transparent;
+	border: none;
+	border-radius: 0.375rem;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.rushby-announcement-currency-item:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-announcement-currency-item.active {
+	background-color: #EEF2FF;
+}
+
+.rushby-currency-flag-small {
+	font-size: 1.25rem;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.rushby-currency-details-small {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-currency-code-small {
+	font-weight: 600;
+	font-size: 0.875rem;
+	color: #1F2937;
+}
+
+.rushby-currency-name-small {
+	font-size: 0.75rem;
+	color: #6B7280;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.rushby-currency-symbol-small {
+	font-weight: 500;
+	font-size: 0.875rem;
+	color: #6B7280;
+	flex-shrink: 0;
+}
+
+/* Social Links */
+.rushby-announcement-social {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rushby-announcement-social-label {
+	display: none;
+	font-size: 0.75rem;
+	color: #9CA3AF;
+	margin-right: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+	.rushby-announcement-social-label {
+		display: inline;
+	}
+}
+
+.rushby-announcement-social-link {
+	color: #9CA3AF;
+	text-decoration: none;
+	transition: color 0.2s;
+	display: inline-flex;
+	align-items: center;
+}
+
+.rushby-announcement-social-link:hover {
+	color: #FFFFFF;
+}
+
+.rushby-announcement-social-icon {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* ============================================
+   Header Section
+   ============================================ */
+
+.rushby-header {
+	position: relative;
+	background-color: #374151;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	z-index: 50;
+}
+
+.rushby-header-sticky {
+	position: sticky;
+	top: 0;
+}
+
+.rushby-header-scrolled {
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.rushby-header-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+.rushby-header-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 80px;
+}
+
+/* Logo */
+.rushby-logo-link {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	text-decoration: none;
+	transition: transform 0.2s;
+}
+
+.rushby-logo-link:hover {
+	transform: scale(1.02);
+}
+
+.rushby-logo {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rushby-logo-image-wrapper {
+	position: relative;
+}
+
+.rushby-logo-image {
+	width: 48px;
+	height: 48px;
+	border-radius: 0.5rem;
+	background-color: rgba(255, 255, 255, 0.1);
+	padding: 0.25rem;
+	object-fit: contain;
+}
+
+.rushby-logo-text {
+	display: block;
+}
+
+.rushby-logo-text-hide-mobile {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-logo-text-hide-mobile {
+		display: block;
+	}
+}
+
+.rushby-logo-text-line1 {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #FFFFFF;
+	letter-spacing: -0.025em;
+	line-height: 1.2;
+}
+
+.rushby-logo-text-line2 {
+	font-size: 0.75rem;
+	color: #D1D5DB;
+	margin-top: -0.25rem;
+	line-height: 1;
+}
+
+/* Desktop Navigation */
+.rushby-nav {
+	display: none;
+	align-items: center;
+	gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+	.rushby-nav {
+		display: flex;
+	}
+}
+
+.rushby-nav-list {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.rushby-nav-link {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #E5E7EB;
+	text-decoration: none;
+	transition: color 0.2s;
+	text-transform: uppercase;
+}
+
+.rushby-nav-link:hover {
+	color: #FFFFFF;
+}
+
+/* Header Actions */
+.rushby-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.rushby-header-icon {
+	color: #D1D5DB;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transition: color 0.2s;
+	position: relative;
+}
+
+.rushby-header-icon:hover {
+	color: #FFFFFF;
+}
+
+.rushby-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.rushby-account-icon-hide-mobile {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-account-icon-hide-mobile {
+		display: block;
+	}
+}
+
+/* Cart Badge */
+.rushby-cart-icon {
+	position: relative;
+}
+
+.rushby-cart-badge {
+	position: absolute;
+	top: -0.5rem;
+	right: -0.5rem;
+	background-color: #DC2626;
+	color: #FFFFFF;
+	font-size: 0.75rem;
+	font-weight: 700;
+	border-radius: 9999px;
+	width: 1.25rem;
+	height: 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Mobile Toggle */
+.rushby-mobile-toggle {
+	display: block;
+}
+
+@media (min-width: 1024px) {
+	.rushby-mobile-toggle {
+		display: none;
+	}
+}
+
+/* Search Bar */
+.rushby-search-bar {
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.rushby-search-inner {
+	padding-bottom: 1rem;
+}
+
+.rushby-search-form {
+	width: 100%;
+}
+
+.rushby-search-wrapper {
+	position: relative;
+	width: 100%;
+}
+
+.rushby-search-icon {
+	position: absolute;
+	left: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 1rem;
+	height: 1rem;
+	color: #6B7280;
+}
+
+.rushby-search-input {
+	width: 100%;
+	padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+	background-color: #FFFFFF;
+	border: 1px solid #D1D5DB;
+	border-radius: 0.375rem;
+	color: #111827;
+	font-size: 0.875rem;
+}
+
+.rushby-search-input:focus {
+	outline: none;
+	border-color: #DC2626;
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.rushby-search-input::placeholder {
+	color: #9CA3AF;
+}
+
+/* Mobile Menu */
+.rushby-mobile-menu {
+	overflow: hidden;
+	border-top: 1px solid #4B5563;
+	background-color: #374151;
+	transition: all 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+	.rushby-mobile-menu {
+		display: none !important;
+	}
+}
+
+.rushby-mobile-menu-inner {
+	padding: 1rem;
+}
+
+.rushby-mobile-nav-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.rushby-mobile-nav-list .rushby-nav-link {
+	display: block;
+	padding: 0.5rem 0;
+}
+
+/* ============================================
+   Side Cart
+   ============================================ */
+
+/* Backdrop */
+.rushby-side-cart-backdrop {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.rushby-side-cart-backdrop.show {
+	opacity: 1;
+}
+
+/* Side Cart Panel */
+.rushby-side-cart-panel {
+	position: fixed;
+	right: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	max-width: 400px;
+	background-color: #FFFFFF;
+	box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	flex-direction: column;
+	transform: translateX(100%);
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rushby-side-cart-panel.show {
+	transform: translateX(0);
+}
+
+@media (max-width: 639px) {
+	.rushby-side-cart-panel {
+		max-width: 100%;
+	}
+}
+
+/* Cart Header */
+.rushby-side-cart-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.5rem;
+	border-bottom: 1px solid #E5E7EB;
+}
+
+.rushby-side-cart-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.rushby-side-cart-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	color: #111827;
+}
+
+.rushby-side-cart-title {
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: #111827;
+	margin: 0;
+}
+
+.rushby-side-cart-close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #6B7280;
+	transition: color 0.2s;
+}
+
+.rushby-side-cart-close:hover {
+	color: #111827;
+}
+
+.rushby-side-cart-close svg {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* Cart Content */
+.rushby-side-cart-content {
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.rushby-side-cart-content.loading {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.rushby-side-cart-items {
+	flex: 1;
+	overflow-y: auto;
+	padding: 1.5rem;
+}
+
+/* Empty Cart */
+.rushby-side-cart-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	text-align: center;
+	padding: 2rem;
+}
+
+.rushby-empty-cart-icon {
+	width: 4rem;
+	height: 4rem;
+	color: #D1D5DB;
+	margin-bottom: 1rem;
+}
+
+.rushby-empty-cart-title {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #111827;
+	margin: 0 0 0.5rem 0;
+}
+
+.rushby-empty-cart-text {
+	font-size: 0.875rem;
+	color: #6B7280;
+	margin: 0 0 1.5rem 0;
+}
+
+/* Cart Item */
+.rushby-side-cart-item {
+	display: flex;
+	gap: 1rem;
+	padding: 1rem;
+	border: 1px solid #E5E7EB;
+	border-radius: 0.5rem;
+	margin-bottom: 1rem;
+	transition: border-color 0.2s;
+}
+
+.rushby-side-cart-item:hover {
+	border-color: #D1D5DB;
+}
+
+.rushby-side-cart-item-image {
+	flex-shrink: 0;
+	width: 80px;
+	height: 80px;
+	background-color: #F3F4F6;
+	border-radius: 0.375rem;
+	overflow: hidden;
+}
+
+.rushby-side-cart-item-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.rushby-side-cart-item-image a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.rushby-side-cart-item-details {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-side-cart-item-name {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #111827;
+	margin: 0 0 0.25rem 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rushby-side-cart-item-name a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.rushby-side-cart-item-name a:hover {
+	color: #DC2626;
+}
+
+.rushby-side-cart-item-variant {
+	font-size: 0.75rem;
+	color: #6B7280;
+	margin: 0 0 0.5rem 0;
+}
+
+.rushby-side-cart-item-variant p {
+	margin: 0;
+}
+
+.rushby-side-cart-item-price-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* Quantity Controls */
+.rushby-quantity-controls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.rushby-qty-btn {
+	width: 1.5rem;
+	height: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #D1D5DB;
+	border-radius: 0.25rem;
+	background-color: #FFFFFF;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	padding: 0;
+}
+
+.rushby-qty-btn:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-qty-btn svg {
+	width: 0.75rem;
+	height: 0.75rem;
+	color: #111827;
+}
+
+.rushby-qty-value {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #111827;
+	min-width: 2rem;
+	text-align: center;
+}
+
+.rushby-side-cart-item-total {
+	font-weight: 700;
+	color: #111827;
+	font-size: 0.875rem;
+}
+
+/* Remove Button */
+.rushby-side-cart-item-remove {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #9CA3AF;
+	transition: color 0.2s;
+	align-self: flex-start;
+}
+
+.rushby-side-cart-item-remove:hover {
+	color: #DC2626;
+}
+
+.rushby-side-cart-item-remove svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* Cart Footer */
+.rushby-side-cart-footer {
+	border-top: 1px solid #E5E7EB;
+	padding: 1.5rem;
+	background-color: #F9FAFB;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.rushby-side-cart-subtotal {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: #111827;
+}
+
+.rushby-side-cart-note {
+	font-size: 0.75rem;
+	color: #6B7280;
+	text-align: center;
+	margin: 0;
+}
+
+.rushby-side-cart-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.rushby-btn-checkout {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.rushby-btn-checkout svg {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.2s;
+}
+
+.rushby-btn-checkout:hover svg {
+	transform: translateX(0.25rem);
+}
+
+.rushby-continue-shopping {
+	width: 100%;
+	font-size: 0.875rem;
+	color: #6B7280;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: color 0.2s;
+	padding: 0.5rem;
+}
+
+.rushby-continue-shopping:hover {
+	color: #111827;
+}
+
+/* ============================================
+   Hero Section
+   ============================================ */
+
+.rushby-hero-section {
+	position: relative;
+	background-color: #E5E7EB;
+	overflow: hidden;
+}
+
+/* Background Pattern */
+.rushby-hero-pattern {
+	position: absolute;
+	inset: 0;
+	opacity: 0.05;
+}
+
+.rushby-hero-pattern > div {
+	position: absolute;
+	inset: 0;
+	background-repeat: repeat;
+}
+
+/* Container */
+.rushby-hero-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 4rem 1rem;
+}
+
+@media (min-width: 768px) {
+	.rushby-hero-container {
+		padding: 6rem 1rem;
+	}
+}
+
+/* Grid Layout */
+.rushby-hero-grid {
+	display: grid;
+	gap: 3rem;
+	align-items: center;
+}
+
+@media (min-width: 1024px) {
+	.rushby-hero-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Left Column - Content */
+.rushby-hero-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+/* ============================================
+   Badge
+   ============================================ */
+
+.rushby-badge-wrapper {
+	animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.rushby-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.375rem 0.75rem;
+	background-color: #FEE2E2;
+	color: #B91C1C;
+	border: 1px solid #FECACA;
+	border-radius: 9999px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transition: background-color 0.2s;
+}
+
+.rushby-badge:hover {
+	background-color: #FECACA;
+}
+
+.rushby-badge-icon {
+	width: 0.75rem;
+	height: 0.75rem;
+	fill: #DC2626;
+}
+
+/* ============================================
+   Headline
+   ============================================ */
+
+.rushby-headline-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.rushby-headline {
+	font-size: 2.25rem;
+	font-weight: 700;
+	color: #111827;
+	line-height: 1.2;
+	margin: 0;
+}
+
+@media (min-width: 768px) {
+	.rushby-headline {
+		font-size: 3.75rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.rushby-headline {
+		font-size: 4.5rem;
+	}
+}
+
+.rushby-headline-highlight {
+	display: block;
+	color: #DC2626;
+}
+
+/* ============================================
+   Description
+   ============================================ */
+
+.rushby-description {
+	font-size: 1.125rem;
+	color: #374151;
+	max-width: 36rem;
+	margin: 0;
+}
+
+@media (min-width: 768px) {
+	.rushby-description {
+		font-size: 1.25rem;
+	}
+}
+
+.rushby-description-highlight {
+	color: #111827;
+	font-weight: 500;
+}
+
+/* ============================================
+   Trust Indicators
+   ============================================ */
+
+.rushby-trust-indicators {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+.rushby-trust-indicator {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+	color: #4B5563;
+}
+
+.rushby-trust-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	color: #DC2626;
+}
+
+/* ============================================
+   CTA Buttons
+   ============================================ */
+
+.rushby-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.rushby-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: 0.375rem;
+	text-decoration: none;
+	transition: all 0.2s;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.rushby-btn-primary {
+	background-color: #DC2626;
+	color: #FFFFFF;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rushby-btn-primary:hover {
+	background-color: #B91C1C;
+	color: #FFFFFF;
+}
+
+.rushby-btn-secondary {
+	background-color: #FFFFFF;
+	color: #111827;
+	border-color: #9CA3AF;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.rushby-btn-secondary:hover {
+	background-color: #F3F4F6;
+	color: #111827;
+}
+
+.rushby-btn-arrow {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.2s;
+}
+
+.rushby-btn-primary:hover .rushby-btn-arrow {
+	transform: translateX(0.25rem);
+}
+
+/* ============================================
+   Statistics
+   ============================================ */
+
+.rushby-stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	padding-top: 2rem;
+	border-top: 1px solid #D1D5DB;
+	animation: fadeInUp 0.6s ease-out 0.7s both;
+}
+
+.rushby-stat {
+	display: flex;
+	flex-direction: column;
+}
+
+.rushby-stat-number {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: #111827;
+}
+
+@media (min-width: 768px) {
+	.rushby-stat-number {
+		font-size: 1.875rem;
+	}
+}
+
+.rushby-stat-label {
+	font-size: 0.875rem;
+	color: #4B5563;
+}
+
+/* ============================================
+   Product Showcase
+   ============================================ */
+
+.rushby-product-showcase {
+	position: relative;
+	animation: fadeInRight 0.8s ease-out 0.4s both;
+}
+
+.rushby-product-card {
+	position: relative;
+	aspect-ratio: 1;
+	background-color: #FFFFFF;
+	border-radius: 1rem;
+	overflow: hidden;
+	border: 1px solid #D1D5DB;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.rushby-product-inner {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}
+
+.rushby-product-content {
+	text-align: center;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.rushby-product-image-wrapper {
+	position: relative;
+	width: 100%;
+	height: 16rem;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	background-color: #F9FAFB;
+}
+
+.rushby-product-image-wrapper img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.rushby-product-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.rushby-product-title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #111827;
+	margin: 0;
+}
+
+.rushby-product-subtitle {
+	font-size: 0.875rem;
+	color: #4B5563;
+	margin: 0;
+}
+
+.rushby-product-rating {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	color: #DC2626;
+}
+
+.rushby-rating-icon {
+	width: 1rem;
+	height: 1rem;
+	fill: #DC2626;
+}
+
+.rushby-product-rating span {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+/* Product Badge */
+.rushby-product-badge-wrapper {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+
+.rushby-product-badge {
+	background-color: #DC2626;
+	color: #FFFFFF;
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 0.375rem 0.75rem;
+	border-radius: 9999px;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   Floating Cards
+   ============================================ */
+
+.rushby-floating-card {
+	position: absolute;
+	background-color: #FFFFFF;
+	border: 1px solid #D1D5DB;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.rushby-floating-card-1 {
+	bottom: -1.5rem;
+	left: -1.5rem;
+	display: none;
+	animation: fadeInUp 0.6s ease-out 0.8s both;
+}
+
+.rushby-floating-card-2 {
+	top: -1.5rem;
+	right: -1.5rem;
+	display: none;
+	animation: fadeInUp 0.6s ease-out 1s both;
+}
+
+@media (min-width: 768px) {
+	.rushby-floating-card-1 {
+		display: block;
+	}
+}
+
+@media (min-width: 1024px) {
+	.rushby-floating-card-2 {
+		display: block;
+	}
+}
+
+.rushby-floating-card-content {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rushby-floating-card-icon {
+	width: 3rem;
+	height: 3rem;
+	background-color: #FEE2E2;
+	border-radius: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.rushby-floating-card-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: #DC2626;
+}
+
+.rushby-floating-card-title {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #111827;
+}
+
+.rushby-floating-card-subtitle {
+	font-size: 0.75rem;
+	color: #4B5563;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(1.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInRight {
+	from {
+		opacity: 0;
+		transform: translateX(1.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* ============================================
+   Responsive Utilities
+   ============================================ */
+
+@media (max-width: 767px) {
+	.rushby-hero-content {
+		gap: 1.5rem;
+	}
+
+	.rushby-headline {
+		font-size: 2rem;
+	}
+
+	.rushby-description {
+		font-size: 1rem;
+	}
+
+	.rushby-stats {
+		gap: 1rem;
+		padding-top: 1.5rem;
+	}
+}
+
+/* ============================================
+   Floating Currency Switcher
+   ============================================ */
+
+.rushby-currency-float-container {
+	position: fixed;
+	z-index: 40;
+}
+
+.rushby-currency-float-container.bottom-right {
+	bottom: 24px;
+	right: 24px;
+}
+
+.rushby-currency-float-container.bottom-left {
+	bottom: 24px;
+	left: 24px;
+}
+
+.rushby-currency-float-container.top-right {
+	top: 24px;
+	right: 24px;
+}
+
+.rushby-currency-float-container.top-left {
+	top: 24px;
+	left: 24px;
+}
+
+/* Mobile Only */
+.rushby-currency-float-container.rushby-mobile-only {
+	display: block;
+}
+
+@media (min-width: 640px) {
+	.rushby-currency-float-container.rushby-mobile-only {
+		display: none;
+	}
+}
+
+/* Floating Button */
+.rushby-currency-float-button {
+	background-color: #DC2626;
+	color: #FFFFFF;
+	border-radius: 9999px;
+	width: 56px;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.rushby-currency-float-button:hover {
+	background-color: #B91C1C;
+	transform: scale(1.05);
+}
+
+.rushby-currency-float-button:active {
+	transform: scale(0.95);
+}
+
+.rushby-currency-button-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.rushby-currency-flag {
+	font-size: 1.125rem;
+	line-height: 1;
+}
+
+.rushby-currency-code {
+	font-size: 0.625rem;
+	font-weight: 700;
+	line-height: 1;
+	margin-top: 0.125rem;
+}
+
+/* Currency Menu */
+.rushby-currency-menu {
+	position: absolute;
+	background-color: #FFFFFF;
+	border-radius: 0.5rem;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	border: 1px solid #E5E7EB;
+	padding: 0.5rem 0;
+	min-width: 240px;
+	opacity: 0;
+	transform: translateY(10px) scale(0.9);
+	transition: all 0.2s;
+	pointer-events: none;
+}
+
+.rushby-currency-menu.show {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: all;
+}
+
+/* Position menu based on parent position */
+.rushby-currency-float-container.bottom-right .rushby-currency-menu,
+.rushby-currency-float-container.bottom-left .rushby-currency-menu {
+	bottom: 64px;
+}
+
+.rushby-currency-float-container.top-right .rushby-currency-menu,
+.rushby-currency-float-container.top-left .rushby-currency-menu {
+	top: 64px;
+}
+
+.rushby-currency-float-container.bottom-right .rushby-currency-menu,
+.rushby-currency-float-container.top-right .rushby-currency-menu {
+	right: 0;
+}
+
+.rushby-currency-float-container.bottom-left .rushby-currency-menu,
+.rushby-currency-float-container.top-left .rushby-currency-menu {
+	left: 0;
+}
+
+/* Menu Header */
+.rushby-currency-menu-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 1rem;
+	border-bottom: 1px solid #E5E7EB;
+}
+
+.rushby-currency-menu-title {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #111827;
+}
+
+.rushby-currency-menu-close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #9CA3AF;
+	transition: color 0.2s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.rushby-currency-menu-close:hover {
+	color: #6B7280;
+}
+
+.rushby-currency-menu-close svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* Currency List */
+.rushby-currency-list {
+	max-height: 16rem;
+	overflow-y: auto;
+}
+
+/* Currency Item */
+.rushby-currency-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.rushby-currency-item:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-currency-item.active {
+	background-color: #FEE2E2;
+}
+
+.rushby-currency-item-flag {
+	font-size: 1.5rem;
+}
+
+.rushby-currency-item-details {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-currency-item-code {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #111827;
+}
+
+.rushby-currency-item-name {
+	font-size: 0.75rem;
+	color: #6B7280;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rushby-currency-item-indicator {
+	width: 0.5rem;
+	height: 0.5rem;
+	background-color: #DC2626;
+	border-radius: 9999px;
+	flex-shrink: 0;
+}
+
+/* ============================================
+   Header Currency Switcher
+   ============================================ */
+
+.rushby-header-currency-switcher {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.rushby-currency-hide-mobile {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-currency-hide-mobile {
+		display: flex;
+	}
+}
+
+.rushby-currency-switcher-button {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	color: #D1D5DB;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transition: color 0.2s;
+	font-size: 0.875rem;
+}
+
+.rushby-currency-switcher-button:hover {
+	color: #FFFFFF;
+}
+
+.rushby-currency-flag-desktop {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-currency-flag-desktop {
+		display: inline;
+	}
+}
+
+.rushby-currency-code-text {
+	font-weight: 500;
+	font-size: 0.875rem;
+}
+
+.rushby-currency-chevron {
+	width: 0.875rem;
+	height: 0.875rem;
+	transition: transform 0.2s;
+}
+
+.rushby-currency-switcher-button.open .rushby-currency-chevron {
+	transform: rotate(180deg);
+}
+
+/* Currency Dropdown */
+.rushby-currency-dropdown {
+	position: absolute;
+	right: 0;
+	top: 100%;
+	margin-top: 0.5rem;
+	background-color: #FFFFFF;
+	border-radius: 0.5rem;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	border: 1px solid #E5E7EB;
+	padding: 0.5rem 0;
+	min-width: 200px;
+	z-index: 50;
+	opacity: 0;
+	transform: translateY(-10px);
+	transition: opacity 0.2s, transform 0.2s;
+	pointer-events: none;
+}
+
+.rushby-currency-dropdown.show {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: all;
+}
+
+.rushby-currency-dropdown-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.625rem 1rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.rushby-currency-dropdown-item:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-currency-dropdown-item.active {
+	background-color: #F9FAFB;
+}
+
+.rushby-currency-dropdown-flag {
+	font-size: 1.25rem;
+}
+
+.rushby-currency-dropdown-details {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-currency-dropdown-code {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #111827;
+}
+
+.rushby-currency-dropdown-name {
+	font-size: 0.75rem;
+	color: #6B7280;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rushby-currency-dropdown-symbol {
+	font-size: 0.875rem;
+	color: #9CA3AF;
+}
