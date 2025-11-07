@@ -3144,9 +3144,11 @@
     background-color: #F3F4F6;
 }
 
-.rushby-cart-qty-btn svg {
+.rushby-cart-qty-btn svg,
+.rushby-cart-qty-btn i {
     width: 0.875rem;
     height: 0.875rem;
+    font-size: 0.875rem;
 }
 
 .rushby-cart-qty-value {
@@ -3182,9 +3184,11 @@
     color: #DC2626;
 }
 
-.rushby-cart-remove-btn svg {
+.rushby-cart-remove-btn svg,
+.rushby-cart-remove-btn i {
     width: 1rem;
     height: 1rem;
+    font-size: 1rem;
 }
 
 /* Cart Actions */
@@ -3305,9 +3309,11 @@
     color: #1E40AF;
 }
 
-.rushby-cart-coupon-remove svg {
+.rushby-cart-coupon-remove svg,
+.rushby-cart-coupon-remove i {
     width: 0.75rem;
     height: 0.75rem;
+    font-size: 0.75rem;
 }
 
 /* Totals Breakdown */

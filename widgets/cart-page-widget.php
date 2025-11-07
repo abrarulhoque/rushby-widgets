@@ -127,6 +127,53 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
+		// Icon Settings
+		$this->start_controls_section(
+			'icon_section',
+			[
+				'label' => esc_html__( 'Icon Settings', 'rushby-elementor-widgets' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'qty_minus_icon',
+			[
+				'label' => esc_html__( 'Quantity Minus Icon', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value' => 'fas fa-minus',
+					'library' => 'fa-solid',
+				],
+			]
+		);
+
+		$this->add_control(
+			'qty_plus_icon',
+			[
+				'label' => esc_html__( 'Quantity Plus Icon', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value' => 'fas fa-plus',
+					'library' => 'fa-solid',
+				],
+			]
+		);
+
+		$this->add_control(
+			'remove_icon',
+			[
+				'label' => esc_html__( 'Remove Item Icon', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value' => 'fas fa-times',
+					'library' => 'fa-solid',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
 		// Style - Colors
 		$this->start_controls_section(
 			'style_colors',
@@ -268,15 +315,11 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 											<div class="rushby-cart-item-quantity">
 												<div class="rushby-cart-quantity-controls">
 													<button type="button" class="rushby-cart-qty-btn rushby-cart-qty-minus" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-														<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-														</svg>
+														<?php \Elementor\Icons_Manager::render_icon( $settings['qty_minus_icon'], [ 'aria-hidden' => 'true' ] ); ?>
 													</button>
 													<span class="rushby-cart-qty-value"><?php echo esc_html( $cart_item['quantity'] ); ?></span>
 													<button type="button" class="rushby-cart-qty-btn rushby-cart-qty-plus" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-														<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-															<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-														</svg>
+														<?php \Elementor\Icons_Manager::render_icon( $settings['qty_plus_icon'], [ 'aria-hidden' => 'true' ] ); ?>
 													</button>
 												</div>
 											</div>
@@ -288,9 +331,7 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 
 											<!-- Remove Button -->
 											<button type="button" class="rushby-cart-remove-btn" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-												<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-												</svg>
+												<?php \Elementor\Icons_Manager::render_icon( $settings['remove_icon'], [ 'aria-hidden' => 'true' ] ); ?>
 											</button>
 										</div>
 										<?php
@@ -338,9 +379,7 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 											<div class="rushby-cart-coupon-tag">
 												<span><?php echo esc_html( $code ); ?></span>
 												<button type="button" class="rushby-cart-coupon-remove" data-coupon="<?php echo esc_attr( $code ); ?>">
-													<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-													</svg>
+													<?php \Elementor\Icons_Manager::render_icon( $settings['remove_icon'], [ 'aria-hidden' => 'true' ] ); ?>
 												</button>
 											</div>
 										<?php endforeach; ?>
