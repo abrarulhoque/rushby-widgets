@@ -1704,6 +1704,25 @@
     background-color: #F3F4F6;
 }
 
+/* Container with padding */
+.rushby-product-grid-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .rushby-product-grid-container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .rushby-product-grid-container {
+        padding: 0 2rem;
+    }
+}
+
 /* Section Header */
 .rushby-product-section-header {
     text-align: center;

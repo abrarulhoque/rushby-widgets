@@ -676,6 +676,7 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 		$image_ratio_class = 'ratio-' . $settings['image_ratio'];
 		?>
 		<section class="rushby-product-grid-section">
+			<div class="rushby-product-grid-container">
 			<?php if ( 'yes' === $settings['show_header'] ) : ?>
 				<!-- Section Header -->
 				<div class="rushby-product-section-header">
@@ -849,6 +850,7 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 					</a>
 				</div>
 			<?php endif; ?>
+			</div><!-- .rushby-product-grid-container -->
 		</section>
 		<?php
 	}
