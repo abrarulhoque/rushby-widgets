@@ -674,3 +674,352 @@
 	});
 
 })(jQuery);
+
+/**
+ * ========================================
+ * Product Grid Widget JavaScript
+ * ========================================
+ */
+
+(function ($) {
+	'use strict';
+
+	// Store selected variations for each product
+	const productVariations = {};
+
+	/**
+	 * Initialize Product Grid functionality
+	 */
+	function initProductGrid() {
+		// Variation swatch selection
+		$(document).on('click', '.rushby-variation-swatch', function () {
+			const $swatch = $(this);
+			const $card = $swatch.closest('.rushby-product-card');
+			const productId = $card.data('product-id');
+			const attribute = $swatch.data('attribute');
+			const value = $swatch.data('value');
+
+			// Toggle selection
+			$swatch.siblings('.rushby-variation-swatch').removeClass('selected');
+			$swatch.addClass('selected');
+
+			// Store selected variation
+			if (!productVariations[productId]) {
+				productVariations[productId] = {};
+			}
+			productVariations[productId][attribute] = value;
+
+			// Update add to cart button state
+			updateAddToCartButton($card);
+		});
+
+		// Add to cart
+		$(document).on('click', '.rushby-product-add-to-cart', function (e) {
+			e.preventDefault();
+			const $button = $(this);
+			const $card = $button.closest('.rushby-product-card');
+			const productId = $card.data('product-id');
+			const productType = $button.data('product-type');
+
+			// Check if product is variable and variations are not selected
+			if (productType === 'variable') {
+				const selectedVariations = productVariations[productId] || {};
+				const $variationGroups = $card.find('.rushby-variation-group');
+
+				// Check if all variations are selected
+				let allSelected = true;
+				$variationGroups.each(function () {
+					const attribute = $(this).find('.rushby-variation-swatch:first').data('attribute');
+					if (!selectedVariations[attribute]) {
+						allSelected = false;
+						return false;
+					}
+				});
+
+				if (!allSelected) {
+					showNotice('Please select all product options', 'error');
+					return;
+				}
+			}
+
+			addToCart($button, productId, productType);
+		});
+
+		// Quick view
+		$(document).on('click', '.rushby-quick-view-btn', function (e) {
+			e.preventDefault();
+			const productId = $(this).data('product-id');
+			openQuickView(productId);
+		});
+
+		// Close quick view modal
+		$(document).on('click', '.rushby-quick-view-close, .rushby-quick-view-modal', function (e) {
+			if (e.target === this) {
+				closeQuickView();
+			}
+		});
+
+		// ESC key to close modal
+		$(document).on('keydown', function (e) {
+			if (e.key === 'Escape') {
+				closeQuickView();
+			}
+		});
+	}
+
+	/**
+	 * Add product to cart via AJAX
+	 */
+	function addToCart($button, productId, productType) {
+		if ($button.hasClass('loading')) {
+			return;
+		}
+
+		$button.addClass('loading').prop('disabled', true);
+
+		const data = {
+			action: 'rushby_add_to_cart',
+			nonce: rushby_cart_ajax.nonce,
+			product_id: productId,
+			quantity: 1,
+		};
+
+		// Add variation data if variable product
+		if (productType === 'variable' && productVariations[productId]) {
+			// Find variation ID based on selected attributes
+			findVariationId(productId, productVariations[productId])
+				.then(function (variationId) {
+					if (variationId) {
+						data.variation_id = variationId;
+						data.variation = productVariations[productId];
+						performAddToCart(data, $button);
+					} else {
+						$button.removeClass('loading').prop('disabled', false);
+						showNotice('Selected variation not available', 'error');
+					}
+				})
+				.catch(function () {
+					$button.removeClass('loading').prop('disabled', false);
+					showNotice('Error finding product variation', 'error');
+				});
+		} else {
+			performAddToCart(data, $button);
+		}
+	}
+
+	/**
+	 * Perform the add to cart AJAX request
+	 */
+	function performAddToCart(data, $button) {
+		$.ajax({
+			url: rushby_cart_ajax.ajax_url,
+			type: 'POST',
+			data: data,
+			success: function (response) {
+				$button.removeClass('loading').prop('disabled', false);
+
+				if (response.success) {
+					// Update cart count
+					$('.rushby-cart-count').text(response.data.cart_count);
+
+					// Update cart fragments
+					if (response.data.fragments) {
+						$.each(response.data.fragments, function (key, value) {
+							$(key).replaceWith(value);
+						});
+					}
+
+					// Show success notification
+					showNotice('Product added to cart!', 'success');
+
+					// Trigger WooCommerce event
+					$(document.body).trigger('added_to_cart', [
+						response.data.fragments,
+						response.data.cart_hash,
+						$button,
+					]);
+
+					// Open side cart if it exists
+					if (typeof rushbyOpenSideCart === 'function') {
+						setTimeout(function () {
+							rushbyOpenSideCart();
+						}, 300);
+					}
+				} else {
+					showNotice(response.data.message || 'Failed to add product to cart', 'error');
+				}
+			},
+			error: function () {
+				$button.removeClass('loading').prop('disabled', false);
+				showNotice('Error adding product to cart', 'error');
+			},
+		});
+	}
+
+	/**
+	 * Find variation ID based on selected attributes
+	 */
+	function findVariationId(productId, selectedAttributes) {
+		return new Promise(function (resolve, reject) {
+			$.ajax({
+				url: rushby_cart_ajax.ajax_url,
+				type: 'POST',
+				data: {
+					action: 'rushby_get_product_variations',
+					nonce: rushby_cart_ajax.nonce,
+					product_id: productId,
+				},
+				success: function (response) {
+					if (response.success && response.data.variations) {
+						// Find matching variation
+						const variations = response.data.variations;
+						for (let i = 0; i < variations.length; i++) {
+							const variation = variations[i];
+							let matches = true;
+
+							// Check if all selected attributes match this variation
+							for (const attr in selectedAttributes) {
+								const variationAttr = 'attribute_' + attr;
+								if (
+									variation.attributes[variationAttr] &&
+									variation.attributes[variationAttr] !== selectedAttributes[attr]
+								) {
+									matches = false;
+									break;
+								}
+							}
+
+							if (matches) {
+								resolve(variation.variation_id);
+								return;
+							}
+						}
+						resolve(null);
+					} else {
+						reject();
+					}
+				},
+				error: function () {
+					reject();
+				},
+			});
+		});
+	}
+
+	/**
+	 * Update add to cart button state
+	 */
+	function updateAddToCartButton($card) {
+		const productId = $card.data('product-id');
+		const $button = $card.find('.rushby-product-add-to-cart');
+		const selectedVariations = productVariations[productId] || {};
+		const $variationGroups = $card.find('.rushby-variation-group');
+
+		let allSelected = true;
+		$variationGroups.each(function () {
+			const attribute = $(this).find('.rushby-variation-swatch:first').data('attribute');
+			if (!selectedVariations[attribute]) {
+				allSelected = false;
+				return false;
+			}
+		});
+
+		// Update button text
+		if (allSelected) {
+			$button.find('span').text('Add to Cart');
+		} else {
+			$button.find('span').text('Select Options');
+		}
+	}
+
+	/**
+	 * Open quick view modal
+	 */
+	function openQuickView(productId) {
+		// Create modal if it doesn't exist
+		let $modal = $('.rushby-quick-view-modal');
+		if ($modal.length === 0) {
+			$modal = $(
+				'<div class="rushby-quick-view-modal">' +
+					'<div class="rushby-quick-view-content">' +
+					'<button class="rushby-quick-view-close">&times;</button>' +
+					'<div class="rushby-quick-view-body"></div>' +
+					'</div>' +
+					'</div>'
+			);
+			$('body').append($modal);
+		}
+
+		// Load product content
+		const $body = $modal.find('.rushby-quick-view-body');
+		$body.html('<p style="text-align:center;padding:2rem;">Loading...</p>');
+		$modal.addClass('active');
+
+		// In a real implementation, you would load the product via AJAX
+		// For now, redirect to product page
+		setTimeout(function () {
+			$body.html(
+				'<p style="text-align:center;padding:2rem;">Quick view feature coming soon. <a href="#" onclick="jQuery(\'.rushby-quick-view-modal\').removeClass(\'active\'); return false;">Close</a></p>'
+			);
+		}, 300);
+	}
+
+	/**
+	 * Close quick view modal
+	 */
+	function closeQuickView() {
+		$('.rushby-quick-view-modal').removeClass('active');
+	}
+
+	/**
+	 * Show notification message
+	 */
+	function showNotice(message, type) {
+		// Remove existing notice
+		$('.rushby-add-to-cart-notice').remove();
+
+		// Create notice
+		const bgColor = type === 'success' ? '#10B981' : '#EF4444';
+		const icon =
+			type === 'success'
+				? '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
+				: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+
+		const $notice = $(
+			'<div class="rushby-add-to-cart-notice" style="background-color:' +
+				bgColor +
+				'">' +
+				icon +
+				'<span>' +
+				message +
+				'</span>' +
+				'</div>'
+		);
+
+		$('body').append($notice);
+
+		// Show with animation
+		setTimeout(function () {
+			$notice.addClass('show');
+		}, 100);
+
+		// Hide after 3 seconds
+		setTimeout(function () {
+			$notice.removeClass('show');
+			setTimeout(function () {
+				$notice.remove();
+			}, 300);
+		}, 3000);
+	}
+
+	// Initialize on document ready
+	$(document).ready(function () {
+		initProductGrid();
+	});
+
+	// Re-initialize on Elementor preview load
+	$(window).on('elementor/frontend/init', function () {
+		initProductGrid();
+	});
+})(jQuery);
+

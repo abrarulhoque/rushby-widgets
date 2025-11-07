@@ -38,12 +38,14 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/hero-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/header-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/floating-currency-switcher-widget.php' );
+	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-grid-widget.php' );
 
 	// Register widgets
 	$widgets_manager->register( new \Rushby_Announcement_Bar_Widget() );
 	$widgets_manager->register( new \Rushby_Hero_Widget() );
 	$widgets_manager->register( new \Rushby_Header_Widget() );
 	$widgets_manager->register( new \Rushby_Floating_Currency_Switcher_Widget() );
+	$widgets_manager->register( new \Rushby_Product_Grid_Widget() );
 
 }
 add_action( 'elementor/widgets/register', 'register_rushby_elementor_widgets' );
@@ -73,8 +75,9 @@ function rushby_elementor_widget_scripts() {
 
 	// Localize script for AJAX
 	wp_localize_script( 'rushby-widgets', 'rushby_cart_ajax', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' ),
-		'nonce'    => wp_create_nonce( 'rushby_cart_nonce' ),
+		'ajax_url'     => admin_url( 'admin-ajax.php' ),
+		'nonce'        => wp_create_nonce( 'rushby_cart_nonce' ),
+		'wc_ajax_url'  => WC_AJAX::get_endpoint( '%%endpoint%%' ),
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'rushby_elementor_widget_scripts' );
@@ -127,6 +130,73 @@ function rushby_remove_cart_item() {
 }
 add_action( 'wp_ajax_rushby_remove_cart_item', 'rushby_remove_cart_item' );
 add_action( 'wp_ajax_nopriv_rushby_remove_cart_item', 'rushby_remove_cart_item' );
+
+/**
+ * AJAX handler to add product to cart
+ */
+function rushby_add_to_cart() {
+	check_ajax_referer( 'rushby_cart_nonce', 'nonce' );
+
+	if ( ! isset( $_POST['product_id'] ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid product ID' ) );
+	}
+
+	$product_id = absint( $_POST['product_id'] );
+	$quantity = isset( $_POST['quantity'] ) ? absint( $_POST['quantity'] ) : 1;
+	$variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+	$variation = isset( $_POST['variation'] ) ? (array) $_POST['variation'] : array();
+
+	// Remove slashes
+	$variation = array_map( 'stripslashes_deep', $variation );
+
+	// Add to cart
+	if ( $variation_id ) {
+		$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation );
+	} else {
+		$cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity );
+	}
+
+	if ( $cart_item_key ) {
+		do_action( 'woocommerce_ajax_added_to_cart', $product_id );
+
+		wp_send_json_success( array(
+			'cart_hash'     => WC()->cart->get_cart_hash(),
+			'cart_count'    => WC()->cart->get_cart_contents_count(),
+			'fragments'     => rushby_get_cart_fragments(),
+			'cart_item_key' => $cart_item_key,
+		) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to add product to cart' ) );
+	}
+}
+add_action( 'wp_ajax_rushby_add_to_cart', 'rushby_add_to_cart' );
+add_action( 'wp_ajax_nopriv_rushby_add_to_cart', 'rushby_add_to_cart' );
+
+/**
+ * AJAX handler to get product variations
+ */
+function rushby_get_product_variations() {
+	check_ajax_referer( 'rushby_cart_nonce', 'nonce' );
+
+	if ( ! isset( $_POST['product_id'] ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid product ID' ) );
+	}
+
+	$product_id = absint( $_POST['product_id'] );
+	$product = wc_get_product( $product_id );
+
+	if ( ! $product || ! $product->is_type( 'variable' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid variable product' ) );
+	}
+
+	$variations = $product->get_available_variations();
+
+	wp_send_json_success( array(
+		'variations' => $variations,
+	) );
+}
+add_action( 'wp_ajax_rushby_get_product_variations', 'rushby_get_product_variations' );
+add_action( 'wp_ajax_nopriv_rushby_get_product_variations', 'rushby_get_product_variations' );
 
 /**
  * Get cart fragments for AJAX updates
