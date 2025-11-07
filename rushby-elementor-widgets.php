@@ -68,12 +68,12 @@ add_action( 'elementor/frontend/after_enqueue_styles', 'rushby_elementor_widget_
  * Enqueue Elementor icons on frontend
  */
 function rushby_enqueue_elementor_icons() {
-	// Enqueue Elementor's icon libraries
+	// Enqueue Elementor's icon libraries for frontend
 	wp_enqueue_style( 'elementor-icons-fa-solid' );
 	wp_enqueue_style( 'elementor-icons-fa-regular' );
 	wp_enqueue_style( 'elementor-icons-fa-brands' );
 }
-add_action( 'wp_enqueue_scripts', 'rushby_enqueue_elementor_icons' );
+add_action( 'elementor/frontend/after_register_styles', 'rushby_enqueue_elementor_icons', 20 );
 
 /**
  * Enqueue editor styles

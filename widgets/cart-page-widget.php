@@ -47,6 +47,13 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
+	 * Get style dependencies.
+	 */
+	public function get_style_depends(): array {
+		return [ 'elementor-icons-fa-solid', 'elementor-icons-fa-regular' ];
+	}
+
+	/**
 	 * Register widget controls.
 	 */
 	protected function register_controls(): void {
@@ -243,6 +250,24 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 		$settings = $this->get_settings_for_display();
 		$cart = WC()->cart;
 		$cart_items = $cart->get_cart();
+
+		// Ensure the selected icon libraries are loaded before rendering.
+		$icon_controls = [ 'qty_minus_icon', 'qty_plus_icon', 'remove_icon' ];
+		$icon_libraries = [];
+		foreach ( $icon_controls as $icon_control ) {
+			if ( empty( $settings[ $icon_control ]['library'] ) ) {
+				continue;
+			}
+			$icon_libraries[ $settings[ $icon_control ]['library'] ] = true;
+		}
+
+		if ( \Elementor\Icons_Manager::is_migration_allowed() ) {
+			foreach ( array_keys( $icon_libraries ) as $library ) {
+				wp_enqueue_style( 'elementor-icons-' . $library );
+			}
+		} elseif ( ! empty( $icon_libraries ) ) {
+			\Elementor\Icons_Manager::enqueue_shim();
+		}
 		?>
 		<div class="rushby-cart-page">
 			<div class="rushby-cart-container">
@@ -315,11 +340,23 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 											<div class="rushby-cart-item-quantity">
 												<div class="rushby-cart-quantity-controls">
 													<button type="button" class="rushby-cart-qty-btn rushby-cart-qty-minus" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-														<?php \Elementor\Icons_Manager::render_icon( $settings['qty_minus_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+														<?php
+														if ( ! empty( $settings['qty_minus_icon']['value'] ) ) {
+															\Elementor\Icons_Manager::render_icon( $settings['qty_minus_icon'], [ 'aria-hidden' => 'true' ] );
+														} else {
+															echo '<i class="fas fa-minus" aria-hidden="true"></i>';
+														}
+														?>
 													</button>
 													<span class="rushby-cart-qty-value"><?php echo esc_html( $cart_item['quantity'] ); ?></span>
 													<button type="button" class="rushby-cart-qty-btn rushby-cart-qty-plus" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-														<?php \Elementor\Icons_Manager::render_icon( $settings['qty_plus_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+														<?php
+														if ( ! empty( $settings['qty_plus_icon']['value'] ) ) {
+															\Elementor\Icons_Manager::render_icon( $settings['qty_plus_icon'], [ 'aria-hidden' => 'true' ] );
+														} else {
+															echo '<i class="fas fa-plus" aria-hidden="true"></i>';
+														}
+														?>
 													</button>
 												</div>
 											</div>
@@ -331,7 +368,13 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 
 											<!-- Remove Button -->
 											<button type="button" class="rushby-cart-remove-btn" data-cart-item-key="<?php echo esc_attr( $cart_item_key ); ?>">
-												<?php \Elementor\Icons_Manager::render_icon( $settings['remove_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+												<?php
+												if ( ! empty( $settings['remove_icon']['value'] ) ) {
+													\Elementor\Icons_Manager::render_icon( $settings['remove_icon'], [ 'aria-hidden' => 'true' ] );
+												} else {
+													echo '<i class="fas fa-times" aria-hidden="true"></i>';
+												}
+												?>
 											</button>
 										</div>
 										<?php
@@ -379,7 +422,13 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 											<div class="rushby-cart-coupon-tag">
 												<span><?php echo esc_html( $code ); ?></span>
 												<button type="button" class="rushby-cart-coupon-remove" data-coupon="<?php echo esc_attr( $code ); ?>">
-													<?php \Elementor\Icons_Manager::render_icon( $settings['remove_icon'], [ 'aria-hidden' => 'true' ] ); ?>
+													<?php
+													if ( ! empty( $settings['remove_icon']['value'] ) ) {
+														\Elementor\Icons_Manager::render_icon( $settings['remove_icon'], [ 'aria-hidden' => 'true' ] );
+													} else {
+														echo '<i class="fas fa-times" aria-hidden="true"></i>';
+													}
+													?>
 												</button>
 											</div>
 										<?php endforeach; ?>
