@@ -1023,3 +1023,203 @@
 	});
 })(jQuery);
 
+
+/**
+ * ========================================
+ * Cart Page Widget JavaScript
+ * ========================================
+ */
+
+(function ($) {
+	'use strict';
+
+	/**
+	 * Initialize Cart Page functionality
+	 */
+	function initCartPage() {
+		// Quantity controls for cart page
+		$(document).on('click', '.rushby-cart-qty-plus', function () {
+			const $button = $(this);
+			const cartItemKey = $button.data('cart-item-key');
+			const $item = $button.closest('.rushby-cart-item');
+			const $qtyValue = $item.find('.rushby-cart-qty-value');
+			const currentQty = parseInt($qtyValue.text()) || 1;
+			const newQty = currentQty + 1;
+
+			updateCartItemQuantity(cartItemKey, newQty, $item);
+		});
+
+		$(document).on('click', '.rushby-cart-qty-minus', function () {
+			const $button = $(this);
+			const cartItemKey = $button.data('cart-item-key');
+			const $item = $button.closest('.rushby-cart-item');
+			const $qtyValue = $item.find('.rushby-cart-qty-value');
+			const currentQty = parseInt($qtyValue.text()) || 1;
+
+			if (currentQty > 1) {
+				const newQty = currentQty - 1;
+				updateCartItemQuantity(cartItemKey, newQty, $item);
+			}
+		});
+
+		// Remove item from cart
+		$(document).on('click', '.rushby-cart-remove-btn', function () {
+			const $button = $(this);
+			const cartItemKey = $button.data('cart-item-key');
+			const $item = $button.closest('.rushby-cart-item');
+
+			if (confirm('Are you sure you want to remove this item from your cart?')) {
+				removeCartItem(cartItemKey, $item);
+			}
+		});
+
+		// Apply coupon
+		$(document).on('submit', '.rushby-cart-coupon-form', function (e) {
+			e.preventDefault();
+			const $form = $(this);
+			const couponCode = $form.find('.rushby-cart-coupon-input').val();
+
+			if (couponCode) {
+				applyCoupon(couponCode, $form);
+			}
+		});
+
+		// Remove coupon
+		$(document).on('click', '.rushby-cart-coupon-remove', function () {
+			const $button = $(this);
+			const couponCode = $button.data('coupon');
+
+			removeCoupon(couponCode);
+		});
+	}
+
+	/**
+	 * Update cart item quantity
+	 */
+	function updateCartItemQuantity(cartItemKey, quantity, $item) {
+		$item.css('opacity', '0.6');
+
+		$.ajax({
+			url: rushby_cart_ajax.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'rushby_update_cart_quantity',
+				nonce: rushby_cart_ajax.nonce,
+				cart_item_key: cartItemKey,
+				quantity: quantity,
+			},
+			success: function (response) {
+				if (response.success) {
+					// Reload page to show updated totals
+					window.location.reload();
+				} else {
+					$item.css('opacity', '1');
+					alert(response.data.message || 'Failed to update quantity');
+				}
+			},
+			error: function () {
+				$item.css('opacity', '1');
+				alert('Error updating cart');
+			},
+		});
+	}
+
+	/**
+	 * Remove item from cart
+	 */
+	function removeCartItem(cartItemKey, $item) {
+		$item.css('opacity', '0.6');
+
+		$.ajax({
+			url: rushby_cart_ajax.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'rushby_remove_cart_item',
+				nonce: rushby_cart_ajax.nonce,
+				cart_item_key: cartItemKey,
+			},
+			success: function (response) {
+				if (response.success) {
+					// Fade out and remove the item
+					$item.fadeOut(300, function () {
+						$(this).remove();
+						// Reload page to update totals
+						window.location.reload();
+					});
+				} else {
+					$item.css('opacity', '1');
+					alert(response.data.message || 'Failed to remove item');
+				}
+			},
+			error: function () {
+				$item.css('opacity', '1');
+				alert('Error removing item');
+			},
+		});
+	}
+
+	/**
+	 * Apply coupon code
+	 */
+	function applyCoupon(couponCode, $form) {
+		const $button = $form.find('.rushby-cart-coupon-btn');
+		const originalText = $button.text();
+
+		$button.text('Applying...').prop('disabled', true);
+
+		$.ajax({
+			url: rushby_cart_ajax.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'rushby_apply_coupon',
+				nonce: rushby_cart_ajax.nonce,
+				coupon_code: couponCode,
+			},
+			success: function (response) {
+				if (response.success) {
+					// Reload page to show applied coupon
+					window.location.reload();
+				} else {
+					$button.text(originalText).prop('disabled', false);
+					alert(response.data.message || 'Invalid coupon code');
+				}
+			},
+			error: function () {
+				$button.text(originalText).prop('disabled', false);
+				alert('Error applying coupon');
+			},
+		});
+	}
+
+	/**
+	 * Remove coupon code
+	 */
+	function removeCoupon(couponCode) {
+		$.ajax({
+			url: rushby_cart_ajax.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'rushby_remove_coupon',
+				nonce: rushby_cart_ajax.nonce,
+				coupon_code: couponCode,
+			},
+			success: function (response) {
+				if (response.success) {
+					// Reload page to show updated totals
+					window.location.reload();
+				} else {
+					alert(response.data.message || 'Failed to remove coupon');
+				}
+			},
+			error: function () {
+				alert('Error removing coupon');
+			},
+		});
+	}
+
+	// Initialize on document ready
+	$(document).ready(function () {
+		initCartPage();
+	});
+})(jQuery);
+

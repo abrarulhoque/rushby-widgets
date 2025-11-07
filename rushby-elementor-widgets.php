@@ -41,6 +41,7 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-grid-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/footer-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/about-widget.php' );
+	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/cart-page-widget.php' );
 
 	// Register widgets
 	$widgets_manager->register( new \Rushby_Announcement_Bar_Widget() );
@@ -50,6 +51,7 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	$widgets_manager->register( new \Rushby_Product_Grid_Widget() );
 	$widgets_manager->register( new \Rushby_Footer_Widget() );
 	$widgets_manager->register( new \Rushby_About_Widget() );
+	$widgets_manager->register( new \Rushby_Cart_Page_Widget() );
 
 }
 add_action( 'elementor/widgets/register', 'register_rushby_elementor_widgets' );
@@ -212,6 +214,52 @@ function rushby_get_product_variations() {
 }
 add_action( 'wp_ajax_rushby_get_product_variations', 'rushby_get_product_variations' );
 add_action( 'wp_ajax_nopriv_rushby_get_product_variations', 'rushby_get_product_variations' );
+
+/**
+ * AJAX handler to apply coupon
+ */
+function rushby_apply_coupon() {
+	check_ajax_referer( 'rushby_cart_nonce', 'nonce' );
+
+	if ( ! isset( $_POST['coupon_code'] ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid coupon code' ) );
+	}
+
+	$coupon_code = sanitize_text_field( $_POST['coupon_code'] );
+
+	if ( ! WC()->cart->apply_coupon( $coupon_code ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid coupon code' ) );
+	}
+
+	wp_send_json_success( array(
+		'message' => 'Coupon applied successfully',
+	) );
+}
+add_action( 'wp_ajax_rushby_apply_coupon', 'rushby_apply_coupon' );
+add_action( 'wp_ajax_nopriv_rushby_apply_coupon', 'rushby_apply_coupon' );
+
+/**
+ * AJAX handler to remove coupon
+ */
+function rushby_remove_coupon() {
+	check_ajax_referer( 'rushby_cart_nonce', 'nonce' );
+
+	if ( ! isset( $_POST['coupon_code'] ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid parameters' ) );
+	}
+
+	$coupon_code = sanitize_text_field( $_POST['coupon_code'] );
+
+	if ( ! WC()->cart->remove_coupon( $coupon_code ) ) {
+		wp_send_json_error( array( 'message' => 'Failed to remove coupon' ) );
+	}
+
+	wp_send_json_success( array(
+		'message' => 'Coupon removed successfully',
+	) );
+}
+add_action( 'wp_ajax_rushby_remove_coupon', 'rushby_remove_coupon' );
+add_action( 'wp_ajax_nopriv_rushby_remove_coupon', 'rushby_remove_coupon' );
 
 /**
  * Get cart fragments for AJAX updates
