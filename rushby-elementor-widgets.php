@@ -182,27 +182,28 @@ function rushby_force_currency_converter_load() {
 		}
 	});
 
-	// If our currency widgets are found, force load the Currency Converter plugin assets
+	// If our currency widgets are found, add a hidden shortcode to make the plugin think it's active
 	if ( $has_currency_widget ) {
-		$converter_instance = WC_Currency_Converter::instance();
-
-		// Force the plugin to enqueue its assets
-		$converter_instance->enqueue_assets();
-
-		// Create a dummy widget instance to trigger currency form rendering
-		// This ensures all the necessary scripts and localized data are loaded
-		$dummy_instance = array(
-			'currency_codes' => 'USD, EUR, GBP, ZAR, CAD, AUD',
-			'disable_location' => false,
-		);
-
-		// Call get_converter_form with echo=false to trigger script loading without displaying anything
-		ob_start();
-		$converter_instance->get_converter_form( $dummy_instance, false );
-		ob_end_clean();
+		add_filter( 'the_content', 'rushby_inject_currency_converter_shortcode', 999 );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'rushby_force_currency_converter_load', 20 );
+
+/**
+ * Inject a hidden currency converter shortcode to trick the plugin into loading
+ */
+function rushby_inject_currency_converter_shortcode( $content ) {
+	// Add hidden shortcode at the end of content
+	// This makes the plugin's is_active() check return true
+	$content .= '<div style="display:none !important; visibility:hidden !important; height:0 !important; overflow:hidden !important;">';
+	$content .= do_shortcode( '[woocommerce_currency_converter currency_codes="USD, EUR, GBP, ZAR, CAD, AUD"]' );
+	$content .= '</div>';
+
+	// Remove this filter after first use to avoid multiple injections
+	remove_filter( 'the_content', 'rushby_inject_currency_converter_shortcode', 999 );
+
+	return $content;
+}
 
 /**
  * AJAX handler to update cart item quantity
