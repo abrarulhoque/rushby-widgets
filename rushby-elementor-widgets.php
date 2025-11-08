@@ -143,6 +143,68 @@ add_action( 'elementor/frontend/before_register_scripts', 'rushby_register_widge
 add_action( 'elementor/editor/before_enqueue_scripts', 'rushby_register_widget_scripts' );
 
 /**
+ * Force Currency Converter plugin to load when our widgets are on the page.
+ * The plugin only loads when its own widget/shortcode is detected, but we need
+ * it to load for our custom currency switchers to work properly.
+ */
+function rushby_force_currency_converter_load() {
+	// Only run on frontend
+	if ( is_admin() || ! class_exists( 'WC_Currency_Converter' ) ) {
+		return;
+	}
+
+	// Get the current post
+	global $post;
+	if ( ! $post ) {
+		return;
+	}
+
+	// Check if Elementor is used on this page
+	if ( ! \Elementor\Plugin::$instance->db->is_built_with_elementor( $post->ID ) ) {
+		return;
+	}
+
+	// Get Elementor document data
+	$document = \Elementor\Plugin::$instance->documents->get( $post->ID );
+	if ( ! $document ) {
+		return;
+	}
+
+	// Get all elements from the page
+	$elements_data = $document->get_elements_data();
+
+	// Check if header or currency switcher widgets are used
+	$has_currency_widget = false;
+
+	array_walk_recursive( $elements_data, function( $value, $key ) use ( &$has_currency_widget ) {
+		if ( 'widgetType' === $key && in_array( $value, [ 'rushby_header', 'rushby_floating_currency_switcher' ], true ) ) {
+			$has_currency_widget = true;
+		}
+	});
+
+	// If our currency widgets are found, force load the Currency Converter plugin assets
+	if ( $has_currency_widget ) {
+		$converter_instance = WC_Currency_Converter::instance();
+
+		// Force the plugin to enqueue its assets
+		$converter_instance->enqueue_assets();
+
+		// Create a dummy widget instance to trigger currency form rendering
+		// This ensures all the necessary scripts and localized data are loaded
+		$dummy_instance = array(
+			'currency_codes' => 'USD, EUR, GBP, ZAR, CAD, AUD',
+			'disable_location' => false,
+		);
+
+		// Call get_converter_form with echo=false to trigger script loading without displaying anything
+		ob_start();
+		$converter_instance->get_converter_form( $dummy_instance, false );
+		ob_end_clean();
+	}
+}
+add_action( 'wp_enqueue_scripts', 'rushby_force_currency_converter_load', 20 );
+
+/**
  * AJAX handler to update cart item quantity
  */
 function rushby_update_cart_quantity() {
