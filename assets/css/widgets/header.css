@@ -1,0 +1,623 @@
+   Header Section
+   ============================================ */
+
+.rushby-header {
+	position: relative;
+	background-color: #374151;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	z-index: 50;
+}
+
+.rushby-header-sticky {
+	position: sticky;
+	top: 0;
+}
+
+.rushby-header-scrolled {
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.rushby-header-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+.rushby-header-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 80px;
+}
+
+/* Logo */
+.rushby-logo-link {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	text-decoration: none;
+	transition: transform 0.2s;
+}
+
+.rushby-logo-link:hover {
+	transform: scale(1.02);
+}
+
+.rushby-logo {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rushby-logo-image-wrapper {
+	position: relative;
+}
+
+.rushby-logo-image {
+	width: 48px;
+	height: 48px;
+	border-radius: 0.5rem;
+	background-color: rgba(255, 255, 255, 0.1);
+	padding: 0.25rem;
+	object-fit: contain;
+}
+
+.rushby-logo-text {
+	display: block;
+}
+
+.rushby-logo-text-hide-mobile {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-logo-text-hide-mobile {
+		display: block;
+	}
+}
+
+.rushby-logo-text-line1 {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #FFFFFF;
+	letter-spacing: -0.025em;
+	line-height: 1.2;
+}
+
+.rushby-logo-text-line2 {
+	font-size: 0.75rem;
+	color: #D1D5DB;
+	margin-top: -0.25rem;
+	line-height: 1;
+}
+
+/* Desktop Navigation */
+.rushby-nav {
+	display: none;
+	align-items: center;
+	gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+	.rushby-nav {
+		display: flex;
+	}
+}
+
+.rushby-nav-list {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.rushby-nav-link {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #E5E7EB;
+	text-decoration: none;
+	transition: color 0.2s;
+	text-transform: uppercase;
+}
+
+.rushby-nav-link:hover {
+	color: #FFFFFF;
+}
+
+/* Header Actions */
+.rushby-header-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.rushby-header-icon {
+	color: #D1D5DB;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transition: color 0.2s;
+	position: relative;
+}
+
+.rushby-header-icon:hover {
+	color: #FFFFFF;
+}
+
+.rushby-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+.rushby-account-icon-hide-mobile {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-account-icon-hide-mobile {
+		display: block;
+	}
+}
+
+/* Cart Badge */
+.rushby-cart-icon {
+	position: relative;
+}
+
+.rushby-cart-badge {
+	position: absolute;
+	top: -0.5rem;
+	right: -0.5rem;
+	background-color: #DC2626;
+	color: #FFFFFF;
+	font-size: 0.75rem;
+	font-weight: 700;
+	border-radius: 9999px;
+	width: 1.25rem;
+	height: 1.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Mobile Toggle */
+.rushby-mobile-toggle {
+	display: block;
+}
+
+@media (min-width: 1024px) {
+	.rushby-mobile-toggle {
+		display: none;
+	}
+}
+
+/* Search Bar */
+.rushby-search-bar {
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.rushby-search-inner {
+	padding-bottom: 1rem;
+}
+
+.rushby-search-form {
+	width: 100%;
+}
+
+.rushby-search-wrapper {
+	position: relative;
+	width: 100%;
+}
+
+.rushby-search-icon {
+	position: absolute;
+	left: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 1rem;
+	height: 1rem;
+	color: #6B7280;
+}
+
+.rushby-search-input {
+	width: 100%;
+	padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+	background-color: #FFFFFF;
+	border: 1px solid #D1D5DB;
+	border-radius: 0.375rem;
+	color: #111827;
+	font-size: 0.875rem;
+}
+
+.rushby-search-input:focus {
+	outline: none;
+	border-color: #DC2626;
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.rushby-search-input::placeholder {
+	color: #9CA3AF;
+}
+
+/* Mobile Menu */
+.rushby-mobile-menu {
+	overflow: hidden;
+	border-top: 1px solid #4B5563;
+	background-color: #374151;
+	transition: all 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+	.rushby-mobile-menu {
+		display: none !important;
+	}
+}
+
+.rushby-mobile-menu-inner {
+	padding: 1rem;
+}
+
+.rushby-mobile-nav-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.rushby-mobile-nav-list .rushby-nav-link {
+	display: block;
+	padding: 0.5rem 0;
+}
+
+/* ============================================
+   Side Cart
+   ============================================ */
+
+/* Backdrop */
+.rushby-side-cart-backdrop {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.rushby-side-cart-backdrop.show {
+	opacity: 1;
+}
+
+/* Side Cart Panel */
+.rushby-side-cart-panel {
+	position: fixed;
+	right: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	max-width: 400px;
+	background-color: #FFFFFF;
+	box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+	flex-direction: column;
+	transform: translateX(100%);
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rushby-side-cart-panel.show {
+	transform: translateX(0);
+}
+
+@media (max-width: 639px) {
+	.rushby-side-cart-panel {
+		max-width: 100%;
+	}
+}
+
+/* Cart Header */
+.rushby-side-cart-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.5rem;
+	border-bottom: 1px solid #E5E7EB;
+}
+
+.rushby-side-cart-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.rushby-side-cart-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	color: #111827;
+}
+
+.rushby-side-cart-title {
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: #111827;
+	margin: 0;
+}
+
+.rushby-side-cart-close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #6B7280;
+	transition: color 0.2s;
+}
+
+.rushby-side-cart-close:hover {
+	color: #111827;
+}
+
+.rushby-side-cart-close svg {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* Cart Content */
+.rushby-side-cart-content {
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.rushby-side-cart-content.loading {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.rushby-side-cart-items {
+	flex: 1;
+	overflow-y: auto;
+	padding: 1.5rem;
+}
+
+/* Empty Cart */
+.rushby-side-cart-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	text-align: center;
+	padding: 2rem;
+}
+
+.rushby-empty-cart-icon {
+	width: 4rem;
+	height: 4rem;
+	color: #D1D5DB;
+	margin-bottom: 1rem;
+}
+
+.rushby-empty-cart-title {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #111827;
+	margin: 0 0 0.5rem 0;
+}
+
+.rushby-empty-cart-text {
+	font-size: 0.875rem;
+	color: #6B7280;
+	margin: 0 0 1.5rem 0;
+}
+
+/* Cart Item */
+.rushby-side-cart-item {
+	display: flex;
+	gap: 1rem;
+	padding: 1rem;
+	border: 1px solid #E5E7EB;
+	border-radius: 0.5rem;
+	margin-bottom: 1rem;
+	transition: border-color 0.2s;
+}
+
+.rushby-side-cart-item:hover {
+	border-color: #D1D5DB;
+}
+
+.rushby-side-cart-item-image {
+	flex-shrink: 0;
+	width: 80px;
+	height: 80px;
+	background-color: #F3F4F6;
+	border-radius: 0.375rem;
+	overflow: hidden;
+}
+
+.rushby-side-cart-item-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.rushby-side-cart-item-image a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.rushby-side-cart-item-details {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-side-cart-item-name {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #111827;
+	margin: 0 0 0.25rem 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rushby-side-cart-item-name a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.rushby-side-cart-item-name a:hover {
+	color: #DC2626;
+}
+
+.rushby-side-cart-item-variant {
+	font-size: 0.75rem;
+	color: #6B7280;
+	margin: 0 0 0.5rem 0;
+}
+
+.rushby-side-cart-item-variant p {
+	margin: 0;
+}
+
+.rushby-side-cart-item-price-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* Quantity Controls */
+.rushby-quantity-controls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.rushby-qty-btn {
+	width: 1.5rem;
+	height: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #D1D5DB;
+	border-radius: 0.25rem;
+	background-color: #FFFFFF;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	padding: 0;
+}
+
+.rushby-qty-btn:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-qty-btn svg {
+	width: 0.75rem;
+	height: 0.75rem;
+	color: #111827;
+}
+
+.rushby-qty-value {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #111827;
+	min-width: 2rem;
+	text-align: center;
+}
+
+.rushby-side-cart-item-total {
+	font-weight: 700;
+	color: #111827;
+	font-size: 0.875rem;
+}
+
+/* Remove Button */
+.rushby-side-cart-item-remove {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #9CA3AF;
+	transition: color 0.2s;
+	align-self: flex-start;
+}
+
+.rushby-side-cart-item-remove:hover {
+	color: #DC2626;
+}
+
+.rushby-side-cart-item-remove svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* Cart Footer */
+.rushby-side-cart-footer {
+	border-top: 1px solid #E5E7EB;
+	padding: 1.5rem;
+	background-color: #F9FAFB;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.rushby-side-cart-subtotal {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: #111827;
+}
+
+.rushby-side-cart-note {
+	font-size: 0.75rem;
+	color: #6B7280;
+	text-align: center;
+	margin: 0;
+}
+
+.rushby-side-cart-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.rushby-btn-checkout {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.rushby-btn-checkout svg {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.2s;
+}
+
+.rushby-btn-checkout:hover svg {
+	transform: translateX(0.25rem);
+}
+
+.rushby-continue-shopping {
+	width: 100%;
+	font-size: 0.875rem;
+	color: #6B7280;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: color 0.2s;
+	padding: 0.5rem;
+}
+
+.rushby-continue-shopping:hover {
+	color: #111827;
+}
+
+/* ============================================

@@ -67,6 +67,14 @@ class Rushby_Floating_Currency_Switcher_Widget extends \Elementor\Widget_Base {
 		return [ 'currency', 'converter', 'switcher', 'floating', 'money', 'rushby' ];
 	}
 
+	public function get_style_depends(): array {
+		return [ 'rushby-widget-currency-switcher' ];
+	}
+
+	public function get_script_depends(): array {
+		return [ 'rushby-widgets-frontend' ];
+	}
+
 	/**
 	 * Get available currencies from WooCommerce Currency Converter plugin
 	 *

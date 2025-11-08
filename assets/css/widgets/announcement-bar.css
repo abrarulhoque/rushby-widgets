@@ -1,0 +1,225 @@
+/**
+ * Rushby Elementor Widgets Styles
+ *
+ * @package Rushby_Elementor_Widgets
+ * @version 1.0.0
+ */
+
+/* ============================================
+   Announcement Bar Section
+   ============================================ */
+
+.rushby-announcement-bar {
+	background-color: #1F2937;
+	border-bottom: 1px solid #374151;
+	position: relative;
+	z-index: 40;
+	transition: transform 0.3s ease;
+}
+
+.rushby-announcement-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+.rushby-announcement-bar-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 40px;
+	font-size: 0.875rem;
+}
+
+/* Contact Info */
+.rushby-announcement-contact {
+	display: none;
+	align-items: center;
+	gap: 1rem;
+}
+
+@media (min-width: 768px) {
+	.rushby-announcement-contact {
+		display: flex;
+	}
+}
+
+.rushby-announcement-contact-link {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	color: #D1D5DB;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.rushby-announcement-contact-link:hover {
+	color: #FFFFFF;
+}
+
+.rushby-announcement-contact-icon {
+	width: 0.875rem;
+	height: 0.875rem;
+	flex-shrink: 0;
+}
+
+.rushby-announcement-contact-text {
+	font-size: 0.75rem;
+}
+
+/* Mobile Currency Switcher */
+.rushby-announcement-mobile-currency {
+	position: relative;
+}
+
+.rushby-mobile-only {
+	display: block;
+}
+
+@media (min-width: 768px) {
+	.rushby-mobile-only {
+		display: none;
+	}
+}
+
+.rushby-announcement-currency-button {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	background: transparent;
+	border: none;
+	color: #D1D5DB;
+	cursor: pointer;
+	padding: 0;
+	font-size: 0.75rem;
+	transition: color 0.2s;
+}
+
+.rushby-announcement-currency-button:hover {
+	color: #FFFFFF;
+}
+
+.rushby-currency-flag {
+	font-size: 0.875rem;
+	line-height: 1;
+}
+
+.rushby-currency-code {
+	font-weight: 500;
+	font-size: 0.75rem;
+}
+
+.rushby-currency-chevron-small {
+	width: 0.875rem;
+	height: 0.875rem;
+	transition: transform 0.2s;
+}
+
+.rushby-announcement-currency-dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	margin-top: 0.5rem;
+	background-color: #FFFFFF;
+	border-radius: 0.5rem;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	border: 1px solid #E5E7EB;
+	z-index: 60;
+	min-width: 12.5rem;
+	max-height: 20rem;
+	overflow-y: auto;
+	padding: 0.5rem;
+}
+
+.rushby-announcement-currency-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+	padding: 0.75rem;
+	background: transparent;
+	border: none;
+	border-radius: 0.375rem;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.rushby-announcement-currency-item:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-announcement-currency-item.active {
+	background-color: #EEF2FF;
+}
+
+.rushby-currency-flag-small {
+	font-size: 1.25rem;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.rushby-currency-details-small {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-currency-code-small {
+	font-weight: 600;
+	font-size: 0.875rem;
+	color: #1F2937;
+}
+
+.rushby-currency-name-small {
+	font-size: 0.75rem;
+	color: #6B7280;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.rushby-currency-symbol-small {
+	font-weight: 500;
+	font-size: 0.875rem;
+	color: #6B7280;
+	flex-shrink: 0;
+}
+
+/* Social Links */
+.rushby-announcement-social {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rushby-announcement-social-label {
+	display: none;
+	font-size: 0.75rem;
+	color: #9CA3AF;
+	margin-right: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+	.rushby-announcement-social-label {
+		display: inline;
+	}
+}
+
+.rushby-announcement-social-link {
+	color: #9CA3AF;
+	text-decoration: none;
+	transition: color 0.2s;
+	display: inline-flex;
+	align-items: center;
+}
+
+.rushby-announcement-social-link:hover {
+	color: #FFFFFF;
+}
+
+.rushby-announcement-social-icon {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* ============================================

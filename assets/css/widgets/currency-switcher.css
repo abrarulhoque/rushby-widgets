@@ -1,0 +1,371 @@
+   Floating Currency Switcher
+   ============================================ */
+
+.rushby-currency-float-container {
+	position: fixed;
+	z-index: 40;
+}
+
+.rushby-currency-float-container.bottom-right {
+	bottom: 24px;
+	right: 24px;
+}
+
+.rushby-currency-float-container.bottom-left {
+	bottom: 24px;
+	left: 24px;
+}
+
+.rushby-currency-float-container.top-right {
+	top: 24px;
+	right: 24px;
+}
+
+.rushby-currency-float-container.top-left {
+	top: 24px;
+	left: 24px;
+}
+
+/* Mobile Only */
+.rushby-currency-float-container.rushby-mobile-only {
+	display: block;
+}
+
+@media (min-width: 640px) {
+	.rushby-currency-float-container.rushby-mobile-only {
+		display: none;
+	}
+}
+
+/* Floating Button */
+.rushby-currency-float-button {
+	background-color: #DC2626;
+	color: #FFFFFF;
+	border-radius: 9999px;
+	width: 56px;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.rushby-currency-float-button:hover {
+	background-color: #B91C1C;
+	transform: scale(1.05);
+}
+
+.rushby-currency-float-button:active {
+	transform: scale(0.95);
+}
+
+.rushby-currency-button-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.rushby-currency-flag {
+	font-size: 1.125rem;
+	line-height: 1;
+}
+
+.rushby-currency-code {
+	font-size: 0.625rem;
+	font-weight: 700;
+	line-height: 1;
+	margin-top: 0.125rem;
+}
+
+/* Currency Menu */
+.rushby-currency-menu {
+	position: absolute;
+	background-color: #FFFFFF;
+	border-radius: 0.5rem;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	border: 1px solid #E5E7EB;
+	padding: 0.5rem 0;
+	min-width: 240px;
+	opacity: 0;
+	transform: translateY(10px) scale(0.9);
+	transition: all 0.2s;
+	pointer-events: none;
+}
+
+.rushby-currency-menu.show {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: all;
+}
+
+/* Position menu based on parent position */
+.rushby-currency-float-container.bottom-right .rushby-currency-menu,
+.rushby-currency-float-container.bottom-left .rushby-currency-menu {
+	bottom: 64px;
+}
+
+.rushby-currency-float-container.top-right .rushby-currency-menu,
+.rushby-currency-float-container.top-left .rushby-currency-menu {
+	top: 64px;
+}
+
+.rushby-currency-float-container.bottom-right .rushby-currency-menu,
+.rushby-currency-float-container.top-right .rushby-currency-menu {
+	right: 0;
+}
+
+.rushby-currency-float-container.bottom-left .rushby-currency-menu,
+.rushby-currency-float-container.top-left .rushby-currency-menu {
+	left: 0;
+}
+
+/* Menu Header */
+.rushby-currency-menu-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5rem 1rem;
+	border-bottom: 1px solid #E5E7EB;
+}
+
+.rushby-currency-menu-title {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #111827;
+}
+
+.rushby-currency-menu-close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: #9CA3AF;
+	transition: color 0.2s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.rushby-currency-menu-close:hover {
+	color: #6B7280;
+}
+
+.rushby-currency-menu-close svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+/* Currency List */
+.rushby-currency-list {
+	max-height: 16rem;
+	overflow-y: auto;
+}
+
+/* Currency Item */
+.rushby-currency-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.rushby-currency-item:hover {
+	background-color: #F3F4F6;
+}
+
+.rushby-currency-item.active {
+	background-color: #FEE2E2;
+}
+
+.rushby-currency-item-flag {
+	font-size: 1.5rem;
+}
+
+.rushby-currency-item-details {
+	flex: 1;
+	min-width: 0;
+}
+
+.rushby-currency-item-code {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: #111827;
+}
+
+.rushby-currency-item-name {
+	font-size: 0.75rem;
+	color: #6B7280;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rushby-currency-item-indicator {
+	width: 0.5rem;
+	height: 0.5rem;
+	background-color: #DC2626;
+	border-radius: 9999px;
+	flex-shrink: 0;
+}
+
+/* ============================================
+   Header Currency Switcher
+   ============================================ */
+
+.rushby-header-currency-switcher {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.rushby-currency-hide-mobile {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-currency-hide-mobile {
+		display: flex;
+	}
+}
+
+/* Button - matches React: flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors text-sm */
+.rushby-currency-switcher-button {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem; /* gap-1.5 = 6px */
+	color: #D1D5DB; /* text-gray-300 */
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transition: color 0.2s;
+	font-size: 0.875rem; /* text-sm */
+	line-height: 1.25rem;
+}
+
+.rushby-currency-switcher-button:hover {
+	color: #FFFFFF; /* hover:text-white */
+}
+
+/* Flag - matches React: hidden sm:inline */
+.rushby-currency-flag-desktop {
+	display: none;
+}
+
+@media (min-width: 640px) {
+	.rushby-currency-flag-desktop {
+		display: inline;
+	}
+}
+
+/* Code text - matches React: font-medium */
+.rushby-currency-code-text {
+	font-weight: 500; /* font-medium */
+	font-size: 0.875rem;
+}
+
+/* Chevron - matches React: w-3.5 h-3.5 transition-transform + rotate-180 when open */
+.rushby-currency-chevron {
+	width: 0.875rem; /* w-3.5 = 14px */
+	height: 0.875rem; /* h-3.5 = 14px */
+	transition: transform 0.2s;
+}
+
+.rushby-currency-switcher-button.open .rushby-currency-chevron {
+	transform: rotate(180deg);
+}
+
+/* Currency Dropdown - matches React: absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-gray-200 py-2 min-w-[200px] z-[60] */
+.rushby-currency-dropdown {
+	position: absolute;
+	right: 0;
+	top: 100%;
+	margin-top: 0.5rem; /* mt-2 = 8px */
+	background-color: #FFFFFF; /* bg-white */
+	border-radius: 0.5rem; /* rounded-lg */
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); /* shadow-xl */
+	border: 1px solid #E5E7EB; /* border-gray-200 */
+	padding: 0.5rem 0; /* py-2 */
+	min-width: 200px; /* min-w-[200px] */
+	z-index: 60;
+	opacity: 0;
+	transform: translateY(-10px);
+	transition: opacity 0.2s, transform 0.2s;
+	pointer-events: none;
+}
+
+.rushby-currency-dropdown.show {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: all;
+}
+
+/* Dropdown items - matches React: w-full px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100 */
+.rushby-currency-dropdown-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem; /* gap-3 = 12px */
+	padding: 0.625rem 1rem; /* py-2.5 px-4 = 10px 16px */
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	text-align: left;
+}
+
+.rushby-currency-dropdown-item:hover {
+	background-color: #F3F4F6; /* hover:bg-gray-100 */
+}
+
+.rushby-currency-dropdown-item.active {
+	background-color: #F9FAFB; /* bg-gray-50 */
+}
+
+/* Flag in dropdown - matches React: text-xl */
+.rushby-currency-dropdown-flag {
+	font-size: 1.25rem; /* text-xl */
+}
+
+/* Details container - matches React: flex-1 text-left */
+.rushby-currency-dropdown-details {
+	flex: 1;
+	min-width: 0;
+	text-align: left;
+}
+
+/* Currency code - matches React: text-sm font-medium text-gray-900 */
+.rushby-currency-dropdown-code {
+	font-size: 0.875rem; /* text-sm */
+	font-weight: 500; /* font-medium */
+	color: #111827; /* text-gray-900 */
+	line-height: 1.25rem;
+}
+
+/* Currency name - matches React: text-xs text-gray-600 */
+.rushby-currency-dropdown-name {
+	font-size: 0.75rem; /* text-xs */
+	color: #6B7280; /* text-gray-600 */
+	line-height: 1rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Currency symbol - matches React: text-sm text-gray-500 */
+.rushby-currency-dropdown-symbol {
+	font-size: 0.875rem; /* text-sm */
+	color: #9CA3AF; /* text-gray-500 */
+}
+
+/* ===================================

@@ -26,6 +26,30 @@ define( 'RUSHBY_ELEMENTOR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'RUSHBY_ELEMENTOR_URL', plugins_url( '/', __FILE__ ) );
 
 /**
+ * Helper: Return cache-busting version based on file mtime when possible.
+ */
+function rushby_get_asset_version( string $relative_path ): string {
+	$absolute = RUSHBY_ELEMENTOR_PATH . ltrim( $relative_path, '/' );
+	return file_exists( $absolute ) ? (string) filemtime( $absolute ) : RUSHBY_ELEMENTOR_VERSION;
+}
+
+/**
+ * Helper: Map widget slugs to their relative style paths.
+ */
+function rushby_get_widget_style_files(): array {
+	return [
+		'announcement-bar' => 'assets/css/widgets/announcement-bar.css',
+		'header' => 'assets/css/widgets/header.css',
+		'hero' => 'assets/css/widgets/hero.css',
+		'currency-switcher' => 'assets/css/widgets/currency-switcher.css',
+		'product-grid' => 'assets/css/widgets/product-grid.css',
+		'footer' => 'assets/css/widgets/footer.css',
+		'about' => 'assets/css/widgets/about.css',
+		'cart-page' => 'assets/css/widgets/cart-page.css',
+	];
+}
+
+/**
  * Register Rushby Elementor Widgets
  *
  * @param \Elementor\Widgets_Manager $widgets_manager Elementor widgets manager.
@@ -57,47 +81,66 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 add_action( 'elementor/widgets/register', 'register_rushby_elementor_widgets' );
 
 /**
- * Enqueue widget styles
+ * Register frontend widget styles so individual widgets can enqueue on demand.
  */
-function rushby_elementor_widget_styles() {
-	wp_enqueue_style( 'rushby-widgets', RUSHBY_ELEMENTOR_URL . 'assets/css/widgets.css', array(), RUSHBY_ELEMENTOR_VERSION );
+function rushby_register_widget_styles() {
+	wp_register_style(
+		'rushby-widgets-common',
+		RUSHBY_ELEMENTOR_URL . 'assets/css/common.css',
+		[],
+		rushby_get_asset_version( 'assets/css/common.css' )
+	);
+
+	foreach ( rushby_get_widget_style_files() as $slug => $relative_path ) {
+		wp_register_style(
+			'rushby-widget-' . $slug,
+			RUSHBY_ELEMENTOR_URL . $relative_path,
+			[ 'rushby-widgets-common' ],
+			rushby_get_asset_version( $relative_path )
+		);
+	}
 }
-add_action( 'elementor/frontend/after_enqueue_styles', 'rushby_elementor_widget_styles' );
+add_action( 'elementor/frontend/before_register_styles', 'rushby_register_widget_styles' );
+add_action( 'elementor/editor/before_enqueue_styles', 'rushby_register_widget_styles' );
 
 /**
- * Enqueue Elementor icons on frontend
- */
-function rushby_enqueue_elementor_icons() {
-	// Enqueue Elementor's icon libraries for frontend
-	wp_enqueue_style( 'elementor-icons-fa-solid' );
-	wp_enqueue_style( 'elementor-icons-fa-regular' );
-	wp_enqueue_style( 'elementor-icons-fa-brands' );
-}
-add_action( 'elementor/frontend/after_register_styles', 'rushby_enqueue_elementor_icons', 20 );
-
-/**
- * Enqueue editor styles
+ * Ensure Elementor editor previews have access to all widget styles.
  */
 function rushby_elementor_editor_styles() {
-	wp_enqueue_style( 'rushby-widgets', RUSHBY_ELEMENTOR_URL . 'assets/css/widgets.css', array(), RUSHBY_ELEMENTOR_VERSION );
-	wp_enqueue_style( 'rushby-widgets-editor', RUSHBY_ELEMENTOR_URL . 'assets/css/editor.css', array(), RUSHBY_ELEMENTOR_VERSION );
+	wp_enqueue_style( 'rushby-widgets-common' );
+	foreach ( array_keys( rushby_get_widget_style_files() ) as $slug ) {
+		wp_enqueue_style( 'rushby-widget-' . $slug );
+	}
+
+	wp_enqueue_style(
+		'rushby-widgets-editor',
+		RUSHBY_ELEMENTOR_URL . 'assets/css/editor.css',
+		[],
+		rushby_get_asset_version( 'assets/css/editor.css' )
+	);
 }
 add_action( 'elementor/editor/after_enqueue_styles', 'rushby_elementor_editor_styles' );
 
 /**
- * Enqueue widget scripts
+ * Register widget frontend script once so widgets can declare it as a dependency.
  */
-function rushby_elementor_widget_scripts() {
-	wp_enqueue_script( 'rushby-widgets', RUSHBY_ELEMENTOR_URL . 'assets/js/widgets.js', array( 'jquery' ), RUSHBY_ELEMENTOR_VERSION, true );
+function rushby_register_widget_scripts() {
+	wp_register_script(
+		'rushby-widgets-frontend',
+		RUSHBY_ELEMENTOR_URL . 'assets/js/widgets.js',
+		[ 'jquery' ],
+		rushby_get_asset_version( 'assets/js/widgets.js' ),
+		true
+	);
 
-	// Localize script for AJAX
-	wp_localize_script( 'rushby-widgets', 'rushby_cart_ajax', array(
-		'ajax_url'     => admin_url( 'admin-ajax.php' ),
-		'nonce'        => wp_create_nonce( 'rushby_cart_nonce' ),
-		'wc_ajax_url'  => WC_AJAX::get_endpoint( '%%endpoint%%' ),
+	wp_localize_script( 'rushby-widgets-frontend', 'rushby_cart_ajax', array(
+		'ajax_url'    => admin_url( 'admin-ajax.php' ),
+		'nonce'       => wp_create_nonce( 'rushby_cart_nonce' ),
+		'wc_ajax_url' => WC_AJAX::get_endpoint( '%%endpoint%%' ),
 	) );
 }
-add_action( 'wp_enqueue_scripts', 'rushby_elementor_widget_scripts' );
+add_action( 'elementor/frontend/before_register_scripts', 'rushby_register_widget_scripts' );
+add_action( 'elementor/editor/before_enqueue_scripts', 'rushby_register_widget_scripts' );
 
 /**
  * AJAX handler to update cart item quantity

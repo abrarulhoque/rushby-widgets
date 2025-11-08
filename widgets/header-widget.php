@@ -67,6 +67,14 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 		return [ 'header', 'navigation', 'menu', 'nav', 'rushby' ];
 	}
 
+	public function get_style_depends(): array {
+		return [ 'rushby-widget-header' ];
+	}
+
+	public function get_script_depends(): array {
+		return [ 'rushby-widgets-frontend' ];
+	}
+
 	/**
 	 * Register widget controls.
 	 *

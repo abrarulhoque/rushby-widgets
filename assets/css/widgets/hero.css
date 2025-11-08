@@ -1,0 +1,467 @@
+   Hero Section
+   ============================================ */
+
+.rushby-hero-section {
+	position: relative;
+	background-color: #E5E7EB;
+	overflow: hidden;
+}
+
+/* Background Pattern */
+.rushby-hero-pattern {
+	position: absolute;
+	inset: 0;
+	opacity: 0.05;
+}
+
+.rushby-hero-pattern > div {
+	position: absolute;
+	inset: 0;
+	background-repeat: repeat;
+}
+
+/* Container */
+.rushby-hero-container {
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 4rem 1rem;
+}
+
+@media (min-width: 768px) {
+	.rushby-hero-container {
+		padding: 6rem 1rem;
+	}
+}
+
+/* Grid Layout */
+.rushby-hero-grid {
+	display: grid;
+	gap: 3rem;
+	align-items: center;
+}
+
+@media (min-width: 1024px) {
+	.rushby-hero-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* Left Column - Content */
+.rushby-hero-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+/* ============================================
+   Badge
+   ============================================ */
+
+.rushby-badge-wrapper {
+	animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.rushby-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.375rem 0.75rem;
+	background-color: #FEE2E2;
+	color: #B91C1C;
+	border: 1px solid #FECACA;
+	border-radius: 9999px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transition: background-color 0.2s;
+}
+
+.rushby-badge:hover {
+	background-color: #FECACA;
+}
+
+.rushby-badge-icon {
+	width: 0.75rem;
+	height: 0.75rem;
+	fill: #DC2626;
+}
+
+/* ============================================
+   Headline
+   ============================================ */
+
+.rushby-headline-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.rushby-headline {
+	font-size: 2.25rem;
+	font-weight: 700;
+	color: #111827;
+	line-height: 1.2;
+	margin: 0;
+}
+
+@media (min-width: 768px) {
+	.rushby-headline {
+		font-size: 3.75rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.rushby-headline {
+		font-size: 4.5rem;
+	}
+}
+
+.rushby-headline-highlight {
+	display: block;
+	color: #DC2626;
+}
+
+/* ============================================
+   Description
+   ============================================ */
+
+.rushby-description {
+	font-size: 1.125rem;
+	color: #374151;
+	max-width: 36rem;
+	margin: 0;
+}
+
+@media (min-width: 768px) {
+	.rushby-description {
+		font-size: 1.25rem;
+	}
+}
+
+.rushby-description-highlight {
+	color: #111827;
+	font-weight: 500;
+}
+
+/* ============================================
+   Trust Indicators
+   ============================================ */
+
+.rushby-trust-indicators {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	animation: fadeInUp 0.6s ease-out 0.5s both;
+}
+
+.rushby-trust-indicator {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+	color: #4B5563;
+}
+
+.rushby-trust-icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	color: #DC2626;
+}
+
+/* ============================================
+   CTA Buttons
+   ============================================ */
+
+.rushby-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.rushby-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: 0.375rem;
+	text-decoration: none;
+	transition: all 0.2s;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.rushby-btn-primary {
+	background-color: #DC2626;
+	color: #FFFFFF;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rushby-btn-primary:hover {
+	background-color: #B91C1C;
+	color: #FFFFFF;
+}
+
+.rushby-btn-secondary {
+	background-color: #FFFFFF;
+	color: #111827;
+	border-color: #9CA3AF;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.rushby-btn-secondary:hover {
+	background-color: #F3F4F6;
+	color: #111827;
+}
+
+.rushby-btn-arrow {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.2s;
+}
+
+.rushby-btn-primary:hover .rushby-btn-arrow {
+	transform: translateX(0.25rem);
+}
+
+/* ============================================
+   Statistics
+   ============================================ */
+
+.rushby-stats {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	padding-top: 2rem;
+	border-top: 1px solid #D1D5DB;
+	animation: fadeInUp 0.6s ease-out 0.7s both;
+}
+
+.rushby-stat {
+	display: flex;
+	flex-direction: column;
+}
+
+.rushby-stat-number {
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: #111827;
+}
+
+@media (min-width: 768px) {
+	.rushby-stat-number {
+		font-size: 1.875rem;
+	}
+}
+
+.rushby-stat-label {
+	font-size: 0.875rem;
+	color: #4B5563;
+}
+
+/* ============================================
+   Product Showcase
+   ============================================ */
+
+.rushby-product-showcase {
+	position: relative;
+	animation: fadeInRight 0.8s ease-out 0.4s both;
+}
+
+.rushby-product-card {
+	position: relative;
+	aspect-ratio: 1;
+	background-color: #FFFFFF;
+	border-radius: 1rem;
+	overflow: hidden;
+	border: 1px solid #D1D5DB;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.rushby-product-inner {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}
+
+.rushby-product-content {
+	text-align: center;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.rushby-product-image-wrapper {
+	position: relative;
+	width: 100%;
+	height: 16rem;
+	border-radius: 0.5rem;
+	overflow: hidden;
+	background-color: #F9FAFB;
+}
+
+.rushby-product-image-wrapper img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.rushby-product-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.rushby-product-title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #111827;
+	margin: 0;
+}
+
+.rushby-product-subtitle {
+	font-size: 0.875rem;
+	color: #4B5563;
+	margin: 0;
+}
+
+.rushby-product-rating {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	color: #DC2626;
+}
+
+.rushby-rating-icon {
+	width: 1rem;
+	height: 1rem;
+	fill: #DC2626;
+}
+
+.rushby-product-rating span {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+/* Product Badge */
+.rushby-product-badge-wrapper {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+
+.rushby-product-badge {
+	background-color: #DC2626;
+	color: #FFFFFF;
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 0.375rem 0.75rem;
+	border-radius: 9999px;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   Floating Cards
+   ============================================ */
+
+.rushby-floating-card {
+	position: absolute;
+	background-color: #FFFFFF;
+	border: 1px solid #D1D5DB;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.rushby-floating-card-1 {
+	bottom: -1.5rem;
+	left: -1.5rem;
+	display: none;
+	animation: fadeInUp 0.6s ease-out 0.8s both;
+}
+
+.rushby-floating-card-2 {
+	top: -1.5rem;
+	right: -1.5rem;
+	display: none;
+	animation: fadeInUp 0.6s ease-out 1s both;
+}
+
+@media (min-width: 768px) {
+	.rushby-floating-card-1 {
+		display: block;
+	}
+}
+
+@media (min-width: 1024px) {
+	.rushby-floating-card-2 {
+		display: block;
+	}
+}
+
+.rushby-floating-card-content {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.rushby-floating-card-icon {
+	width: 3rem;
+	height: 3rem;
+	background-color: #FEE2E2;
+	border-radius: 0.25rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.rushby-floating-card-icon svg {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: #DC2626;
+}
+
+.rushby-floating-card-title {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: #111827;
+}
+
+.rushby-floating-card-subtitle {
+	font-size: 0.75rem;
+	color: #4B5563;
+}
+
+/* ============================================
+   Responsive Utilities
+   ============================================ */
+
+@media (max-width: 767px) {
+	.rushby-hero-content {
+		gap: 1.5rem;
+	}
+
+	.rushby-headline {
+		font-size: 2rem;
+	}
+
+	.rushby-description {
+		font-size: 1rem;
+	}
+
+	.rushby-stats {
+		gap: 1rem;
+		padding-top: 1.5rem;
+	}
+}
+
+/* ============================================

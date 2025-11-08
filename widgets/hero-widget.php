@@ -67,6 +67,10 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 		return [ 'hero', 'banner', 'header', 'rushby' ];
 	}
 
+	public function get_style_depends(): array {
+		return [ 'rushby-widget-hero' ];
+	}
+
 	/**
 	 * Register widget controls.
 	 *

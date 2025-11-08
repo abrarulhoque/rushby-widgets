@@ -50,7 +50,11 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 	 * Get style dependencies.
 	 */
 	public function get_style_depends(): array {
-		return [ 'elementor-icons-fa-solid', 'elementor-icons-fa-regular' ];
+		return [ 'rushby-widget-cart-page', 'elementor-icons-fa-solid', 'elementor-icons-fa-regular' ];
+	}
+
+	public function get_script_depends(): array {
+		return [ 'rushby-widgets-frontend' ];
 	}
 
 	/**

@@ -68,6 +68,20 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
+	 * Get style dependencies.
+	 */
+	public function get_style_depends(): array {
+		return [ 'rushby-widget-announcement-bar' ];
+	}
+
+	/**
+	 * Get script dependencies.
+	 */
+	public function get_script_depends(): array {
+		return [ 'rushby-widgets-frontend' ];
+	}
+
+	/**
 	 * Register widget controls.
 	 *
 	 * @since 1.0.0

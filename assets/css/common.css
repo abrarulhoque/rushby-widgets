@@ -1,0 +1,40 @@
+/**
+ * Shared Rushby Elementor styles
+ */
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(1.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInRight {
+	from {
+		opacity: 0;
+		transform: translateX(1.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes rushby-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes rushby-pulse {
+	0%, 100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}

@@ -46,6 +46,14 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 		return [ 'product', 'woocommerce', 'shop', 'grid', 'rushby' ];
 	}
 
+	public function get_style_depends(): array {
+		return [ 'rushby-widget-product-grid' ];
+	}
+
+	public function get_script_depends(): array {
+		return [ 'rushby-widgets-frontend' ];
+	}
+
 	/**
 	 * Register widget controls.
 	 */

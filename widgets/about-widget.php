@@ -50,7 +50,7 @@ class Rushby_About_Widget extends \Elementor\Widget_Base {
 	 * Get style dependencies.
 	 */
 	public function get_style_depends(): array {
-		return [ 'elementor-icons-fa-solid', 'elementor-icons-fa-regular' ];
+		return [ 'rushby-widget-about', 'elementor-icons-fa-solid', 'elementor-icons-fa-regular' ];
 	}
 
 	/**
