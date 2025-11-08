@@ -68,7 +68,7 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 	}
 
 	public function get_style_depends(): array {
-		return [ 'rushby-widget-header' ];
+		return [ 'rushby-widget-header', 'rushby-widget-currency-switcher' ];
 	}
 
 	public function get_script_depends(): array {
