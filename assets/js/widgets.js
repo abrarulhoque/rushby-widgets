@@ -323,6 +323,19 @@
 	};
 
 	/**
+	 * Helper: Set cookie using vanilla JavaScript
+	 */
+	function rushbySetCookie(name, value, days) {
+		let expires = '';
+		if (days) {
+			const date = new Date();
+			date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+			expires = '; expires=' + date.toUTCString();
+		}
+		document.cookie = name + '=' + (value || '') + expires + '; path=/';
+	}
+
+	/**
 	 * Select Currency
 	 * Integrates with Currency Converter for WooCommerce plugin
 	 */
@@ -362,24 +375,19 @@
 			codeSpan.textContent = currencyCode;
 		}
 
-		// Trigger currency change using the Currency Converter plugin's method
-		// The plugin listens for clicks on elements with data-currencycode attribute
-		if (typeof jQuery !== 'undefined' && typeof jQuery.cookie !== 'undefined') {
-			// Set cookie that the plugin uses
-			jQuery.cookie('woocommerce_current_currency', currencyCode, {
-				expires: 1,
-				path: '/'
-			});
+		// Set cookie that the Currency Converter plugin uses
+		rushbySetCookie('woocommerce_current_currency', currencyCode, 1);
 
-			// Trigger the plugin's currency change event
+		// Trigger the plugin's currency change event if jQuery is available
+		if (typeof jQuery !== 'undefined') {
 			jQuery(document).trigger('currencyChanged', [currencyCode]);
-
-			// Reload page to apply currency changes
-			// The Currency Converter plugin requires a page reload to update all prices
-			setTimeout(function () {
-				window.location.reload();
-			}, 100);
 		}
+
+		// Reload page to apply currency changes
+		// The Currency Converter plugin requires a page reload to update all prices
+		setTimeout(function () {
+			window.location.reload();
+		}, 100);
 
 		// Close menu
 		rushbyCloseCurrencyMenu(button);
@@ -461,22 +469,18 @@
 			codeSpan.textContent = currencyCode;
 		}
 
-		// Trigger currency change using the Currency Converter plugin's method
-		if (typeof jQuery !== 'undefined' && typeof jQuery.cookie !== 'undefined') {
-			// Set cookie that the plugin uses
-			jQuery.cookie('woocommerce_current_currency', currencyCode, {
-				expires: 1,
-				path: '/'
-			});
+		// Set cookie that the Currency Converter plugin uses
+		rushbySetCookie('woocommerce_current_currency', currencyCode, 1);
 
-			// Trigger the plugin's currency change event
+		// Trigger the plugin's currency change event if jQuery is available
+		if (typeof jQuery !== 'undefined') {
 			jQuery(document).trigger('currencyChanged', [currencyCode]);
-
-			// Reload page to apply currency changes
-			setTimeout(function () {
-				window.location.reload();
-			}, 100);
 		}
+
+		// Reload page to apply currency changes
+		setTimeout(function () {
+			window.location.reload();
+		}, 100);
 
 		// Close dropdown
 		dropdown.classList.remove('show');
