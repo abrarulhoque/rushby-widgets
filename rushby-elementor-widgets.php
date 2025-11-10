@@ -43,6 +43,7 @@ function rushby_get_widget_style_files(): array {
 		'hero' => 'assets/css/widgets/hero.css',
 		'currency-switcher' => 'assets/css/widgets/currency-switcher.css',
 		'product-grid' => 'assets/css/widgets/product-grid.css',
+		'product-page' => 'assets/css/widgets/product-page.css',
 		'footer' => 'assets/css/widgets/footer.css',
 		'about' => 'assets/css/widgets/about.css',
 		'cart-page' => 'assets/css/widgets/cart-page.css',
@@ -63,6 +64,7 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/header-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/floating-currency-switcher-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-grid-widget.php' );
+	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-page-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/footer-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/about-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/cart-page-widget.php' );
@@ -73,6 +75,7 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	$widgets_manager->register( new \Rushby_Header_Widget() );
 	$widgets_manager->register( new \Rushby_Floating_Currency_Switcher_Widget() );
 	$widgets_manager->register( new \Rushby_Product_Grid_Widget() );
+	$widgets_manager->register( new \Rushby_Product_Page_Widget() );
 	$widgets_manager->register( new \Rushby_Footer_Widget() );
 	$widgets_manager->register( new \Rushby_About_Widget() );
 	$widgets_manager->register( new \Rushby_Cart_Page_Widget() );

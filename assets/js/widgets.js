@@ -1242,3 +1242,59 @@
 		initCartPage();
 	});
 })(jQuery);
+
+/**
+ * ========================================
+ * Product Page Widget JavaScript
+ * ========================================
+ */
+
+(function ($) {
+	'use strict';
+
+	/**
+	 * Initialize Product Page functionality
+	 */
+	function initProductPage() {
+		// Gallery thumbnail switching
+		$(document).on('click', '.rushby-gallery-thumb', function () {
+			const $thumb = $(this);
+			const newImageSrc = $thumb.find('img').attr('src');
+			const newImageSrcset = $thumb.find('img').attr('srcset');
+			const newImageSizes = $thumb.find('img').attr('sizes');
+			const newImageAlt = $thumb.find('img').attr('alt');
+
+			// Update main image
+			const $mainImage = $('.rushby-product-main-image img');
+			if ($mainImage.length && newImageSrc) {
+				$mainImage.attr('src', newImageSrc);
+				if (newImageSrcset) {
+					$mainImage.attr('srcset', newImageSrcset);
+				}
+				if (newImageSizes) {
+					$mainImage.attr('sizes', newImageSizes);
+				}
+				if (newImageAlt) {
+					$mainImage.attr('alt', newImageAlt);
+				}
+			}
+
+			// Update active state
+			$('.rushby-gallery-thumb').removeClass('active');
+			$thumb.addClass('active');
+		});
+
+		// Initialize first thumbnail as active
+		$('.rushby-gallery-thumb:first').addClass('active');
+	}
+
+	// Initialize on document ready
+	$(document).ready(function () {
+		initProductPage();
+	});
+
+	// Re-initialize on Elementor preview load
+	$(window).on('elementor/frontend/init', function () {
+		initProductPage();
+	});
+})(jQuery);
