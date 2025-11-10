@@ -710,6 +710,15 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 										<span class="rushby-currency-symbol-small"><?php echo esc_html( $currency_symbol ); ?></span>
 									</button>
 								<?php endforeach; ?>
+
+								<!-- Disclaimer -->
+								<div class="rushby-currency-disclaimer">
+									<p class="rushby-currency-disclaimer-text">
+										<span class="rushby-currency-disclaimer-italic"><?php esc_html_e( 'These conversions are estimates.', 'rushby-elementor-widgets' ); ?></span>
+										<br />
+										<span class="rushby-currency-disclaimer-bold"><?php esc_html_e( 'All payments are collected in ZAR', 'rushby-elementor-widgets' ); ?></span>
+									</p>
+								</div>
 							</div>
 						</div>
 					<?php endif; ?>

@@ -185,6 +185,31 @@
 	flex-shrink: 0;
 }
 
+/* Disclaimer - matches React component design */
+.rushby-announcement-currency-dropdown .rushby-currency-disclaimer {
+	border-top: 1px solid #E5E7EB;
+	background-color: #F9FAFB;
+	padding: 0.5rem 0.75rem;
+	margin: 0.5rem -0.5rem -0.5rem -0.5rem;
+	border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.rushby-announcement-currency-dropdown .rushby-currency-disclaimer-text {
+	font-size: 10px;
+	color: #4B5563;
+	text-align: center;
+	line-height: 1.25;
+	margin: 0;
+}
+
+.rushby-announcement-currency-dropdown .rushby-currency-disclaimer-italic {
+	font-style: italic;
+}
+
+.rushby-announcement-currency-dropdown .rushby-currency-disclaimer-bold {
+	font-weight: 500;
+}
+
 /* Social Links */
 .rushby-announcement-social {
 	display: flex;
