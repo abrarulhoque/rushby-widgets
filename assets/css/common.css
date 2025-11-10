@@ -47,3 +47,56 @@
 		opacity: 0.5;
 	}
 }
+
+/* ============================================
+   Common Button Styles
+   Used across multiple widgets (hero, side cart, etc.)
+   ============================================ */
+
+.rushby-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: 0.375rem;
+	text-decoration: none;
+	transition: all 0.2s;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.rushby-btn-primary {
+	background-color: var(--rushby-accent);
+	color: #FFFFFF;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rushby-btn-primary:hover {
+	background-color: var(--rushby-accent-dark);
+	color: #FFFFFF;
+}
+
+.rushby-btn-secondary {
+	background-color: #FFFFFF;
+	color: #111827;
+	border-color: #9CA3AF;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.rushby-btn-secondary:hover {
+	background-color: #F3F4F6;
+	color: #111827;
+}
+
+.rushby-btn-arrow {
+	width: 1rem;
+	height: 1rem;
+	transition: transform 0.2s;
+}
+
+.rushby-btn-primary:hover .rushby-btn-arrow {
+	transform: translateX(0.25rem);
+}
