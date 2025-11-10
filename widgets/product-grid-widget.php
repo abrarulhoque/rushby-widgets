@@ -689,6 +689,13 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 			'orderby' => $settings['orderby'],
 			'order' => $settings['order'],
 			'image_ratio' => $settings['image_ratio'],
+			'show_badge' => $settings['show_badge'],
+			'show_category' => $settings['show_category'],
+			'show_rating' => $settings['show_rating'],
+			'show_compatibility' => $settings['show_compatibility'],
+			'show_variations' => $settings['show_variations'],
+			'show_stock_status' => $settings['show_stock_status'],
+			'show_quick_view' => $settings['show_quick_view'],
 		] );
 		?>
 		<section class="rushby-product-grid-section" id="rushby-product-grid" data-widget-settings="<?php echo esc_attr( $widget_settings_json ); ?>">

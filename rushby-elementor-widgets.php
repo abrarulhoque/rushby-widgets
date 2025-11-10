@@ -456,6 +456,72 @@ add_action( 'wp_ajax_rushby_filter_products', 'rushby_filter_products' );
 add_action( 'wp_ajax_nopriv_rushby_filter_products', 'rushby_filter_products' );
 
 /**
+ * Get product badge text
+ */
+function rushby_get_product_badge( $product ) {
+	if ( $product->is_on_sale() ) {
+		return esc_html__( 'Sale', 'rushby-elementor-widgets' );
+	}
+
+	if ( $product->is_featured() ) {
+		return esc_html__( 'Featured', 'rushby-elementor-widgets' );
+	}
+
+	// Check if product is new (less than 30 days old)
+	$created = strtotime( $product->get_date_created() );
+	$now = time();
+	$diff_days = floor( ( $now - $created ) / ( 60 * 60 * 24 ) );
+
+	if ( $diff_days < 30 ) {
+		return esc_html__( 'New', 'rushby-elementor-widgets' );
+	}
+
+	// Check if popular (high sales)
+	$total_sales = $product->get_total_sales();
+	if ( $total_sales > 20 ) {
+		return esc_html__( 'Best Seller', 'rushby-elementor-widgets' );
+	} elseif ( $total_sales > 10 ) {
+		return esc_html__( 'Popular', 'rushby-elementor-widgets' );
+	}
+
+	return '';
+}
+
+/**
+ * Get product variations for variable products
+ */
+function rushby_get_product_variations( $product ) {
+	if ( ! $product->is_type( 'variable' ) ) {
+		return [];
+	}
+
+	$variations = [];
+	$available_variations = $product->get_available_variations();
+
+	foreach ( $available_variations as $variation ) {
+		$variation_obj = wc_get_product( $variation['variation_id'] );
+		$attributes = $variation_obj->get_variation_attributes();
+
+		foreach ( $attributes as $attr_name => $attr_value ) {
+			$taxonomy = str_replace( 'attribute_', '', $attr_name );
+
+			if ( ! isset( $variations[ $taxonomy ] ) ) {
+				$variations[ $taxonomy ] = [
+					'label' => wc_attribute_label( $taxonomy ),
+					'options' => [],
+				];
+			}
+
+			if ( ! in_array( $attr_value, $variations[ $taxonomy ]['options'] ) ) {
+				$variations[ $taxonomy ]['options'][] = $attr_value;
+			}
+		}
+	}
+
+	return $variations;
+}
+
+/**
  * Render product card HTML (used by AJAX and widget render)
  */
 function rushby_render_product_card( $product, $settings ) {
@@ -464,88 +530,135 @@ function rushby_render_product_card( $product, $settings ) {
 	}
 
 	$product_id = $product->get_id();
-	$product_link = get_permalink( $product_id );
-	$product_title = $product->get_name();
-	$product_price = $product->get_price_html();
-	$product_image_id = $product->get_image_id();
-	$product_image_url = wp_get_attachment_image_url( $product_image_id, 'medium' );
-
-	// Get categories
-	$categories = get_the_terms( $product_id, 'product_cat' );
-	$category_name = '';
-	if ( $categories && ! is_wp_error( $categories ) ) {
-		$category = array_shift( $categories );
-		$category_name = $category->name;
-	}
-
-	// Get rating
-	$rating_count = $product->get_rating_count();
-	$average_rating = $product->get_average_rating();
-
-	// Get badge
-	$badge_text = '';
-	if ( $product->is_on_sale() ) {
-		$badge_text = esc_html__( 'Sale', 'rushby-elementor-widgets' );
-	} elseif ( $product->is_featured() ) {
-		$badge_text = esc_html__( 'Featured', 'rushby-elementor-widgets' );
-	}
-
+	$product_badge = rushby_get_product_badge( $product );
+	$product_variations = rushby_get_product_variations( $product );
 	$image_ratio = $settings['image_ratio'] ?? '1-1';
+	$image_ratio_class = 'ratio-' . $image_ratio;
 	?>
 	<div class="rushby-product-card" data-product-id="<?php echo esc_attr( $product_id ); ?>">
 		<!-- Product Image -->
-		<div class="rushby-product-image-wrapper ratio-<?php echo esc_attr( $image_ratio ); ?>">
-			<a href="<?php echo esc_url( $product_link ); ?>" class="rushby-product-image-link">
-				<?php if ( $product_image_url ) : ?>
-					<img src="<?php echo esc_url( $product_image_url ); ?>" alt="<?php echo esc_attr( $product_title ); ?>" loading="lazy">
-				<?php else : ?>
-					<img src="<?php echo esc_url( wc_placeholder_img_src() ); ?>" alt="<?php echo esc_attr( $product_title ); ?>" loading="lazy">
-				<?php endif; ?>
+		<div class="rushby-product-image-wrapper <?php echo esc_attr( $image_ratio_class ); ?>">
+			<a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="rushby-product-image-link">
+				<?php echo $product->get_image( 'woocommerce_thumbnail' ); ?>
 			</a>
 
-			<?php if ( ! empty( $badge_text ) ) : ?>
+			<?php if ( ( $settings['show_badge'] ?? 'yes' ) === 'yes' && ! empty( $product_badge ) ) : ?>
 				<div class="rushby-product-badge-wrapper">
-					<span class="rushby-product-badge"><?php echo esc_html( $badge_text ); ?></span>
+					<span class="rushby-product-badge"><?php echo esc_html( $product_badge ); ?></span>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( ( $settings['show_quick_view'] ?? 'no' ) === 'yes' ) : ?>
+				<div class="rushby-product-quick-view-overlay">
+					<button class="rushby-quick-view-btn" data-product-id="<?php echo esc_attr( $product_id ); ?>">
+						<?php esc_html_e( 'Quick View', 'rushby-elementor-widgets' ); ?>
+					</button>
 				</div>
 			<?php endif; ?>
 		</div>
 
 		<!-- Product Info -->
 		<div class="rushby-product-info">
-			<!-- Meta -->
+			<!-- Category & Rating -->
 			<div class="rushby-product-meta">
-				<?php if ( ! empty( $category_name ) ) : ?>
-					<span class="rushby-product-category"><?php echo esc_html( $category_name ); ?></span>
+				<?php if ( ( $settings['show_category'] ?? 'yes' ) === 'yes' ) : ?>
+					<span class="rushby-product-category">
+						<?php
+						$categories = $product->get_category_ids();
+						if ( ! empty( $categories ) ) {
+							$category = get_term( $categories[0], 'product_cat' );
+							echo esc_html( $category->name );
+						}
+						?>
+					</span>
 				<?php endif; ?>
 
-				<?php if ( $rating_count > 0 ) : ?>
+				<?php if ( ( $settings['show_rating'] ?? 'yes' ) === 'yes' ) : ?>
 					<div class="rushby-product-rating">
-						<svg class="star" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-							<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-						</svg>
-						<span class="rating-value"><?php echo esc_html( number_format( $average_rating, 1 ) ); ?></span>
+						<?php
+						$rating_count = $product->get_rating_count();
+						$average_rating = $product->get_average_rating();
+						if ( $rating_count > 0 ) :
+							?>
+							<svg class="star" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+							</svg>
+							<span class="rating-value"><?php echo esc_html( number_format( $average_rating, 1 ) ); ?></span>
+							<span class="rating-count">(<?php echo esc_html( $rating_count ); ?>)</span>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 			</div>
 
-			<!-- Title -->
+			<!-- Product Name -->
 			<h3 class="rushby-product-title">
-				<a href="<?php echo esc_url( $product_link ); ?>"><?php echo esc_html( $product_title ); ?></a>
+				<a href="<?php echo esc_url( $product->get_permalink() ); ?>">
+					<?php echo esc_html( $product->get_name() ); ?>
+				</a>
 			</h3>
+
+			<?php if ( ( $settings['show_compatibility'] ?? 'yes' ) === 'yes' && $product->get_short_description() ) : ?>
+				<div class="rushby-product-compatibility">
+					<?php echo wp_kses_post( wp_trim_words( $product->get_short_description(), 10 ) ); ?>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( ( $settings['show_variations'] ?? 'yes' ) === 'yes' && ! empty( $product_variations ) ) : ?>
+				<!-- Variation Swatches -->
+				<div class="rushby-product-variations">
+					<?php foreach ( $product_variations as $attr_name => $attr_data ) : ?>
+						<div class="rushby-variation-group">
+							<span class="rushby-variation-label"><?php echo esc_html( $attr_data['label'] ); ?>:</span>
+							<div class="rushby-variation-swatches">
+								<?php foreach ( $attr_data['options'] as $option ) : ?>
+									<button
+										type="button"
+										class="rushby-variation-swatch"
+										data-attribute="<?php echo esc_attr( $attr_name ); ?>"
+										data-value="<?php echo esc_attr( $option ); ?>"
+										title="<?php echo esc_attr( $option ); ?>">
+										<?php echo esc_html( $option ); ?>
+									</button>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
 			<!-- Price & Add to Cart -->
 			<div class="rushby-product-price-cart">
 				<div class="rushby-product-price-wrapper">
-					<div class="rushby-product-price"><?php echo wp_kses_post( $product_price ); ?></div>
+					<span class="rushby-product-price"><?php echo $product->get_price_html(); ?></span>
+					<p class="rushby-product-tax-note"><?php esc_html_e( 'Inclusive of Tax', 'rushby-elementor-widgets' ); ?></p>
 				</div>
-
-				<button class="rushby-product-add-to-cart" data-product-id="<?php echo esc_attr( $product_id ); ?>" data-product-type="<?php echo esc_attr( $product->get_type() ); ?>">
-					<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<button
+					class="rushby-product-add-to-cart"
+					data-product-id="<?php echo esc_attr( $product_id ); ?>"
+					data-product-type="<?php echo esc_attr( $product->get_type() ); ?>">
+					<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
 					</svg>
-					<span><?php esc_html_e( 'Add to Cart', 'rushby-elementor-widgets' ); ?></span>
+					<span><?php esc_html_e( 'Add', 'rushby-elementor-widgets' ); ?></span>
 				</button>
 			</div>
+
+			<?php if ( ( $settings['show_stock_status'] ?? 'yes' ) === 'yes' ) : ?>
+				<!-- Stock Status -->
+				<div class="rushby-product-stock">
+					<?php if ( $product->is_in_stock() ) : ?>
+						<div class="rushby-stock-indicator in-stock"></div>
+						<span class="rushby-stock-text">
+							<?php esc_html_e( 'In Stock - Ships in 2-3 days', 'rushby-elementor-widgets' ); ?>
+						</span>
+					<?php else : ?>
+						<div class="rushby-stock-indicator out-of-stock"></div>
+						<span class="rushby-stock-text">
+							<?php esc_html_e( 'Out of Stock', 'rushby-elementor-widgets' ); ?>
+						</span>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 	<?php
