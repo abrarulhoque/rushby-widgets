@@ -249,7 +249,7 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 				'type' => \Elementor\Controls_Manager::URL,
 				'placeholder' => esc_html__( 'https://facebook.com/yourpage', 'rushby-elementor-widgets' ),
 				'default' => [
-					'url' => 'https://facebook.com',
+					'url' => 'https://www.facebook.com/rushbyindustries/',
 				],
 				'condition' => [
 					'show_facebook' => 'yes',
@@ -277,7 +277,7 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 				'type' => \Elementor\Controls_Manager::URL,
 				'placeholder' => esc_html__( 'https://instagram.com/yourpage', 'rushby-elementor-widgets' ),
 				'default' => [
-					'url' => 'https://instagram.com',
+					'url' => 'https://www.instagram.com/rushbyindustries/',
 				],
 				'condition' => [
 					'show_instagram' => 'yes',
@@ -293,7 +293,7 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 				'label_on' => esc_html__( 'Show', 'rushby-elementor-widgets' ),
 				'label_off' => esc_html__( 'Hide', 'rushby-elementor-widgets' ),
 				'return_value' => 'yes',
-				'default' => 'yes',
+				'default' => 'no',
 				'separator' => 'before',
 			]
 		);
@@ -333,7 +333,7 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 				'type' => \Elementor\Controls_Manager::URL,
 				'placeholder' => esc_html__( 'https://youtube.com/yourchannel', 'rushby-elementor-widgets' ),
 				'default' => [
-					'url' => 'https://youtube.com',
+					'url' => 'https://www.youtube.com/channel/UCDgCnlBaiViGkX_e4pFIGRQ',
 				],
 				'condition' => [
 					'show_youtube' => 'yes',

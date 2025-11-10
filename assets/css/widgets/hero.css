@@ -470,3 +470,66 @@
 }
 
 /* ============================================
+   Highlights Section
+   ============================================ */
+
+.rushby-hero-highlights {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.5rem;
+	margin-top: 3rem;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (min-width: 768px) {
+	.rushby-hero-highlights {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.rushby-hero-highlight-card {
+	background-color: #F9FAFB;
+	border: 1px solid #E5E7EB;
+	border-radius: 0.75rem;
+	padding: 1.5rem;
+	text-align: center;
+	transition: box-shadow 0.3s ease;
+}
+
+.rushby-hero-highlight-card:hover {
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rushby-hero-highlight-icon-wrapper {
+	width: 3rem;
+	height: 3rem;
+	background-color: var(--rushby-accent-light);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 1rem;
+}
+
+.rushby-hero-highlight-icon {
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--rushby-accent);
+}
+
+.rushby-hero-highlight-title {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: #111827;
+	margin-bottom: 0.5rem;
+}
+
+.rushby-hero-highlight-description {
+	color: #6B7280;
+	line-height: 1.5;
+	font-size: 0.875rem;
+}
+
+/* ============================================

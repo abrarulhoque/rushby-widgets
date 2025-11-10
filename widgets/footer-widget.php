@@ -310,7 +310,7 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Copyright Text', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( '© 2025 Rushby Industries. All rights reserved. | Reg: 2020/053579/07', 'rushby-elementor-widgets' ),
+				'default' => esc_html__( '© 2025 Rushby Industries. All rights reserved.', 'rushby-elementor-widgets' ),
 			]
 		);
 
@@ -520,10 +520,10 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 	 */
 	private function get_default_support_links(): array {
 		return [
-			[ 'link_text' => 'Contact Us', 'link_url' => [ 'url' => '/contact' ] ],
+			[ 'link_text' => 'Contact Us', 'link_url' => [ 'url' => '/contact-us' ] ],
 			[ 'link_text' => 'Shipping Info', 'link_url' => [ 'url' => '/shipping' ] ],
-			[ 'link_text' => 'Returns Policy', 'link_url' => [ 'url' => '/returns' ] ],
-			[ 'link_text' => 'Warranty', 'link_url' => [ 'url' => '/warranty' ] ],
+			[ 'link_text' => 'Returns Policy', 'link_url' => [ 'url' => '/returns-policy' ] ],
+			[ 'link_text' => 'Privacy Policy', 'link_url' => [ 'url' => '/privacy-policy' ] ],
 			[ 'link_text' => 'FAQ', 'link_url' => [ 'url' => '/faq' ] ],
 		];
 	}
@@ -533,11 +533,10 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 	 */
 	private function get_default_company_links(): array {
 		return [
-			[ 'link_text' => 'About Us', 'link_url' => [ 'url' => '/about' ] ],
-			[ 'link_text' => 'Quality Guarantee', 'link_url' => [ 'url' => '/quality' ] ],
-			[ 'link_text' => 'Compatibility Guide', 'link_url' => [ 'url' => '/compatibility' ] ],
-			[ 'link_text' => 'Installation Guides', 'link_url' => [ 'url' => '/installation' ] ],
-			[ 'link_text' => 'Become a Dealer', 'link_url' => [ 'url' => '/dealers' ] ],
+			[ 'link_text' => 'Quality Guarantee', 'link_url' => [ 'url' => '/quality-guarantee' ] ],
+			[ 'link_text' => 'Terms of Service', 'link_url' => [ 'url' => '/terms-of-service' ] ],
+			[ 'link_text' => 'Shop', 'link_url' => [ 'url' => '/shop' ] ],
+			[ 'link_text' => 'My Account', 'link_url' => [ 'url' => '/my-account' ] ],
 		];
 	}
 

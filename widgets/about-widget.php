@@ -198,59 +198,6 @@ class Rushby_About_Widget extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Highlights Section
-		$this->start_controls_section(
-			'highlights_section',
-			[
-				'label' => esc_html__( 'Highlights', 'rushby-elementor-widgets' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$repeater = new \Elementor\Repeater();
-
-		$repeater->add_control(
-			'icon',
-			[
-				'label' => esc_html__( 'Icon', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::ICONS,
-				'default' => [
-					'value' => 'fas fa-star',
-					'library' => 'solid',
-				],
-			]
-		);
-
-		$repeater->add_control(
-			'title',
-			[
-				'label' => esc_html__( 'Title', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'Highlight Title', 'rushby-elementor-widgets' ),
-			]
-		);
-
-		$repeater->add_control(
-			'description',
-			[
-				'label' => esc_html__( 'Description', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'default' => esc_html__( 'Highlight description text', 'rushby-elementor-widgets' ),
-			]
-		);
-
-		$this->add_control(
-			'highlights',
-			[
-				'label' => esc_html__( 'Highlights', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::REPEATER,
-				'fields' => $repeater->get_controls(),
-				'default' => $this->get_default_highlights(),
-				'title_field' => '{{{ title }}}',
-			]
-		);
-
-		$this->end_controls_section();
 
 		// Style Tab - Colors
 		$this->start_controls_section(
@@ -348,37 +295,6 @@ class Rushby_About_Widget extends \Elementor\Widget_Base {
 		$this->end_controls_section();
 	}
 
-	/**
-	 * Get default highlights
-	 */
-	private function get_default_highlights(): array {
-		return [
-			[
-				'icon' => [
-					'value' => 'fas fa-wrench',
-					'library' => 'solid',
-				],
-				'title' => 'Precision Engineering',
-				'description' => 'Every product crafted with meticulous attention to detail',
-			],
-			[
-				'icon' => [
-					'value' => 'fas fa-globe',
-					'library' => 'solid',
-				],
-				'title' => 'Global Shipping',
-				'description' => 'Delivering quality CZ accessories to shooters worldwide',
-			],
-			[
-				'icon' => [
-					'value' => 'fas fa-award',
-					'library' => 'solid',
-				],
-				'title' => 'Lifetime Warranty',
-				'description' => 'Standing behind every product with confidence',
-			],
-		];
-	}
 
 	/**
 	 * Render widget output
@@ -473,20 +389,6 @@ class Rushby_About_Widget extends \Elementor\Widget_Base {
 					</div>
 				</div>
 
-				<?php if ( ! empty( $settings['highlights'] ) ) : ?>
-					<!-- Highlights -->
-					<div class="rushby-about-highlights">
-						<?php foreach ( $settings['highlights'] as $highlight ) : ?>
-							<div class="rushby-about-highlight-card">
-								<div class="rushby-about-highlight-icon-wrapper">
-									<?php \Elementor\Icons_Manager::render_icon( $highlight['icon'], [ 'aria-hidden' => 'true', 'class' => 'rushby-about-highlight-icon' ] ); ?>
-								</div>
-								<h3 class="rushby-about-highlight-title"><?php echo esc_html( $highlight['title'] ); ?></h3>
-								<p class="rushby-about-highlight-description"><?php echo esc_html( $highlight['description'] ); ?></p>
-							</div>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
 			</div>
 		</section>
 		<?php

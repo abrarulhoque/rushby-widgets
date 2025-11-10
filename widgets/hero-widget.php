@@ -80,55 +80,6 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 	protected function register_controls(): void {
 
 		// ============================================
-		// CONTENT TAB - Badge Section
-		// ============================================
-		$this->start_controls_section(
-			'badge_section',
-			[
-				'label' => esc_html__( 'Badge', 'rushby-elementor-widgets' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$this->add_control(
-			'show_badge',
-			[
-				'label' => esc_html__( 'Show Badge', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Show', 'rushby-elementor-widgets' ),
-				'label_off' => esc_html__( 'Hide', 'rushby-elementor-widgets' ),
-				'return_value' => 'yes',
-				'default' => 'yes',
-			]
-		);
-
-		$this->add_control(
-			'badge_rating',
-			[
-				'label' => esc_html__( 'Rating', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => '5.0 Stars',
-				'condition' => [
-					'show_badge' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'badge_reviews',
-			[
-				'label' => esc_html__( 'Reviews Text', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => '22+ Customer Reviews',
-				'condition' => [
-					'show_badge' => 'yes',
-				],
-			]
-		);
-
-		$this->end_controls_section();
-
-		// ============================================
 		// CONTENT TAB - Headline Section
 		// ============================================
 		$this->start_controls_section(
@@ -420,6 +371,62 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 				'condition' => [
 					'show_stats' => 'yes',
 				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		// ============================================
+		// CONTENT TAB - Highlights
+		// ============================================
+		$this->start_controls_section(
+			'highlights_section',
+			[
+				'label' => esc_html__( 'Highlights', 'rushby-elementor-widgets' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$repeater = new \Elementor\Repeater();
+
+		$repeater->add_control(
+			'icon',
+			[
+				'label' => esc_html__( 'Icon', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value' => 'fas fa-star',
+					'library' => 'solid',
+				],
+			]
+		);
+
+		$repeater->add_control(
+			'title',
+			[
+				'label' => esc_html__( 'Title', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Highlight Title', 'rushby-elementor-widgets' ),
+			]
+		);
+
+		$repeater->add_control(
+			'description',
+			[
+				'label' => esc_html__( 'Description', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXTAREA,
+				'default' => esc_html__( 'Highlight description text', 'rushby-elementor-widgets' ),
+			]
+		);
+
+		$this->add_control(
+			'highlights',
+			[
+				'label' => esc_html__( 'Highlights', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
+				'default' => $this->get_default_highlights(),
+				'title_field' => '{{{ title }}}',
 			]
 		);
 
@@ -1095,18 +1102,6 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 					<!-- Left Column - Content -->
 					<div class="rushby-hero-content">
 
-						<!-- Badge -->
-						<?php if ( $settings['show_badge'] === 'yes' ) : ?>
-						<div class="rushby-badge-wrapper">
-							<span class="rushby-badge">
-								<svg class="rushby-badge-icon" fill="currentColor" viewBox="0 0 20 20">
-									<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-								</svg>
-								<?php echo esc_html( $settings['badge_rating'] ); ?> • <?php echo esc_html( $settings['badge_reviews'] ); ?>
-							</span>
-						</div>
-						<?php endif; ?>
-
 						<!-- Headline -->
 						<div class="rushby-headline-wrapper">
 							<h1 class="rushby-headline">
@@ -1255,6 +1250,21 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 						<?php endif; ?>
 					</div>
 				</div>
+
+				<?php if ( ! empty( $settings['highlights'] ) ) : ?>
+					<!-- Highlights -->
+					<div class="rushby-hero-highlights">
+						<?php foreach ( $settings['highlights'] as $highlight ) : ?>
+							<div class="rushby-hero-highlight-card">
+								<div class="rushby-hero-highlight-icon-wrapper">
+									<?php \Elementor\Icons_Manager::render_icon( $highlight['icon'], [ 'aria-hidden' => 'true', 'class' => 'rushby-hero-highlight-icon' ] ); ?>
+								</div>
+								<h3 class="rushby-hero-highlight-title"><?php echo esc_html( $highlight['title'] ); ?></h3>
+								<p class="rushby-hero-highlight-description"><?php echo esc_html( $highlight['description'] ); ?></p>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
 			</div>
 		</section>
 		<?php
@@ -1279,16 +1289,6 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			<div class="rushby-hero-container">
 				<div class="rushby-hero-grid">
 					<div class="rushby-hero-content">
-						<# if ( settings.show_badge === 'yes' ) { #>
-						<div class="rushby-badge-wrapper">
-							<span class="rushby-badge">
-								<svg class="rushby-badge-icon" fill="currentColor" viewBox="0 0 20 20">
-									<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-								</svg>
-								{{{ settings.badge_rating }}} • {{{ settings.badge_reviews }}}
-							</span>
-						</div>
-						<# } #>
 
 						<div class="rushby-headline-wrapper">
 							<h1 class="rushby-headline">
@@ -1309,5 +1309,37 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			</div>
 		</section>
 		<?php
+	}
+
+	/**
+	 * Get default highlights
+	 */
+	private function get_default_highlights(): array {
+		return [
+			[
+				'icon' => [
+					'value' => 'fas fa-wrench',
+					'library' => 'solid',
+				],
+				'title' => 'Precision Engineering',
+				'description' => 'Every product crafted with meticulous attention to detail',
+			],
+			[
+				'icon' => [
+					'value' => 'fas fa-globe',
+					'library' => 'solid',
+				],
+				'title' => 'Global Shipping',
+				'description' => 'Delivering quality CZ accessories to shooters worldwide',
+			],
+			[
+				'icon' => [
+					'value' => 'fas fa-award',
+					'library' => 'solid',
+				],
+				'title' => 'Lifetime Warranty',
+				'description' => 'Standing behind every product with confidence',
+			],
+		];
 	}
 }
