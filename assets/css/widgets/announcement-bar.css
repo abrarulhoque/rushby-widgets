@@ -67,19 +67,11 @@
 	font-size: 0.75rem;
 }
 
-/* Mobile Currency Switcher */
+/* Currency Switcher */
 .rushby-announcement-mobile-currency {
 	position: relative;
-}
-
-.rushby-mobile-only {
-	display: block;
-}
-
-@media (min-width: 768px) {
-	.rushby-mobile-only {
-		display: none;
-	}
+	display: flex;
+	align-items: center;
 }
 
 .rushby-announcement-currency-button {

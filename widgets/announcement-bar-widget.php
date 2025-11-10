@@ -113,19 +113,6 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
-			'email',
-			[
-				'label' => esc_html__( 'Email Address', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => 'info@rushbyindustries.com',
-				'label_block' => true,
-				'condition' => [
-					'show_contact' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
 			'phone',
 			[
 				'label' => esc_html__( 'Phone Number', 'rushby-elementor-widgets' ),
@@ -155,12 +142,12 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 		$this->end_controls_section();
 
 		// ============================================
-		// CONTENT TAB - Mobile Currency Switcher Section
+		// CONTENT TAB - Currency Switcher Section
 		// ============================================
 		$this->start_controls_section(
 			'mobile_currency_section',
 			[
-				'label' => esc_html__( 'Mobile Currency Switcher', 'rushby-elementor-widgets' ),
+				'label' => esc_html__( 'Currency Switcher', 'rushby-elementor-widgets' ),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -168,13 +155,13 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'show_mobile_currency_switcher',
 			[
-				'label' => esc_html__( 'Show Mobile Currency Switcher', 'rushby-elementor-widgets' ),
+				'label' => esc_html__( 'Show Currency Switcher', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Show', 'rushby-elementor-widgets' ),
 				'label_off' => esc_html__( 'Hide', 'rushby-elementor-widgets' ),
 				'return_value' => 'yes',
 				'default' => 'yes',
-				'description' => esc_html__( 'Show currency switcher on mobile (requires Currency Converter for WooCommerce plugin)', 'rushby-elementor-widgets' ),
+				'description' => esc_html__( 'Show currency switcher (requires Currency Converter for WooCommerce plugin)', 'rushby-elementor-widgets' ),
 			]
 		);
 
@@ -634,29 +621,18 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 			<div class="rushby-announcement-container">
 				<div class="rushby-announcement-bar-inner">
 					<!-- Left - Contact Info -->
-					<?php if ( $settings['show_contact'] === 'yes' ) : ?>
+					<?php if ( $settings['show_contact'] === 'yes' && ! empty( $settings['phone'] ) ) : ?>
 					<div class="rushby-announcement-contact">
-						<?php if ( ! empty( $settings['email'] ) ) : ?>
-						<a href="mailto:<?php echo esc_attr( $settings['email'] ); ?>" class="rushby-announcement-contact-link">
-							<svg class="rushby-announcement-contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-							</svg>
-							<span class="rushby-announcement-contact-text"><?php echo esc_html( $settings['email'] ); ?></span>
-						</a>
-						<?php endif; ?>
-
-						<?php if ( ! empty( $settings['phone'] ) ) : ?>
 						<a href="tel:<?php echo esc_attr( $settings['phone_link'] ); ?>" class="rushby-announcement-contact-link">
 							<svg class="rushby-announcement-contact-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
 							</svg>
 							<span class="rushby-announcement-contact-text"><?php echo esc_html( $settings['phone'] ); ?></span>
 						</a>
-						<?php endif; ?>
 					</div>
 					<?php endif; ?>
 
-					<!-- Center - Currency Switcher (Mobile Only) -->
+					<!-- Center - Currency Switcher -->
 					<?php if ( $settings['show_mobile_currency_switcher'] === 'yes' && class_exists( 'WC_Currency_Converter' ) ) : ?>
 						<?php
 						// Parse currency codes
@@ -681,7 +657,7 @@ class Rushby_Announcement_Bar_Widget extends \Elementor\Widget_Base {
 						wp_enqueue_script( 'wc_currency_converter' );
 						wp_enqueue_script( 'wc_currency_converter_inline' );
 						?>
-						<div class="rushby-announcement-mobile-currency rushby-mobile-only">
+						<div class="rushby-announcement-mobile-currency">
 							<button class="rushby-announcement-currency-button" onclick="rushbyToggleAnnouncementCurrency(this)" aria-label="<?php esc_attr_e( 'Select currency', 'rushby-elementor-widgets' ); ?>">
 								<span class="rushby-currency-flag"><?php echo esc_html( $mobile_current_flag ); ?></span>
 								<span class="rushby-currency-code"><?php echo esc_html( $mobile_current_currency ); ?></span>
