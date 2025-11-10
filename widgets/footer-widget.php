@@ -496,9 +496,9 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 	private function get_default_shop_links(): array {
 		return [
 			[ 'link_text' => 'CZ Triggers', 'link_url' => [ 'url' => '/product-category/cz-triggers/' ] ],
-			[ 'link_text' => 'Magazine Extensions', 'link_url' => [ 'url' => '/product-category/cz-magazine-extensions/' ] ],
 			[ 'link_text' => 'Performance Upgrades', 'link_url' => [ 'url' => '/product-category/cz-edc-performance-upgrades/' ] ],
-			[ 'link_text' => 'CZ RDR Sights', 'link_url' => [ 'url' => '/product-category/cz-rdr-sights/' ] ],
+			[ 'link_text' => 'Magazine Extensions', 'link_url' => [ 'url' => '/product-category/cz-magazine-extensions/' ] ],
+			[ 'link_text' => 'Apparel', 'link_url' => [ 'url' => '/product-category/apparel/' ] ],
 			[ 'link_text' => 'Shop All', 'link_url' => [ 'url' => '/shop/' ] ],
 		];
 	}
@@ -510,8 +510,7 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 		return [
 			[ 'link_text' => 'CZ P07/P09', 'link_url' => [ 'url' => '/product-category/cz-p07-p09/' ] ],
 			[ 'link_text' => 'CZ Shadow 2', 'link_url' => [ 'url' => '/product-category/cz-shadow-2/' ] ],
-			[ 'link_text' => 'AR Parts', 'link_url' => [ 'url' => '/product-category/ar15-parts/' ] ],
-			[ 'link_text' => 'Apparel', 'link_url' => [ 'url' => '/product-category/apparel/' ] ],
+			[ 'link_text' => 'Shop', 'link_url' => [ 'url' => '/shop/' ] ],
 		];
 	}
 
@@ -521,10 +520,9 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 	private function get_default_support_links(): array {
 		return [
 			[ 'link_text' => 'Contact Us', 'link_url' => [ 'url' => '/contact-us/' ] ],
-			[ 'link_text' => 'Shipping', 'link_url' => [ 'url' => '/shipping/' ] ],
-			[ 'link_text' => 'Returns Policy', 'link_url' => [ 'url' => '/returns-policy/' ] ],
-			[ 'link_text' => 'Privacy Policy', 'link_url' => [ 'url' => '/privacy-policy/' ] ],
 			[ 'link_text' => 'FAQ', 'link_url' => [ 'url' => '/faq/' ] ],
+			[ 'link_text' => 'Shipping', 'link_url' => [ 'url' => '/shipping/' ] ],
+			[ 'link_text' => 'My Account', 'link_url' => [ 'url' => '/my-account/' ] ],
 		];
 	}
 
@@ -533,10 +531,10 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 	 */
 	private function get_default_company_links(): array {
 		return [
-			[ 'link_text' => 'Quality Guarantee', 'link_url' => [ 'url' => '/quality-guarantee/' ] ],
 			[ 'link_text' => 'Terms of Service', 'link_url' => [ 'url' => '/terms-of-service/' ] ],
-			[ 'link_text' => 'Shop', 'link_url' => [ 'url' => '/shop/' ] ],
-			[ 'link_text' => 'My Account', 'link_url' => [ 'url' => '/my-account/' ] ],
+			[ 'link_text' => 'Privacy Policy', 'link_url' => [ 'url' => '/privacy-policy/' ] ],
+			[ 'link_text' => 'Quality Guarantee', 'link_url' => [ 'url' => '/quality-guarantee/' ] ],
+			[ 'link_text' => 'Returns Policy', 'link_url' => [ 'url' => '/returns-policy/' ] ],
 		];
 	}
 
