@@ -199,7 +199,7 @@ class Rushby_Cart_Page_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Primary Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-cart-checkout-btn' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} .rushby-cart-remove-btn:hover' => 'color: {{VALUE}};',

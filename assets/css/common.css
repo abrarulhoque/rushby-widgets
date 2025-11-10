@@ -2,6 +2,15 @@
  * Shared Rushby Elementor styles
  */
 
+:root {
+	--rushby-accent: #556b2f;
+	--rushby-accent-dark: #445024;
+	--rushby-accent-light: #e4ecd1;
+	--rushby-accent-soft: #cad89b;
+	--rushby-accent-muted: rgba(85, 107, 47, 0.12);
+	--rushby-accent-contrast: #ffffff;
+}
+
 @keyframes fadeInUp {
 	from {
 		opacity: 0;

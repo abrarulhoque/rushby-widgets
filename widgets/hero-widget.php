@@ -621,7 +621,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Background Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#FEE2E2',
+				'default' => '#e4ecd1',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-badge' => 'background-color: {{VALUE}}',
 				],
@@ -633,7 +633,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Text Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#B91C1C',
+				'default' => '#445024',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-badge' => 'color: {{VALUE}}',
 				],
@@ -645,7 +645,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Border Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#FECACA',
+				'default' => '#cad89b',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-badge' => 'border-color: {{VALUE}}',
 				],
@@ -698,7 +698,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Line 2 Color (Highlighted)', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-headline-highlight' => 'color: {{VALUE}}',
 				],
@@ -780,7 +780,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Icon Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-trust-icon' => 'color: {{VALUE}}',
 				],
@@ -821,7 +821,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Background Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-btn-primary' => 'background-color: {{VALUE}}',
 				],
@@ -845,7 +845,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Hover Background Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#B91C1C',
+				'default' => '#445024',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-btn-primary:hover' => 'background-color: {{VALUE}}',
 				],
@@ -1002,7 +1002,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Badge Background', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-product-badge' => 'background-color: {{VALUE}}',
 				],
@@ -1051,7 +1051,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Icon Background', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#FEE2E2',
+				'default' => '#e4ecd1',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-floating-card-icon' => 'background-color: {{VALUE}}',
 				],
@@ -1063,7 +1063,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Icon Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-floating-card-icon' => 'color: {{VALUE}}',
 				],

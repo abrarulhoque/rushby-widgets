@@ -278,12 +278,12 @@ class Rushby_About_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Primary Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
-					'{{WRAPPER}} .rushby-about-badge' => 'background-color: rgba(220, 38, 38, 0.1); color: {{VALUE}};',
+					'{{WRAPPER}} .rushby-about-badge' => 'background-color: rgba(85, 107, 47, 0.12); color: {{VALUE}};',
 					'{{WRAPPER}} .rushby-about-subtitle' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .rushby-about-cta-quote' => 'border-left-color: {{VALUE}};',
-					'{{WRAPPER}} .rushby-about-highlight-icon-wrapper' => 'background-color: rgba(220, 38, 38, 0.1);',
+					'{{WRAPPER}} .rushby-about-highlight-icon-wrapper' => 'background-color: rgba(85, 107, 47, 0.12);',
 					'{{WRAPPER}} .rushby-about-highlight-icon' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .rushby-about-floating-badge-icon' => 'color: {{VALUE}};',
 				],

@@ -65,7 +65,7 @@
     align-items: center;
     justify-content: center;
     padding: 0.75rem 2rem;
-    background-color: #DC2626;
+    background-color: var(--rushby-accent);
     color: #ffffff;
     border-radius: 0.375rem;
     font-weight: 600;
@@ -74,7 +74,7 @@
 }
 
 .rushby-cart-continue-btn:hover {
-    background-color: #B91C1C;
+    background-color: var(--rushby-accent-dark);
 }
 
 /* Cart Content */
@@ -203,7 +203,7 @@
 }
 
 .rushby-cart-item-name a:hover {
-    color: #DC2626;
+    color: var(--rushby-accent);
 }
 
 .rushby-cart-item-variant {
@@ -282,7 +282,7 @@
 }
 
 .rushby-cart-remove-btn:hover {
-    color: #DC2626;
+    color: var(--rushby-accent);
 }
 
 .rushby-cart-remove-btn svg,
@@ -359,7 +359,7 @@
 
 .rushby-cart-coupon-input:focus {
     outline: none;
-    border-color: #DC2626;
+    border-color: var(--rushby-accent);
 }
 
 .rushby-cart-coupon-btn {
@@ -449,7 +449,7 @@
     gap: 0.5rem;
     width: 100%;
     padding: 0.875rem 1.5rem;
-    background-color: #DC2626;
+    background-color: var(--rushby-accent);
     color: #ffffff;
     border: none;
     border-radius: 0.375rem;
@@ -461,7 +461,7 @@
 }
 
 .rushby-cart-checkout-btn:hover {
-    background-color: #B91C1C;
+    background-color: var(--rushby-accent-dark);
 }
 
 .rushby-cart-checkout-btn svg {

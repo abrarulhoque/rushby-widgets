@@ -171,7 +171,7 @@
 	position: absolute;
 	top: -0.5rem;
 	right: -0.5rem;
-	background-color: #DC2626;
+	background-color: var(--rushby-accent);
 	color: #FFFFFF;
 	font-size: 0.75rem;
 	font-weight: 700;
@@ -235,8 +235,8 @@
 
 .rushby-search-input:focus {
 	outline: none;
-	border-color: #DC2626;
-	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+	border-color: var(--rushby-accent);
+	box-shadow: 0 0 0 3px var(--rushby-accent-muted);
 }
 
 .rushby-search-input::placeholder {
@@ -472,7 +472,7 @@
 }
 
 .rushby-side-cart-item-name a:hover {
-	color: #DC2626;
+	color: var(--rushby-accent);
 }
 
 .rushby-side-cart-item-variant {
@@ -548,7 +548,7 @@
 }
 
 .rushby-side-cart-item-remove:hover {
-	color: #DC2626;
+	color: var(--rushby-accent);
 }
 
 .rushby-side-cart-item-remove svg {

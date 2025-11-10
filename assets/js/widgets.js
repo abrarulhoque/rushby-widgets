@@ -439,7 +439,12 @@
 	 * Select Currency from Header Dropdown
 	 * Integrates with Currency Converter for WooCommerce plugin
 	 */
-	window.rushbySelectHeaderCurrency = function (button) {
+	window.rushbySelectHeaderCurrency = function (button, event) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
 		const currencyCode = button.getAttribute('data-currencycode');
 		if (!currencyCode) return;
 
@@ -1237,4 +1242,3 @@
 		initCartPage();
 	});
 })(jQuery);
-
