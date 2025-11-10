@@ -538,7 +538,7 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Cart Badge Background', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-cart-badge' => 'background-color: {{VALUE}}',
 				],
@@ -628,6 +628,98 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
+	 * Ensure Currency Converter scripts/data are available even without the widget block.
+	 *
+	 * @param array $currency_codes Currency codes configured in the widget.
+	 */
+	private function ensure_currency_converter_ready( array $currency_codes ): void {
+		if ( empty( $currency_codes ) || ! class_exists( 'WC_Currency_Converter' ) ) {
+			return;
+		}
+
+		if ( ! defined( 'WC_CURRENCY_CONVERTER_VERSION' ) || ! defined( 'WC_CURRENCY_CONVERTER_FILE' ) ) {
+			return;
+		}
+
+		$converter_instance = WC_Currency_Converter::instance();
+		$suffix             = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+		if ( ! wp_style_is( 'currency_converter_styles', 'enqueued' ) ) {
+			wp_enqueue_style(
+				'currency_converter_styles',
+				plugins_url( '/assets/css/converter.css', WC_CURRENCY_CONVERTER_FILE ),
+				[],
+				WC_CURRENCY_CONVERTER_VERSION
+			);
+		}
+
+		wp_enqueue_script( 'jquery-cookie' );
+
+		if ( ! wp_script_is( 'moneyjs', 'registered' ) ) {
+			wp_register_script(
+				'moneyjs',
+				plugins_url( '/assets/js/money' . $suffix . '.js', WC_CURRENCY_CONVERTER_FILE ),
+				[],
+				'0.2.0',
+				true
+			);
+		}
+
+		if ( ! wp_script_is( 'wc_currency_converter_inline', 'registered' ) ) {
+			wp_register_script(
+				'wc_currency_converter_inline',
+				plugins_url( '/assets/js/conversion_inline' . $suffix . '.js', WC_CURRENCY_CONVERTER_FILE ),
+				[ 'jquery' ],
+				WC_CURRENCY_CONVERTER_VERSION,
+				true
+			);
+		}
+
+		if ( ! wp_script_is( 'wc_currency_converter', 'registered' ) ) {
+			wp_register_script(
+				'wc_currency_converter',
+				plugins_url( '/assets/js/conversion' . $suffix . '.js', WC_CURRENCY_CONVERTER_FILE ),
+				[
+					'jquery',
+					'moneyjs',
+					'accounting',
+					'jquery-cookie',
+					'wc_currency_converter_inline',
+				],
+				WC_CURRENCY_CONVERTER_VERSION,
+				true
+			);
+		}
+
+		wp_enqueue_script( 'wc_currency_converter_inline' );
+		wp_enqueue_script( 'wc_currency_converter' );
+
+		$script_manager       = wp_scripts();
+		$inline_localization  = $script_manager ? $script_manager->get_data( 'wc_currency_converter_inline', 'data' ) : '';
+		$needs_inline_params  = empty( $inline_localization ) || strpos( (string) $inline_localization, 'wc_currency_converter_inline_params' ) === false;
+
+		if ( $needs_inline_params && $converter_instance && method_exists( $converter_instance, 'get_converter_form' ) ) {
+			$form_settings = [
+				'currency_codes'   => implode( ',', $currency_codes ),
+				'message'          => '',
+				'show_symbols'     => '0',
+				'show_reset'       => '0',
+				'currency_display' => '',
+				'disable_location' => '0',
+			];
+
+			// Prime the converter so localization runs even if the widget is hidden.
+			$converter_instance->get_converter_form( $form_settings, false );
+		}
+
+		if ( $converter_instance && method_exists( $converter_instance, 'localize_script' ) ) {
+			if ( ! has_action( 'wp_print_footer_scripts', [ $converter_instance, 'localize_script' ] ) ) {
+				add_action( 'wp_print_footer_scripts', [ $converter_instance, 'localize_script' ], 5 );
+			}
+		}
+	}
+
+	/**
 	 * Render widget output on the frontend.
 	 *
 	 * @since 1.0.0
@@ -698,6 +790,8 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 								$currency_codes = [ 'USD', 'EUR', 'GBP' ];
 							}
 
+							$this->ensure_currency_converter_ready( $currency_codes );
+
 							// Get current currency
 							$current_currency = get_woocommerce_currency();
 							if ( ! empty( $_COOKIE['woocommerce_current_currency'] ) ) {
@@ -714,8 +808,8 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 							wp_enqueue_script( 'wc_currency_converter' );
 							wp_enqueue_script( 'wc_currency_converter_inline' );
 							?>
-							<div class="rushby-header-currency-switcher rushby-currency-hide-mobile">
-								<button class="rushby-currency-switcher-button" onclick="rushbyToggleHeaderCurrency(this)" aria-label="<?php esc_attr_e( 'Select currency', 'rushby-elementor-widgets' ); ?>">
+								<div class="rushby-header-currency-switcher rushby-currency-hide-mobile">
+									<button type="button" class="rushby-currency-switcher-button" onclick="rushbyToggleHeaderCurrency(this)" aria-label="<?php esc_attr_e( 'Select currency', 'rushby-elementor-widgets' ); ?>">
 									<span class="rushby-currency-flag-desktop"><?php echo esc_html( $current_flag ); ?></span>
 									<span class="rushby-currency-code-text"><?php echo esc_html( $current_currency ); ?></span>
 									<svg class="rushby-currency-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -723,26 +817,38 @@ class Rushby_Header_Widget extends \Elementor\Widget_Base {
 									</svg>
 								</button>
 								<div class="rushby-currency-dropdown" style="display: none;">
-									<?php foreach ( $currency_codes as $currency ) : ?>
-										<?php
-										$is_active = $current_currency === $currency;
-										$currency_name = function_exists( 'get_woocommerce_currencies' ) ? get_woocommerce_currencies()[ $currency ] ?? $currency : $currency;
-										$currency_flag = $currency_flags[ $currency ] ?? '💱';
-										$currency_symbol = get_woocommerce_currency_symbol( $currency );
-										?>
-										<button
-											class="rushby-currency-dropdown-item <?php echo $is_active ? 'active' : ''; ?>"
-											data-currencycode="<?php echo esc_attr( $currency ); ?>"
-											onclick="rushbySelectHeaderCurrency(this)"
-										>
-											<span class="rushby-currency-dropdown-flag"><?php echo esc_html( $currency_flag ); ?></span>
-											<div class="rushby-currency-dropdown-details">
-												<div class="rushby-currency-dropdown-code"><?php echo esc_html( $currency ); ?></div>
-												<div class="rushby-currency-dropdown-name"><?php echo esc_html( $currency_name ); ?></div>
-											</div>
-											<span class="rushby-currency-dropdown-symbol"><?php echo esc_html( $currency_symbol ); ?></span>
-										</button>
-									<?php endforeach; ?>
+									<!-- Currency List -->
+									<div class="rushby-currency-list">
+										<?php foreach ( $currency_codes as $currency ) : ?>
+											<?php
+											$is_active = $current_currency === $currency;
+											$currency_name = function_exists( 'get_woocommerce_currencies' ) ? get_woocommerce_currencies()[ $currency ] ?? $currency : $currency;
+											$currency_flag = $currency_flags[ $currency ] ?? '💱';
+											$currency_symbol = get_woocommerce_currency_symbol( $currency );
+											?>
+												<button type="button"
+													class="rushby-currency-dropdown-item <?php echo $is_active ? 'active' : ''; ?>"
+													data-currencycode="<?php echo esc_attr( $currency ); ?>"
+													onclick="rushbySelectHeaderCurrency(this, event)"
+												>
+												<span class="rushby-currency-dropdown-flag"><?php echo esc_html( $currency_flag ); ?></span>
+												<div class="rushby-currency-dropdown-details">
+													<div class="rushby-currency-dropdown-code"><?php echo esc_html( $currency ); ?></div>
+													<div class="rushby-currency-dropdown-name"><?php echo esc_html( $currency_name ); ?></div>
+												</div>
+												<span class="rushby-currency-dropdown-symbol"><?php echo esc_html( $currency_symbol ); ?></span>
+											</button>
+										<?php endforeach; ?>
+									</div>
+
+									<!-- Disclaimer -->
+									<div class="rushby-currency-disclaimer">
+										<p class="rushby-currency-disclaimer-text">
+											<span class="rushby-currency-disclaimer-italic"><?php esc_html_e( 'These conversions are estimates.', 'rushby-elementor-widgets' ); ?></span>
+											<br />
+											<span class="rushby-currency-disclaimer-bold"><?php esc_html_e( 'All payments are collected in ZAR', 'rushby-elementor-widgets' ); ?></span>
+										</p>
+									</div>
 								</div>
 							</div>
 						<?php endif; ?>

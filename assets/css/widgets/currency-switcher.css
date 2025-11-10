@@ -39,7 +39,7 @@
 
 /* Floating Button */
 .rushby-currency-float-button {
-	background-color: #DC2626;
+	background-color: var(--rushby-accent);
 	color: #FFFFFF;
 	border-radius: 9999px;
 	width: 56px;
@@ -54,7 +54,7 @@
 }
 
 .rushby-currency-float-button:hover {
-	background-color: #B91C1C;
+	background-color: var(--rushby-accent-dark);
 	transform: scale(1.05);
 }
 
@@ -184,7 +184,7 @@
 }
 
 .rushby-currency-item.active {
-	background-color: #FEE2E2;
+	background-color: var(--rushby-accent-light);
 }
 
 .rushby-currency-item-flag {
@@ -213,7 +213,7 @@
 .rushby-currency-item-indicator {
 	width: 0.5rem;
 	height: 0.5rem;
-	background-color: #DC2626;
+	background-color: var(--rushby-accent);
 	border-radius: 9999px;
 	flex-shrink: 0;
 }
@@ -297,7 +297,7 @@
 	border: 1px solid #E5E7EB; /* border-gray-200 */
 	padding: 0.5rem 0; /* py-2 */
 	min-width: 200px; /* min-w-[200px] */
-	z-index: 60;
+	z-index: 200;
 	opacity: 0;
 	transform: translateY(-10px);
 	transition: opacity 0.2s, transform 0.2s;
@@ -366,6 +366,32 @@
 .rushby-currency-dropdown-symbol {
 	font-size: 0.875rem; /* text-sm */
 	color: #9CA3AF; /* text-gray-500 */
+}
+
+/* Disclaimer - matches React: border-t border-gray-200 bg-gray-50 px-3 py-2 */
+.rushby-currency-disclaimer {
+	border-top: 1px solid #E5E7EB; /* border-t border-gray-200 */
+	background-color: #F9FAFB; /* bg-gray-50 */
+	padding: 0.5rem 0.75rem; /* py-2 px-3 = 8px 12px */
+}
+
+/* Disclaimer text - matches React: text-[10px] text-gray-600 text-center leading-tight */
+.rushby-currency-disclaimer-text {
+	font-size: 10px; /* text-[10px] */
+	color: #4B5563; /* text-gray-600 */
+	text-align: center;
+	line-height: 1.25; /* leading-tight */
+	margin: 0;
+}
+
+/* Italic text - matches React: italic */
+.rushby-currency-disclaimer-italic {
+	font-style: italic;
+}
+
+/* Bold text - matches React: font-medium */
+.rushby-currency-disclaimer-bold {
+	font-weight: 500; /* font-medium */
 }
 
 /* ===================================

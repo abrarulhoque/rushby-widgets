@@ -226,7 +226,7 @@ class Rushby_Floating_Currency_Switcher_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Background Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#DC2626',
+				'default' => '#556b2f',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-currency-float-button' => 'background-color: {{VALUE}}',
 				],
@@ -238,7 +238,7 @@ class Rushby_Floating_Currency_Switcher_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Hover Background Color', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#B91C1C',
+				'default' => '#445024',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-currency-float-button:hover' => 'background-color: {{VALUE}}',
 				],
@@ -361,7 +361,7 @@ class Rushby_Floating_Currency_Switcher_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Active Item Background', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
-				'default' => '#FEE2E2',
+				'default' => '#e4ecd1',
 				'selectors' => [
 					'{{WRAPPER}} .rushby-currency-item.active' => 'background-color: {{VALUE}}',
 				],
@@ -492,6 +492,15 @@ class Rushby_Floating_Currency_Switcher_Widget extends \Elementor\Widget_Base {
 							<?php endif; ?>
 						</button>
 					<?php endforeach; ?>
+				</div>
+
+				<!-- Disclaimer -->
+				<div class="rushby-currency-disclaimer">
+					<p class="rushby-currency-disclaimer-text">
+						<span class="rushby-currency-disclaimer-italic"><?php esc_html_e( 'These conversions are estimates.', 'rushby-elementor-widgets' ); ?></span>
+						<br />
+						<span class="rushby-currency-disclaimer-bold"><?php esc_html_e( 'All payments are collected in ZAR', 'rushby-elementor-widgets' ); ?></span>
+					</p>
 				</div>
 			</div>
 		</div>
