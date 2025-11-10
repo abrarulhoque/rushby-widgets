@@ -43,6 +43,7 @@ function rushby_get_widget_style_files(): array {
 		'hero' => 'assets/css/widgets/hero.css',
 		'currency-switcher' => 'assets/css/widgets/currency-switcher.css',
 		'product-grid' => 'assets/css/widgets/product-grid.css',
+		'product-filter' => 'assets/css/widgets/product-filter.css',
 		'product-page' => 'assets/css/widgets/product-page.css',
 		'footer' => 'assets/css/widgets/footer.css',
 		'about' => 'assets/css/widgets/about.css',
@@ -64,6 +65,7 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/header-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/floating-currency-switcher-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-grid-widget.php' );
+	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-filter-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/product-page-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/footer-widget.php' );
 	require_once( RUSHBY_ELEMENTOR_PATH . 'widgets/about-widget.php' );
@@ -75,6 +77,7 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 	$widgets_manager->register( new \Rushby_Header_Widget() );
 	$widgets_manager->register( new \Rushby_Floating_Currency_Switcher_Widget() );
 	$widgets_manager->register( new \Rushby_Product_Grid_Widget() );
+	$widgets_manager->register( new \Rushby_Product_Filter_Widget() );
 	$widgets_manager->register( new \Rushby_Product_Page_Widget() );
 	$widgets_manager->register( new \Rushby_Footer_Widget() );
 	$widgets_manager->register( new \Rushby_About_Widget() );
@@ -369,6 +372,184 @@ function rushby_remove_coupon() {
 }
 add_action( 'wp_ajax_rushby_remove_coupon', 'rushby_remove_coupon' );
 add_action( 'wp_ajax_nopriv_rushby_remove_coupon', 'rushby_remove_coupon' );
+
+/**
+ * AJAX handler to filter products by category
+ */
+function rushby_filter_products() {
+	check_ajax_referer( 'rushby_cart_nonce', 'nonce' );
+
+	if ( ! isset( $_POST['category'] ) || ! isset( $_POST['widget_settings'] ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid parameters' ) );
+	}
+
+	$category = sanitize_text_field( $_POST['category'] );
+	$widget_settings = json_decode( stripslashes( $_POST['widget_settings'] ), true );
+
+	if ( ! $widget_settings ) {
+		wp_send_json_error( array( 'message' => 'Invalid widget settings' ) );
+	}
+
+	// Build query args
+	$args = [
+		'post_type' => 'product',
+		'posts_per_page' => $widget_settings['products_per_page'] ?? 12,
+		'post_status' => 'publish',
+		'orderby' => $widget_settings['orderby'] ?? 'date',
+		'order' => $widget_settings['order'] ?? 'DESC',
+	];
+
+	// Add category filter if not "all"
+	if ( 'all' !== $category ) {
+		$args['tax_query'] = [
+			[
+				'taxonomy' => 'product_cat',
+				'field' => 'term_id',
+				'terms' => absint( $category ),
+			],
+		];
+	}
+
+	// Handle orderby special cases
+	if ( 'price' === $widget_settings['orderby'] ) {
+		$args['meta_key'] = '_price';
+		$args['orderby'] = 'meta_value_num';
+	} elseif ( 'popularity' === $widget_settings['orderby'] ) {
+		$args['meta_key'] = 'total_sales';
+		$args['orderby'] = 'meta_value_num';
+	} elseif ( 'rating' === $widget_settings['orderby'] ) {
+		$args['meta_key'] = '_wc_average_rating';
+		$args['orderby'] = 'meta_value_num';
+	}
+
+	$products_query = new WP_Query( $args );
+
+	if ( ! $products_query->have_posts() ) {
+		ob_start();
+		echo '<div class="rushby-no-products"><p>' . esc_html__( 'No products found in this category.', 'rushby-elementor-widgets' ) . '</p></div>';
+		$html = ob_get_clean();
+		wp_send_json_success( array(
+			'html' => $html,
+			'count' => 0,
+		) );
+	}
+
+	// Generate products HTML
+	ob_start();
+	while ( $products_query->have_posts() ) {
+		$products_query->the_post();
+		global $product;
+
+		// Include the product card template
+		rushby_render_product_card( $product, $widget_settings );
+	}
+	wp_reset_postdata();
+
+	$html = ob_get_clean();
+
+	wp_send_json_success( array(
+		'html' => $html,
+		'count' => $products_query->found_posts,
+	) );
+}
+add_action( 'wp_ajax_rushby_filter_products', 'rushby_filter_products' );
+add_action( 'wp_ajax_nopriv_rushby_filter_products', 'rushby_filter_products' );
+
+/**
+ * Render product card HTML (used by AJAX and widget render)
+ */
+function rushby_render_product_card( $product, $settings ) {
+	if ( ! $product ) {
+		return;
+	}
+
+	$product_id = $product->get_id();
+	$product_link = get_permalink( $product_id );
+	$product_title = $product->get_name();
+	$product_price = $product->get_price_html();
+	$product_image_id = $product->get_image_id();
+	$product_image_url = wp_get_attachment_image_url( $product_image_id, 'medium' );
+
+	// Get categories
+	$categories = get_the_terms( $product_id, 'product_cat' );
+	$category_name = '';
+	if ( $categories && ! is_wp_error( $categories ) ) {
+		$category = array_shift( $categories );
+		$category_name = $category->name;
+	}
+
+	// Get rating
+	$rating_count = $product->get_rating_count();
+	$average_rating = $product->get_average_rating();
+
+	// Get badge
+	$badge_text = '';
+	if ( $product->is_on_sale() ) {
+		$badge_text = esc_html__( 'Sale', 'rushby-elementor-widgets' );
+	} elseif ( $product->is_featured() ) {
+		$badge_text = esc_html__( 'Featured', 'rushby-elementor-widgets' );
+	}
+
+	$image_ratio = $settings['image_ratio'] ?? '1-1';
+	?>
+	<div class="rushby-product-card" data-product-id="<?php echo esc_attr( $product_id ); ?>">
+		<!-- Product Image -->
+		<div class="rushby-product-image-wrapper ratio-<?php echo esc_attr( $image_ratio ); ?>">
+			<a href="<?php echo esc_url( $product_link ); ?>" class="rushby-product-image-link">
+				<?php if ( $product_image_url ) : ?>
+					<img src="<?php echo esc_url( $product_image_url ); ?>" alt="<?php echo esc_attr( $product_title ); ?>" loading="lazy">
+				<?php else : ?>
+					<img src="<?php echo esc_url( wc_placeholder_img_src() ); ?>" alt="<?php echo esc_attr( $product_title ); ?>" loading="lazy">
+				<?php endif; ?>
+			</a>
+
+			<?php if ( ! empty( $badge_text ) ) : ?>
+				<div class="rushby-product-badge-wrapper">
+					<span class="rushby-product-badge"><?php echo esc_html( $badge_text ); ?></span>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		<!-- Product Info -->
+		<div class="rushby-product-info">
+			<!-- Meta -->
+			<div class="rushby-product-meta">
+				<?php if ( ! empty( $category_name ) ) : ?>
+					<span class="rushby-product-category"><?php echo esc_html( $category_name ); ?></span>
+				<?php endif; ?>
+
+				<?php if ( $rating_count > 0 ) : ?>
+					<div class="rushby-product-rating">
+						<svg class="star" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+						</svg>
+						<span class="rating-value"><?php echo esc_html( number_format( $average_rating, 1 ) ); ?></span>
+					</div>
+				<?php endif; ?>
+			</div>
+
+			<!-- Title -->
+			<h3 class="rushby-product-title">
+				<a href="<?php echo esc_url( $product_link ); ?>"><?php echo esc_html( $product_title ); ?></a>
+			</h3>
+
+			<!-- Price & Add to Cart -->
+			<div class="rushby-product-price-cart">
+				<div class="rushby-product-price-wrapper">
+					<div class="rushby-product-price"><?php echo wp_kses_post( $product_price ); ?></div>
+				</div>
+
+				<button class="rushby-product-add-to-cart" data-product-id="<?php echo esc_attr( $product_id ); ?>" data-product-type="<?php echo esc_attr( $product->get_type() ); ?>">
+					<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+					</svg>
+					<span><?php esc_html_e( 'Add to Cart', 'rushby-elementor-widgets' ); ?></span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<?php
+}
 
 /**
  * Get cart fragments for AJAX updates

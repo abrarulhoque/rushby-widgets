@@ -1298,3 +1298,153 @@
 		initProductPage();
 	});
 })(jQuery);
+
+/**
+ * ========================================
+ * Product Filter Widget JavaScript
+ * ========================================
+ */
+
+(function ($) {
+	'use strict';
+
+	/**
+	 * Initialize Product Filter functionality
+	 */
+	function initProductFilter() {
+		// Filter button click
+		$(document).on('click', '.rushby-filter-button', function () {
+			const $button = $(this);
+			const $filterContainer = $button.closest('.rushby-filter-buttons');
+			const targetGridId = $filterContainer.data('target-grid');
+			const category = $button.data('category');
+
+			// Don't filter if already active
+			if ($button.hasClass('active')) {
+				return;
+			}
+
+			// Update active state
+			$filterContainer.find('.rushby-filter-button').removeClass('active');
+			$button.addClass('active');
+
+			// Find target grid
+			const $targetGrid = $('#' + targetGridId);
+			if ($targetGrid.length === 0) {
+				console.error('Target grid not found:', targetGridId);
+				return;
+			}
+
+			// Get widget settings from data attribute
+			const widgetSettings = $targetGrid.data('widget-settings');
+			if (!widgetSettings) {
+				console.error('Widget settings not found on target grid');
+				return;
+			}
+
+			// Filter products
+			filterProducts(category, widgetSettings, $targetGrid);
+		});
+	}
+
+	/**
+	 * Filter products via AJAX
+	 */
+	function filterProducts(category, widgetSettings, $targetGrid) {
+		// Add loading state
+		$targetGrid.addClass('filtering');
+		const $productGrid = $targetGrid.find('.rushby-product-grid');
+
+		// Disable all filter buttons during request
+		$('.rushby-filter-button').prop('disabled', true);
+
+		$.ajax({
+			url: rushby_cart_ajax.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'rushby_filter_products',
+				nonce: rushby_cart_ajax.nonce,
+				category: category,
+				widget_settings: JSON.stringify(widgetSettings),
+			},
+			success: function (response) {
+				if (response.success && response.data.html) {
+					// Fade out old products
+					$productGrid.fadeOut(200, function () {
+						// Replace with new products
+						$productGrid.html(response.data.html);
+
+						// Fade in new products
+						$productGrid.fadeIn(200);
+
+						// Re-attach event listeners for new products
+						if (typeof initProductGrid === 'function') {
+							initProductGrid();
+						}
+					});
+				} else {
+					console.error('Filter failed:', response.data?.message || 'Unknown error');
+					showFilterNotice('Failed to filter products', 'error');
+				}
+			},
+			error: function (xhr, status, error) {
+				console.error('AJAX error:', status, error);
+				showFilterNotice('Error filtering products', 'error');
+			},
+			complete: function () {
+				// Remove loading state
+				$targetGrid.removeClass('filtering');
+
+				// Re-enable filter buttons
+				$('.rushby-filter-button').prop('disabled', false);
+			},
+		});
+	}
+
+	/**
+	 * Show filter notification
+	 */
+	function showFilterNotice(message, type) {
+		// Remove existing notice
+		$('.rushby-filter-notice').remove();
+
+		// Create notice
+		const bgColor = type === 'success' ? '#10B981' : '#EF4444';
+		const icon =
+			type === 'success'
+				? '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
+				: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+
+		const $notice = $(
+			'<div class="rushby-filter-notice" style="position:fixed;bottom:2rem;right:2rem;background-color:' +
+				bgColor +
+				';color:#fff;padding:1rem 1.5rem;border-radius:0.5rem;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem;z-index:9999;">' +
+				'<div style="width:1.5rem;height:1.5rem;">' +
+				icon +
+				'</div>' +
+				'<span>' +
+				message +
+				'</span>' +
+				'</div>'
+		);
+
+		$('body').append($notice);
+
+		// Hide after 3 seconds
+		setTimeout(function () {
+			$notice.fadeOut(300, function () {
+				$(this).remove();
+			});
+		}, 3000);
+	}
+
+	// Initialize on document ready
+	$(document).ready(function () {
+		initProductFilter();
+	});
+
+	// Re-initialize on Elementor preview load
+	$(window).on('elementor/frontend/init', function () {
+		initProductFilter();
+	});
+})(jQuery);

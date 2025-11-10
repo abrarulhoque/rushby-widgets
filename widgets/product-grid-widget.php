@@ -682,8 +682,16 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 		}
 
 		$image_ratio_class = 'ratio-' . $settings['image_ratio'];
+
+		// Prepare settings for filter widget integration
+		$widget_settings_json = wp_json_encode( [
+			'products_per_page' => $settings['products_per_page'],
+			'orderby' => $settings['orderby'],
+			'order' => $settings['order'],
+			'image_ratio' => $settings['image_ratio'],
+		] );
 		?>
-		<section class="rushby-product-grid-section">
+		<section class="rushby-product-grid-section" id="rushby-product-grid" data-widget-settings="<?php echo esc_attr( $widget_settings_json ); ?>">
 			<div class="rushby-product-grid-container">
 			<?php if ( 'yes' === $settings['show_header'] ) : ?>
 				<!-- Section Header -->

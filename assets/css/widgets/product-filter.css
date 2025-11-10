@@ -1,0 +1,143 @@
+/* ============================================
+   Product Filter Widget
+   ============================================ */
+
+.rushby-product-filter-container {
+	margin-bottom: 2rem;
+}
+
+/* Filter Buttons Container */
+.rushby-filter-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: center;
+}
+
+.rushby-filter-buttons.layout-vertical {
+	flex-direction: column;
+	align-items: stretch;
+}
+
+/* Filter Button Base Styles */
+.rushby-filter-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.375rem;
+	padding: 0.625rem 1.25rem;
+	background-color: #FFFFFF;
+	border: 2px solid #E5E7EB;
+	color: #374151;
+	font-size: 0.875rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}
+
+/* Button Style Variations */
+.button-style-pill .rushby-filter-button {
+	border-radius: 9999px;
+}
+
+.button-style-rounded .rushby-filter-button {
+	border-radius: 0.375rem;
+}
+
+.button-style-square .rushby-filter-button {
+	border-radius: 0;
+}
+
+/* Button States */
+.rushby-filter-button:hover {
+	border-color: var(--rushby-accent);
+	color: var(--rushby-accent);
+	background-color: var(--rushby-accent-light);
+}
+
+.rushby-filter-button.active {
+	background-color: var(--rushby-accent);
+	border-color: var(--rushby-accent);
+	color: #FFFFFF;
+}
+
+.rushby-filter-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Filter Label and Count */
+.rushby-filter-label {
+	font-weight: 500;
+}
+
+.rushby-filter-count {
+	font-size: 0.75rem;
+	opacity: 0.8;
+}
+
+/* Loading Indicator */
+.rushby-filter-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	margin-top: 1rem;
+}
+
+.rushby-filter-spinner {
+	width: 2rem;
+	height: 2rem;
+	border: 3px solid #E5E7EB;
+	border-top-color: var(--rushby-accent);
+	border-radius: 50%;
+	animation: rushby-spin 0.8s linear infinite;
+}
+
+/* Vertical Layout Specific */
+.layout-vertical .rushby-filter-button {
+	width: 100%;
+	justify-content: space-between;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+	.rushby-filter-buttons {
+		gap: 0.5rem;
+	}
+
+	.rushby-filter-button {
+		padding: 0.5rem 1rem;
+		font-size: 0.8125rem;
+	}
+}
+
+/* Integration with Product Grid */
+.rushby-product-grid-section.filtering {
+	opacity: 0.6;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+}
+
+.rushby-product-grid-section.filtering::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 3rem;
+	height: 3rem;
+	border: 4px solid #E5E7EB;
+	border-top-color: var(--rushby-accent);
+	border-radius: 50%;
+	animation: rushby-spin 0.8s linear infinite;
+	z-index: 10;
+}
+
+/* Animation already defined in common.css but adding here as fallback */
+@keyframes rushby-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
