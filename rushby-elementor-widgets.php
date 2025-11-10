@@ -456,9 +456,9 @@ add_action( 'wp_ajax_rushby_filter_products', 'rushby_filter_products' );
 add_action( 'wp_ajax_nopriv_rushby_filter_products', 'rushby_filter_products' );
 
 /**
- * Get product badge text
+ * Helper: Get product badge text
  */
-function rushby_get_product_badge( $product ) {
+function rushby_helper_get_badge( $product ) {
 	if ( $product->is_on_sale() ) {
 		return esc_html__( 'Sale', 'rushby-elementor-widgets' );
 	}
@@ -488,9 +488,9 @@ function rushby_get_product_badge( $product ) {
 }
 
 /**
- * Get product variations for variable products
+ * Helper: Get product variations for variable products
  */
-function rushby_get_product_variations( $product ) {
+function rushby_helper_get_variations( $product ) {
 	if ( ! $product->is_type( 'variable' ) ) {
 		return [];
 	}
@@ -530,8 +530,8 @@ function rushby_render_product_card( $product, $settings ) {
 	}
 
 	$product_id = $product->get_id();
-	$product_badge = rushby_get_product_badge( $product );
-	$product_variations = rushby_get_product_variations( $product );
+	$product_badge = rushby_helper_get_badge( $product );
+	$product_variations = rushby_helper_get_variations( $product );
 	$image_ratio = $settings['image_ratio'] ?? '1-1';
 	$image_ratio_class = 'ratio-' . $image_ratio;
 	?>
