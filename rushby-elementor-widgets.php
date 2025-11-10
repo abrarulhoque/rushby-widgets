@@ -110,6 +110,15 @@ add_action( 'elementor/frontend/before_register_styles', 'rushby_register_widget
 add_action( 'elementor/editor/before_enqueue_styles', 'rushby_register_widget_styles' );
 
 /**
+ * Enqueue common.css sitewide on frontend for global typography and styles.
+ * This ensures typography applies to all pages, not just those with Rushby widgets.
+ */
+function rushby_enqueue_common_styles() {
+	wp_enqueue_style( 'rushby-widgets-common' );
+}
+add_action( 'wp_enqueue_scripts', 'rushby_enqueue_common_styles' );
+
+/**
  * Ensure Elementor editor previews have access to all widget styles.
  */
 function rushby_elementor_editor_styles() {

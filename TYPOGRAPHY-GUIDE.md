@@ -69,14 +69,21 @@ This guide explains how to apply consistent typography across your entire WordPr
 
 ## How to Apply Sitewide
 
-### Method 1: Already Active (Plugin CSS)
-The typography is now automatically applied to all WordPress pages because it's in `common.css` which loads sitewide.
+### Method 1: Already Active (Plugin CSS) ✅
+The typography is **automatically applied to ALL WordPress pages** because `common.css` is enqueued sitewide via the `wp_enqueue_scripts` hook. This works even on pages without any Rushby widgets.
 
 **What's already styled:**
 - All `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>` tags
 - All `<p>` tags (paragraphs)
 - All `<a>` tags (links)
 - All `<strong>` and `<b>` tags
+
+**Works on all page types:**
+- Elementor pages (with or without Rushby widgets)
+- WooCommerce pages (products, cart, checkout)
+- Contact Us and other standard pages
+- Blog posts and archives
+- Custom post types
 
 ### Method 2: Add to Contact Page (Elementor)
 
