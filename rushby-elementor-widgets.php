@@ -630,7 +630,6 @@ function rushby_render_product_card( $product, $settings ) {
 			<div class="rushby-product-price-cart">
 				<div class="rushby-product-price-wrapper">
 					<span class="rushby-product-price"><?php echo $product->get_price_html(); ?></span>
-					<p class="rushby-product-tax-note"><?php esc_html_e( 'Inclusive of Tax', 'rushby-elementor-widgets' ); ?></p>
 				</div>
 				<button
 					class="rushby-product-add-to-cart"
