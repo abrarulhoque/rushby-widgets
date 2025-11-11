@@ -449,11 +449,24 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			"show_column_{$column_num}",
+			[
+				'label' => esc_html__( 'Show This Column', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default' => 'yes',
+			]
+		);
+
+		$this->add_control(
 			"column_{$column_num}_title",
 			[
 				'label' => esc_html__( 'Column Title', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => $default_title,
+				'condition' => [
+					"show_column_{$column_num}" => 'yes',
+				],
 			]
 		);
 
@@ -484,6 +497,9 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 				'fields' => $repeater->get_controls(),
 				'default' => $default_links,
 				'title_field' => '{{{ link_text }}}',
+				'condition' => [
+					"show_column_{$column_num}" => 'yes',
+				],
 			]
 		);
 
@@ -635,7 +651,17 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 			<!-- Main Footer Content -->
 			<div class="rushby-footer-main">
 				<div class="rushby-footer-container">
-					<div class="rushby-footer-columns">
+					<?php
+					// Count visible columns for grid layout
+					$visible_columns = 0;
+					for ( $i = 1; $i <= 4; $i++ ) {
+						if ( 'yes' === ( $settings["show_column_{$i}"] ?? 'yes' ) ) {
+							$visible_columns++;
+						}
+					}
+					$columns_class = "rushby-footer-columns-{$visible_columns}";
+					?>
+					<div class="rushby-footer-columns <?php echo esc_attr( $columns_class ); ?>">
 						<!-- Brand Column -->
 						<div class="rushby-footer-brand-column">
 							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="rushby-footer-brand-link">
@@ -676,24 +702,26 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 
 						<!-- Footer Columns 1-4 -->
 						<?php for ( $i = 1; $i <= 4; $i++ ) : ?>
-							<?php
-							$column_title = $settings["column_{$i}_title"];
-							$column_links = $settings["column_{$i}_links"];
-							?>
-							<div class="rushby-footer-link-column">
-								<h4 class="rushby-footer-heading rushby-footer-column-title">
-									<?php echo esc_html( $column_title ); ?>
-								</h4>
-								<ul class="rushby-footer-link-list">
-									<?php foreach ( $column_links as $link ) : ?>
-										<li>
-											<a href="<?php echo esc_url( $link['link_url']['url'] ?? '#' ); ?>" class="rushby-footer-link">
-												<?php echo esc_html( $link['link_text'] ); ?>
-											</a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
+							<?php if ( 'yes' === ( $settings["show_column_{$i}"] ?? 'yes' ) ) : ?>
+								<?php
+								$column_title = $settings["column_{$i}_title"];
+								$column_links = $settings["column_{$i}_links"];
+								?>
+								<div class="rushby-footer-link-column">
+									<h4 class="rushby-footer-heading rushby-footer-column-title">
+										<?php echo esc_html( $column_title ); ?>
+									</h4>
+									<ul class="rushby-footer-link-list">
+										<?php foreach ( $column_links as $link ) : ?>
+											<li>
+												<a href="<?php echo esc_url( $link['link_url']['url'] ?? '#' ); ?>" class="rushby-footer-link">
+													<?php echo esc_html( $link['link_text'] ); ?>
+												</a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							<?php endif; ?>
 						<?php endfor; ?>
 					</div>
 

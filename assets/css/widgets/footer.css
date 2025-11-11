@@ -133,6 +133,27 @@
     .rushby-footer-columns {
         grid-template-columns: repeat(5, 1fr);
     }
+
+    /* Dynamic column layouts based on visible columns */
+    .rushby-footer-columns-0 {
+        grid-template-columns: 1fr;
+    }
+
+    .rushby-footer-columns-1 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .rushby-footer-columns-2 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .rushby-footer-columns-3 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .rushby-footer-columns-4 {
+        grid-template-columns: repeat(5, 1fr);
+    }
 }
 
 /* Brand Column */
