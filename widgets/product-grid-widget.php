@@ -368,6 +368,19 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'stock_shipping_text',
+			[
+				'label' => esc_html__( 'In Stock Shipping Text', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => 'In Stock - Ships in 1-3 days',
+				'placeholder' => esc_html__( 'In Stock - Ships in 1-3 days', 'rushby-elementor-widgets' ),
+				'condition' => [
+					'show_stock_status' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
 			'show_quick_view',
 			[
 				'label' => esc_html__( 'Show Quick View', 'rushby-elementor-widgets' ),
@@ -695,6 +708,7 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 			'show_compatibility' => $settings['show_compatibility'],
 			'show_variations' => $settings['show_variations'],
 			'show_stock_status' => $settings['show_stock_status'],
+			'stock_shipping_text' => $settings['stock_shipping_text'],
 			'show_quick_view' => $settings['show_quick_view'],
 		] );
 		?>
@@ -846,7 +860,7 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 									<?php if ( $product->is_in_stock() ) : ?>
 										<div class="rushby-stock-indicator in-stock"></div>
 										<span class="rushby-stock-text">
-											<?php esc_html_e( 'In Stock - Ships in 2-3 days', 'rushby-elementor-widgets' ); ?>
+											<?php echo esc_html( $settings['stock_shipping_text'] ); ?>
 										</span>
 									<?php else : ?>
 										<div class="rushby-stock-indicator out-of-stock"></div>

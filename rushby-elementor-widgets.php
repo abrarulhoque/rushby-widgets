@@ -657,7 +657,7 @@ function rushby_render_product_card( $product, $settings ) {
 					<?php if ( $product->is_in_stock() ) : ?>
 						<div class="rushby-stock-indicator in-stock"></div>
 						<span class="rushby-stock-text">
-							<?php esc_html_e( 'In Stock - Ships in 2-3 days', 'rushby-elementor-widgets' ); ?>
+							<?php echo esc_html( $settings['stock_shipping_text'] ?? 'In Stock - Ships in 1-3 days' ); ?>
 						</span>
 					<?php else : ?>
 						<div class="rushby-stock-indicator out-of-stock"></div>

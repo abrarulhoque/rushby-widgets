@@ -166,6 +166,19 @@ class Rushby_Product_Page_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'stock_shipping_text',
+			[
+				'label' => esc_html__( 'In Stock Shipping Text', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => 'In Stock - Ships in 1-3 days',
+				'placeholder' => esc_html__( 'In Stock - Ships in 1-3 days', 'rushby-elementor-widgets' ),
+				'condition' => [
+					'show_stock_status' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
 			'show_trust_badges',
 			[
 				'label' => esc_html__( 'Show Trust Badges', 'rushby-elementor-widgets' ),
@@ -510,7 +523,7 @@ class Rushby_Product_Page_Widget extends \Elementor\Widget_Base {
 							<span class="rushby-stock-indicator"></span>
 							<?php
 							if ( $product->is_in_stock() ) {
-								esc_html_e( 'In Stock - Ships in 2-3 days', 'rushby-elementor-widgets' );
+								echo esc_html( $settings['stock_shipping_text'] );
 							} else {
 								esc_html_e( 'Out of Stock', 'rushby-elementor-widgets' );
 							}
