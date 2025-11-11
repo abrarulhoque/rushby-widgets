@@ -564,7 +564,7 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			[
 				'label' => esc_html__( 'Badge Text', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => 'BEST SELLER',
+				'default' => 'FEATURED',
 				'placeholder' => esc_html__( 'Leave empty for auto (Sale/Featured/New)', 'rushby-elementor-widgets' ),
 				'description' => esc_html__( 'Custom badge text. Leave empty to auto-detect (Sale/Featured/New)', 'rushby-elementor-widgets' ),
 			]
@@ -1335,32 +1335,82 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 						}
 						?>
 						<!-- Main Product Card -->
-						<a href="<?php echo esc_url( $product_url ); ?>" class="rushby-product-card" style="text-decoration: none; color: inherit;">
-							<div class="rushby-product-inner">
-								<div class="rushby-product-content">
-									<div class="rushby-product-image-wrapper">
-										<?php echo $product_image; ?>
+						<div class="rushby-product-card" data-product-id="<?php echo esc_attr( $product && 'manual' !== $product_source ? $product->get_id() : '' ); ?>">
+							<!-- Product Image -->
+							<div class="rushby-product-image-wrapper ratio-1-1">
+								<a href="<?php echo esc_url( $product_url ); ?>" class="rushby-product-image-link">
+									<?php echo $product_image; ?>
+								</a>
+
+								<?php if ( ! empty( $badge_text ) ) : ?>
+									<div class="rushby-product-badge-wrapper">
+										<span class="rushby-product-badge"><?php echo esc_html( $badge_text ); ?></span>
 									</div>
-									<div class="rushby-product-info">
-										<h3 class="rushby-product-title"><?php echo esc_html( $product_title ); ?></h3>
-										<p class="rushby-product-subtitle"><?php echo esc_html( $product_subtitle ); ?></p>
-										<div class="rushby-product-rating">
-											<svg class="rushby-rating-icon" fill="currentColor" viewBox="0 0 20 20">
-												<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-											</svg>
-											<span><?php echo esc_html( $product_rating ); ?> (<?php echo esc_html( $product_review_count ); ?> reviews)</span>
-										</div>
-									</div>
-								</div>
+								<?php endif; ?>
 							</div>
 
-							<!-- Floating Badge -->
-							<?php if ( ! empty( $badge_text ) ) : ?>
-							<div class="rushby-product-badge-wrapper">
-								<div class="rushby-product-badge"><?php echo esc_html( $badge_text ); ?></div>
+							<!-- Product Info -->
+							<div class="rushby-product-info">
+								<!-- Category & Rating -->
+								<div class="rushby-product-meta">
+									<span class="rushby-product-category">
+										<?php echo esc_html( $product_subtitle ); ?>
+									</span>
+
+									<div class="rushby-product-rating">
+										<?php if ( $product_rating > 0 ) : ?>
+											<svg class="star" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+											</svg>
+											<span class="rating-value"><?php echo esc_html( number_format( $product_rating, 1 ) ); ?></span>
+											<span class="rating-count">(<?php echo esc_html( $product_review_count ); ?>)</span>
+										<?php endif; ?>
+									</div>
+								</div>
+
+								<!-- Product Name -->
+								<h3 class="rushby-product-title">
+									<a href="<?php echo esc_url( $product_url ); ?>">
+										<?php echo esc_html( $product_title ); ?>
+									</a>
+								</h3>
+
+								<?php if ( $product && 'manual' !== $product_source ) : ?>
+									<!-- Price & Add to Cart -->
+									<div class="rushby-product-price-cart">
+										<div class="rushby-product-price-wrapper">
+											<span class="rushby-product-price"><?php echo $product->get_price_html(); ?></span>
+										</div>
+										<button
+											class="rushby-product-add-to-cart"
+											data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
+											data-product-type="<?php echo esc_attr( $product->get_type() ); ?>">
+											<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+											</svg>
+											<span><?php esc_html_e( 'Add', 'rushby-elementor-widgets' ); ?></span>
+										</button>
+									</div>
+
+									<!-- Stock Status -->
+									<?php if ( $product->is_in_stock() ) : ?>
+										<div class="rushby-product-stock">
+											<div class="rushby-stock-indicator in-stock"></div>
+											<span class="rushby-stock-text">
+												<?php esc_html_e( 'In Stock - Ships in 1-3 days', 'rushby-elementor-widgets' ); ?>
+											</span>
+										</div>
+									<?php else : ?>
+										<div class="rushby-product-stock">
+											<div class="rushby-stock-indicator out-of-stock"></div>
+											<span class="rushby-stock-text">
+												<?php esc_html_e( 'Out of Stock', 'rushby-elementor-widgets' ); ?>
+											</span>
+										</div>
+									<?php endif; ?>
+								<?php endif; ?>
 							</div>
-							<?php endif; ?>
-						</a>
+						</div>
 
 						<!-- Floating Cards -->
 						<?php if ( $settings['show_floating_cards'] === 'yes' ) : ?>
