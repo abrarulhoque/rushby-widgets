@@ -1300,7 +1300,9 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 						// Get product data
 						if ( $product && 'manual' !== $product_source ) {
 							$product_url = $product->get_permalink();
-							$product_image = $product->get_image( 'woocommerce_thumbnail' );
+							// Use full size image for high quality display in hero section
+							$image_id = $product->get_image_id();
+							$product_image = $image_id ? wp_get_attachment_image( $image_id, 'full', false, array( 'class' => 'wp-post-image' ) ) : $product->get_image( 'full' );
 							$product_title = $product->get_name();
 							$product_rating = $product->get_average_rating();
 							$product_review_count = $product->get_review_count();
