@@ -407,6 +407,10 @@
     animation: rushby-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+.rushby-product-grid-section .rushby-stock-indicator.on-backorder {
+    background-color: #F59E0B;
+}
+
 .rushby-product-grid-section .rushby-stock-indicator.out-of-stock {
     background-color: #EF4444;
 }

@@ -857,7 +857,12 @@ class Rushby_Product_Grid_Widget extends \Elementor\Widget_Base {
 							<?php if ( 'yes' === $settings['show_stock_status'] ) : ?>
 								<!-- Stock Status -->
 								<div class="rushby-product-stock">
-									<?php if ( $product->is_in_stock() ) : ?>
+									<?php if ( $product->is_on_backorder() ) : ?>
+										<div class="rushby-stock-indicator on-backorder"></div>
+										<span class="rushby-stock-text">
+											<?php esc_html_e( 'Available on Backorder', 'rushby-elementor-widgets' ); ?>
+										</span>
+									<?php elseif ( $product->is_in_stock() ) : ?>
 										<div class="rushby-stock-indicator in-stock"></div>
 										<span class="rushby-stock-text">
 											<?php echo esc_html( $settings['stock_shipping_text'] ); ?>

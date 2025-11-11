@@ -1395,7 +1395,14 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 									</div>
 
 									<!-- Stock Status -->
-									<?php if ( $product->is_in_stock() ) : ?>
+									<?php if ( $product->is_on_backorder() ) : ?>
+										<div class="rushby-product-stock">
+											<div class="rushby-stock-indicator on-backorder"></div>
+											<span class="rushby-stock-text">
+												<?php esc_html_e( 'Available on Backorder', 'rushby-elementor-widgets' ); ?>
+											</span>
+										</div>
+									<?php elseif ( $product->is_in_stock() ) : ?>
 										<div class="rushby-product-stock">
 											<div class="rushby-stock-indicator in-stock"></div>
 											<span class="rushby-stock-text">

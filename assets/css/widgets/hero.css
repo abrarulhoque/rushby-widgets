@@ -412,6 +412,10 @@
 	background-color: #10B981;
 }
 
+.rushby-product-showcase .rushby-stock-indicator.on-backorder {
+	background-color: #F59E0B;
+}
+
 .rushby-product-showcase .rushby-stock-indicator.out-of-stock {
 	background-color: #EF4444;
 }
