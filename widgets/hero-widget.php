@@ -419,6 +419,18 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$repeater->add_control(
+			'link',
+			[
+				'label' => esc_html__( 'Link', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::URL,
+				'placeholder' => esc_html__( 'https://your-link.com', 'rushby-elementor-widgets' ),
+				'default' => [
+					'url' => '',
+				],
+			]
+		);
+
 		$this->add_control(
 			'highlights',
 			[
@@ -1255,13 +1267,28 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 					<!-- Highlights -->
 					<div class="rushby-hero-highlights">
 						<?php foreach ( $settings['highlights'] as $highlight ) : ?>
-							<div class="rushby-hero-highlight-card">
-								<div class="rushby-hero-highlight-icon-wrapper">
-									<?php \Elementor\Icons_Manager::render_icon( $highlight['icon'], [ 'aria-hidden' => 'true', 'class' => 'rushby-hero-highlight-icon' ] ); ?>
+							<?php
+							$has_link = ! empty( $highlight['link']['url'] );
+							$link_target = $has_link && ! empty( $highlight['link']['is_external'] ) ? ' target="_blank"' : '';
+							$link_nofollow = $has_link && ! empty( $highlight['link']['nofollow'] ) ? ' rel="nofollow"' : '';
+
+							if ( $has_link ) : ?>
+								<a href="<?php echo esc_url( $highlight['link']['url'] ); ?>" class="rushby-hero-highlight-card rushby-hero-highlight-card-link"<?php echo $link_target . $link_nofollow; ?>>
+									<div class="rushby-hero-highlight-icon-wrapper">
+										<?php \Elementor\Icons_Manager::render_icon( $highlight['icon'], [ 'aria-hidden' => 'true', 'class' => 'rushby-hero-highlight-icon' ] ); ?>
+									</div>
+									<h3 class="rushby-hero-highlight-title"><?php echo esc_html( $highlight['title'] ); ?></h3>
+									<p class="rushby-hero-highlight-description"><?php echo esc_html( $highlight['description'] ); ?></p>
+								</a>
+							<?php else : ?>
+								<div class="rushby-hero-highlight-card">
+									<div class="rushby-hero-highlight-icon-wrapper">
+										<?php \Elementor\Icons_Manager::render_icon( $highlight['icon'], [ 'aria-hidden' => 'true', 'class' => 'rushby-hero-highlight-icon' ] ); ?>
+									</div>
+									<h3 class="rushby-hero-highlight-title"><?php echo esc_html( $highlight['title'] ); ?></h3>
+									<p class="rushby-hero-highlight-description"><?php echo esc_html( $highlight['description'] ); ?></p>
 								</div>
-								<h3 class="rushby-hero-highlight-title"><?php echo esc_html( $highlight['title'] ); ?></h3>
-								<p class="rushby-hero-highlight-description"><?php echo esc_html( $highlight['description'] ); ?></p>
-							</div>
+							<?php endif; ?>
 						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
@@ -1318,27 +1345,36 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 		return [
 			[
 				'icon' => [
-					'value' => 'fas fa-wrench',
-					'library' => 'solid',
-				],
-				'title' => 'Precision Engineering',
-				'description' => 'Every product crafted with meticulous attention to detail',
-			],
-			[
-				'icon' => [
 					'value' => 'fas fa-globe',
 					'library' => 'solid',
 				],
-				'title' => 'Global Shipping',
+				'title' => 'Worldwide Shipping',
 				'description' => 'Delivering quality CZ accessories to shooters worldwide',
+				'link' => [
+					'url' => 'https://rushbyind.com/shipping/',
+				],
 			],
 			[
 				'icon' => [
 					'value' => 'fas fa-award',
 					'library' => 'solid',
 				],
-				'title' => 'Lifetime Warranty',
+				'title' => 'Quality Guarantee',
 				'description' => 'Standing behind every product with confidence',
+				'link' => [
+					'url' => 'https://rushbyind.com/quality-guarantee/',
+				],
+			],
+			[
+				'icon' => [
+					'value' => 'fas fa-envelope',
+					'library' => 'solid',
+				],
+				'title' => 'Contact Us',
+				'description' => 'Get in touch with our team for any inquiries',
+				'link' => [
+					'url' => 'https://rushbyind.com/contact-us/',
+				],
 			],
 		];
 	}
