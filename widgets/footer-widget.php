@@ -226,17 +226,55 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Footer Column 1
-		$this->add_footer_column_controls( 1, 'Shop', $this->get_default_shop_links() );
+		// Support Links Section
+		$this->start_controls_section(
+			'support_links_section',
+			[
+				'label' => esc_html__( 'Support Links', 'rushby-elementor-widgets' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-		// Footer Column 2
-		$this->add_footer_column_controls( 2, 'By Model', $this->get_default_model_links() );
+		$this->add_control(
+			'support_links_title',
+			[
+				'label' => esc_html__( 'Section Title', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Support', 'rushby-elementor-widgets' ),
+			]
+		);
 
-		// Footer Column 3
-		$this->add_footer_column_controls( 3, 'Support', $this->get_default_support_links() );
+		$repeater = new \Elementor\Repeater();
 
-		// Footer Column 4
-		$this->add_footer_column_controls( 4, 'Company', $this->get_default_company_links() );
+		$repeater->add_control(
+			'link_text',
+			[
+				'label' => esc_html__( 'Link Text', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Link', 'rushby-elementor-widgets' ),
+			]
+		);
+
+		$repeater->add_control(
+			'link_url',
+			[
+				'label' => esc_html__( 'Link URL', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::URL,
+			]
+		);
+
+		$this->add_control(
+			'support_links',
+			[
+				'label' => esc_html__( 'Links', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
+				'default' => $this->get_default_support_links(),
+				'title_field' => '{{{ link_text }}}',
+			]
+		);
+
+		$this->end_controls_section();
 
 		// Trust Badges Section
 		$this->start_controls_section(
@@ -437,120 +475,15 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Add footer column controls
-	 */
-	private function add_footer_column_controls( int $column_num, string $default_title, array $default_links ): void {
-		$this->start_controls_section(
-			"column_{$column_num}_section",
-			[
-				'label' => sprintf( esc_html__( 'Column %d', 'rushby-elementor-widgets' ), $column_num ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$this->add_control(
-			"show_column_{$column_num}",
-			[
-				'label' => esc_html__( 'Show This Column', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'return_value' => 'yes',
-				'default' => 'yes',
-			]
-		);
-
-		$this->add_control(
-			"column_{$column_num}_title",
-			[
-				'label' => esc_html__( 'Column Title', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => $default_title,
-				'condition' => [
-					"show_column_{$column_num}" => 'yes',
-				],
-			]
-		);
-
-		$repeater = new \Elementor\Repeater();
-
-		$repeater->add_control(
-			'link_text',
-			[
-				'label' => esc_html__( 'Link Text', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'Link', 'rushby-elementor-widgets' ),
-			]
-		);
-
-		$repeater->add_control(
-			'link_url',
-			[
-				'label' => esc_html__( 'Link URL', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::URL,
-			]
-		);
-
-		$this->add_control(
-			"column_{$column_num}_links",
-			[
-				'label' => esc_html__( 'Links', 'rushby-elementor-widgets' ),
-				'type' => \Elementor\Controls_Manager::REPEATER,
-				'fields' => $repeater->get_controls(),
-				'default' => $default_links,
-				'title_field' => '{{{ link_text }}}',
-				'condition' => [
-					"show_column_{$column_num}" => 'yes',
-				],
-			]
-		);
-
-		$this->end_controls_section();
-	}
-
-	/**
-	 * Get default shop links
-	 */
-	private function get_default_shop_links(): array {
-		return [
-			[ 'link_text' => 'CZ Triggers', 'link_url' => [ 'url' => '/product-category/cz-triggers/' ] ],
-			[ 'link_text' => 'Performance Upgrades', 'link_url' => [ 'url' => '/product-category/cz-edc-performance-upgrades/' ] ],
-			[ 'link_text' => 'Magazine Extensions', 'link_url' => [ 'url' => '/product-category/cz-magazine-extensions/' ] ],
-			[ 'link_text' => 'Apparel', 'link_url' => [ 'url' => '/product-category/apparel/' ] ],
-			[ 'link_text' => 'Shop All', 'link_url' => [ 'url' => '/shop/' ] ],
-		];
-	}
-
-	/**
-	 * Get default model links
-	 */
-	private function get_default_model_links(): array {
-		return [
-			[ 'link_text' => 'CZ P07/P09', 'link_url' => [ 'url' => '/product-category/cz-p07-p09/' ] ],
-			[ 'link_text' => 'CZ Shadow 2', 'link_url' => [ 'url' => '/product-category/cz-shadow-2/' ] ],
-			[ 'link_text' => 'Shop', 'link_url' => [ 'url' => '/shop/' ] ],
-		];
-	}
-
-	/**
 	 * Get default support links
 	 */
 	private function get_default_support_links(): array {
 		return [
-			[ 'link_text' => 'Contact Us', 'link_url' => [ 'url' => '/contact-us/' ] ],
-			[ 'link_text' => 'FAQ', 'link_url' => [ 'url' => '/faq/' ] ],
-			[ 'link_text' => 'Shipping', 'link_url' => [ 'url' => '/shipping/' ] ],
-			[ 'link_text' => 'My Account', 'link_url' => [ 'url' => '/my-account/' ] ],
-		];
-	}
-
-	/**
-	 * Get default company links
-	 */
-	private function get_default_company_links(): array {
-		return [
-			[ 'link_text' => 'Terms of Service', 'link_url' => [ 'url' => '/terms-of-service/' ] ],
-			[ 'link_text' => 'Privacy Policy', 'link_url' => [ 'url' => '/privacy-policy/' ] ],
-			[ 'link_text' => 'Quality Guarantee', 'link_url' => [ 'url' => '/quality-guarantee/' ] ],
-			[ 'link_text' => 'Returns Policy', 'link_url' => [ 'url' => '/returns-policy/' ] ],
+			[ 'link_text' => 'Contact Us', 'link_url' => [ 'url' => '/contact' ] ],
+			[ 'link_text' => 'Shipping Info', 'link_url' => [ 'url' => '/shipping' ] ],
+			[ 'link_text' => 'Returns Policy', 'link_url' => [ 'url' => '/returns' ] ],
+			[ 'link_text' => 'FAQ', 'link_url' => [ 'url' => '/faq' ] ],
+			[ 'link_text' => 'Quality Guarantee', 'link_url' => [ 'url' => '/quality' ] ],
 		];
 	}
 
@@ -651,79 +584,58 @@ class Rushby_Footer_Widget extends \Elementor\Widget_Base {
 			<!-- Main Footer Content -->
 			<div class="rushby-footer-main">
 				<div class="rushby-footer-container">
-					<?php
-					// Count visible columns for grid layout
-					$visible_columns = 0;
-					for ( $i = 1; $i <= 4; $i++ ) {
-						if ( 'yes' === ( $settings["show_column_{$i}"] ?? 'yes' ) ) {
-							$visible_columns++;
-						}
-					}
-					$columns_class = "rushby-footer-columns-{$visible_columns}";
-					?>
-					<div class="rushby-footer-columns <?php echo esc_attr( $columns_class ); ?>">
-						<!-- Brand Column -->
-						<div class="rushby-footer-brand-column">
-							<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="rushby-footer-brand-link">
-								<div class="rushby-footer-logo-wrapper">
-									<img
-										src="<?php echo esc_url( $settings['logo']['url'] ); ?>"
-										alt="<?php echo esc_attr( $settings['brand_name'] ); ?>"
-										class="rushby-footer-logo"
-									/>
-								</div>
-								<div class="rushby-footer-brand-text">
-									<div class="rushby-footer-brand-name"><?php echo esc_html( $settings['brand_name'] ); ?></div>
-									<div class="rushby-footer-brand-tagline"><?php echo esc_html( $settings['brand_tagline'] ); ?></div>
-								</div>
-							</a>
-							<p class="rushby-footer-text rushby-footer-brand-description">
-								<?php echo esc_html( $settings['brand_description'] ); ?>
-							</p>
-							<!-- Social Media -->
-							<div class="rushby-footer-social">
-								<?php if ( ! empty( $settings['facebook_url']['url'] ) ) : ?>
-									<a href="<?php echo esc_url( $settings['facebook_url']['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rushby-footer-social-link">
-										<svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-									</a>
-								<?php endif; ?>
-								<?php if ( ! empty( $settings['instagram_url']['url'] ) ) : ?>
-									<a href="<?php echo esc_url( $settings['instagram_url']['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rushby-footer-social-link">
-										<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-									</a>
-								<?php endif; ?>
-								<?php if ( ! empty( $settings['youtube_url']['url'] ) ) : ?>
-									<a href="<?php echo esc_url( $settings['youtube_url']['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rushby-footer-social-link">
-										<svg fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-									</a>
-								<?php endif; ?>
-							</div>
+				<!-- Brand & Description -->
+				<div class="rushby-footer-brand-section">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="rushby-footer-brand-link">
+						<div class="rushby-footer-logo-wrapper">
+							<img
+								src="<?php echo esc_url( $settings['logo']['url'] ); ?>"
+								alt="<?php echo esc_attr( $settings['brand_name'] ); ?>"
+								class="rushby-footer-logo"
+							/>
 						</div>
+						<div class="rushby-footer-brand-text">
+							<div class="rushby-footer-brand-name"><?php echo esc_html( $settings['brand_name'] ); ?></div>
+							<div class="rushby-footer-brand-tagline"><?php echo esc_html( $settings['brand_tagline'] ); ?></div>
+						</div>
+					</a>
+					<p class="rushby-footer-text rushby-footer-brand-description">
+						<?php echo esc_html( $settings['brand_description'] ); ?>
+					</p>
+				</div>
 
-						<!-- Footer Columns 1-4 -->
-						<?php for ( $i = 1; $i <= 4; $i++ ) : ?>
-							<?php if ( 'yes' === ( $settings["show_column_{$i}"] ?? 'yes' ) ) : ?>
-								<?php
-								$column_title = $settings["column_{$i}_title"];
-								$column_links = $settings["column_{$i}_links"];
-								?>
-								<div class="rushby-footer-link-column">
-									<h4 class="rushby-footer-heading rushby-footer-column-title">
-										<?php echo esc_html( $column_title ); ?>
-									</h4>
-									<ul class="rushby-footer-link-list">
-										<?php foreach ( $column_links as $link ) : ?>
-											<li>
-												<a href="<?php echo esc_url( $link['link_url']['url'] ?? '#' ); ?>" class="rushby-footer-link">
-													<?php echo esc_html( $link['link_text'] ); ?>
-												</a>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-								</div>
-							<?php endif; ?>
-						<?php endfor; ?>
-					</div>
+				<!-- Support Links -->
+				<div class="rushby-footer-support-section">
+					<h4 class="rushby-footer-heading rushby-footer-support-title">
+						<?php echo esc_html( $settings['support_links_title'] ); ?>
+					</h4>
+					<nav class="rushby-footer-support-nav">
+						<?php foreach ( $settings['support_links'] as $link ) : ?>
+							<a href="<?php echo esc_url( $link['link_url']['url'] ?? '#' ); ?>" class="rushby-footer-link">
+								<?php echo esc_html( $link['link_text'] ); ?>
+							</a>
+						<?php endforeach; ?>
+					</nav>
+				</div>
+
+				<!-- Social Media -->
+				<div class="rushby-footer-social">
+					<?php if ( ! empty( $settings['facebook_url']['url'] ) ) : ?>
+						<a href="<?php echo esc_url( $settings['facebook_url']['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rushby-footer-social-link">
+							<svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+						</a>
+					<?php endif; ?>
+					<?php if ( ! empty( $settings['instagram_url']['url'] ) ) : ?>
+						<a href="<?php echo esc_url( $settings['instagram_url']['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rushby-footer-social-link">
+							<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+						</a>
+					<?php endif; ?>
+					<?php if ( ! empty( $settings['youtube_url']['url'] ) ) : ?>
+						<a href="<?php echo esc_url( $settings['youtube_url']['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rushby-footer-social-link">
+							<svg fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+						</a>
+					<?php endif; ?>
+				</div>
 
 					<?php if ( 'yes' === $settings['show_trust_badges'] && ! empty( $settings['trust_badges'] ) ) : ?>
 						<!-- Trust Badges -->
