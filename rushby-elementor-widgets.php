@@ -87,6 +87,20 @@ function register_rushby_elementor_widgets( $widgets_manager ) {
 add_action( 'elementor/widgets/register', 'register_rushby_elementor_widgets' );
 
 /**
+ * Load Oswald font so Rushby typography is independent of the active theme.
+ */
+function rushby_enqueue_typography_fonts() {
+	wp_enqueue_style(
+		'rushby-google-fonts',
+		'https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap',
+		[],
+		null
+	);
+}
+add_action( 'wp_enqueue_scripts', 'rushby_enqueue_typography_fonts', 5 );
+add_action( 'elementor/editor/after_enqueue_styles', 'rushby_enqueue_typography_fonts', 5 );
+
+/**
  * Register frontend widget styles so individual widgets can enqueue on demand.
  */
 function rushby_register_widget_styles() {
@@ -654,7 +668,12 @@ function rushby_render_product_card( $product, $settings ) {
 			<?php if ( ( $settings['show_stock_status'] ?? 'yes' ) === 'yes' ) : ?>
 				<!-- Stock Status -->
 				<div class="rushby-product-stock">
-					<?php if ( $product->is_in_stock() ) : ?>
+					<?php if ( $product->is_on_backorder() ) : ?>
+						<div class="rushby-stock-indicator on-backorder"></div>
+						<span class="rushby-stock-text">
+							<?php esc_html_e( 'Available on Backorder', 'rushby-elementor-widgets' ); ?>
+						</span>
+					<?php elseif ( $product->is_in_stock() ) : ?>
 						<div class="rushby-stock-indicator in-stock"></div>
 						<span class="rushby-stock-text">
 							<?php echo esc_html( $settings['stock_shipping_text'] ?? 'In Stock - Ships in 1-3 days' ); ?>
