@@ -258,6 +258,14 @@
 	aspect-ratio: 1 / 1;
 }
 
+/* Desktop: Reduce image height to make card shorter */
+@media (min-width: 768px) {
+	.rushby-product-showcase .rushby-product-image-wrapper.ratio-1-1 {
+		aspect-ratio: 4 / 3;
+		max-height: 280px;
+	}
+}
+
 .rushby-product-showcase .rushby-product-image-link {
 	display: block;
 	width: 100%;
