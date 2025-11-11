@@ -238,6 +238,20 @@
 	overflow: hidden;
 	border: 1px solid #D1D5DB;
 	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	display: block;
+	transition: all 0.3s ease;
+}
+
+a.rushby-product-card {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+}
+
+a.rushby-product-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 15px 15px -5px rgba(0, 0, 0, 0.08);
+	border-color: var(--rushby-accent);
 }
 
 .rushby-product-inner {

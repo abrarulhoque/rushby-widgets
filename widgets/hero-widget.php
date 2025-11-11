@@ -456,12 +456,56 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'product_source',
+			[
+				'label' => esc_html__( 'Product Source', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'tag',
+				'options' => [
+					'tag' => esc_html__( 'By Tag', 'rushby-elementor-widgets' ),
+					'category' => esc_html__( 'By Category', 'rushby-elementor-widgets' ),
+					'manual' => esc_html__( 'Manual (Static)', 'rushby-elementor-widgets' ),
+				],
+			]
+		);
+
+		$this->add_control(
+			'product_tag',
+			[
+				'label' => esc_html__( 'Product Tag', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => 'featured',
+				'placeholder' => esc_html__( 'Enter tag slug (e.g., featured)', 'rushby-elementor-widgets' ),
+				'description' => esc_html__( 'Displays the first product with this tag', 'rushby-elementor-widgets' ),
+				'condition' => [
+					'product_source' => 'tag',
+				],
+			]
+		);
+
+		$this->add_control(
+			'product_category',
+			[
+				'label' => esc_html__( 'Product Category', 'rushby-elementor-widgets' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => esc_html__( 'Enter category slug', 'rushby-elementor-widgets' ),
+				'description' => esc_html__( 'Displays the first product from this category', 'rushby-elementor-widgets' ),
+				'condition' => [
+					'product_source' => 'category',
+				],
+			]
+		);
+
+		$this->add_control(
 			'product_image',
 			[
 				'label' => esc_html__( 'Product Image', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::MEDIA,
 				'default' => [
 					'url' => \Elementor\Utils::get_placeholder_image_src(),
+				],
+				'condition' => [
+					'product_source' => 'manual',
 				],
 			]
 		);
@@ -473,6 +517,9 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => 'The Jackal Flat Trigger',
 				'label_block' => true,
+				'condition' => [
+					'product_source' => 'manual',
+				],
 			]
 		);
 
@@ -482,6 +529,9 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 				'label' => esc_html__( 'Product Subtitle', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => 'CZ P07/P09/Omega',
+				'condition' => [
+					'product_source' => 'manual',
+				],
 			]
 		);
 
@@ -491,6 +541,9 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 				'label' => esc_html__( 'Rating', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => '5.0',
+				'condition' => [
+					'product_source' => 'manual',
+				],
 			]
 		);
 
@@ -500,6 +553,9 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 				'label' => esc_html__( 'Reviews Count', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => '22',
+				'condition' => [
+					'product_source' => 'manual',
+				],
 			]
 		);
 
@@ -509,6 +565,8 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 				'label' => esc_html__( 'Badge Text', 'rushby-elementor-widgets' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => 'BEST SELLER',
+				'placeholder' => esc_html__( 'Leave empty for auto (Sale/Featured/New)', 'rushby-elementor-widgets' ),
+				'description' => esc_html__( 'Custom badge text. Leave empty to auto-detect (Sale/Featured/New)', 'rushby-elementor-widgets' ),
 			]
 		);
 
@@ -1200,33 +1258,109 @@ class Rushby_Hero_Widget extends \Elementor\Widget_Base {
 
 					<!-- Right Column - Product Showcase -->
 					<div class="rushby-product-showcase">
+						<?php
+						// Fetch WooCommerce product based on source
+						$product = null;
+						$product_source = $settings['product_source'] ?? 'tag';
+
+						if ( 'tag' === $product_source && ! empty( $settings['product_tag'] ) ) {
+							$args = [
+								'post_type' => 'product',
+								'posts_per_page' => 1,
+								'tax_query' => [
+									[
+										'taxonomy' => 'product_tag',
+										'field' => 'slug',
+										'terms' => $settings['product_tag'],
+									],
+								],
+							];
+							$products = get_posts( $args );
+							if ( ! empty( $products ) ) {
+								$product = wc_get_product( $products[0]->ID );
+							}
+						} elseif ( 'category' === $product_source && ! empty( $settings['product_category'] ) ) {
+							$args = [
+								'post_type' => 'product',
+								'posts_per_page' => 1,
+								'tax_query' => [
+									[
+										'taxonomy' => 'product_cat',
+										'field' => 'slug',
+										'terms' => $settings['product_category'],
+									],
+								],
+							];
+							$products = get_posts( $args );
+							if ( ! empty( $products ) ) {
+								$product = wc_get_product( $products[0]->ID );
+							}
+						}
+
+						// Get product data
+						if ( $product && 'manual' !== $product_source ) {
+							$product_url = $product->get_permalink();
+							$product_image = $product->get_image( 'woocommerce_thumbnail' );
+							$product_title = $product->get_name();
+							$product_rating = $product->get_average_rating();
+							$product_review_count = $product->get_review_count();
+
+							// Get category
+							$categories = get_the_terms( $product->get_id(), 'product_cat' );
+							$product_subtitle = $categories && ! is_wp_error( $categories ) ? esc_html( $categories[0]->name ) : '';
+
+							// Get badge text
+							$badge_text = $settings['product_badge_text'];
+							if ( empty( $badge_text ) ) {
+								if ( $product->is_on_sale() ) {
+									$badge_text = 'SALE';
+								} elseif ( $product->is_featured() ) {
+									$badge_text = 'FEATURED';
+								} else {
+									$post_date = get_the_date( 'U', $product->get_id() );
+									if ( ( time() - $post_date ) < ( 30 * DAY_IN_SECONDS ) ) {
+										$badge_text = 'NEW';
+									}
+								}
+							}
+						} else {
+							// Manual/fallback data
+							$product_url = '#';
+							$product_image = \Elementor\Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'product_image' );
+							$product_title = $settings['product_title'];
+							$product_subtitle = $settings['product_subtitle'];
+							$product_rating = $settings['product_rating'];
+							$product_review_count = $settings['product_reviews_count'];
+							$badge_text = $settings['product_badge_text'];
+						}
+						?>
 						<!-- Main Product Card -->
-						<div class="rushby-product-card">
+						<a href="<?php echo esc_url( $product_url ); ?>" class="rushby-product-card" style="text-decoration: none; color: inherit;">
 							<div class="rushby-product-inner">
 								<div class="rushby-product-content">
 									<div class="rushby-product-image-wrapper">
-										<?php echo \Elementor\Group_Control_Image_Size::get_attachment_image_html( $settings, 'thumbnail', 'product_image' ); ?>
+										<?php echo $product_image; ?>
 									</div>
 									<div class="rushby-product-info">
-										<h3 class="rushby-product-title"><?php echo esc_html( $settings['product_title'] ); ?></h3>
-										<p class="rushby-product-subtitle"><?php echo esc_html( $settings['product_subtitle'] ); ?></p>
+										<h3 class="rushby-product-title"><?php echo esc_html( $product_title ); ?></h3>
+										<p class="rushby-product-subtitle"><?php echo esc_html( $product_subtitle ); ?></p>
 										<div class="rushby-product-rating">
 											<svg class="rushby-rating-icon" fill="currentColor" viewBox="0 0 20 20">
 												<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
 											</svg>
-											<span><?php echo esc_html( $settings['product_rating'] ); ?> (<?php echo esc_html( $settings['product_reviews_count'] ); ?> reviews)</span>
+											<span><?php echo esc_html( $product_rating ); ?> (<?php echo esc_html( $product_review_count ); ?> reviews)</span>
 										</div>
 									</div>
 								</div>
 							</div>
 
 							<!-- Floating Badge -->
-							<?php if ( ! empty( $settings['product_badge_text'] ) ) : ?>
+							<?php if ( ! empty( $badge_text ) ) : ?>
 							<div class="rushby-product-badge-wrapper">
-								<div class="rushby-product-badge"><?php echo esc_html( $settings['product_badge_text'] ); ?></div>
+								<div class="rushby-product-badge"><?php echo esc_html( $badge_text ); ?></div>
 							</div>
 							<?php endif; ?>
-						</div>
+						</a>
 
 						<!-- Floating Cards -->
 						<?php if ( $settings['show_floating_cards'] === 'yes' ) : ?>
